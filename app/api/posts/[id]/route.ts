@@ -3,14 +3,16 @@ import { NextResponse } from 'next/server';
 // 1. 단일 게시물 반환 (GET)
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!params || !params.id) {
+  const resolvedParams = await params;
+  if (!resolvedParams || !resolvedParams.id) {
     return NextResponse.json({ error: '올바르지 않은 파라미터 요청입니다.' }, { status: 400 });
   }
 
+  const id = resolvedParams.id;
   const posts = (global as any).posts || [];
-  const post = posts.find((p: any) => String(p.id) === String(params.id));
+  const post = posts.find((p: any) => String(p.id) === String(id));
   
   if (!post) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -22,16 +24,18 @@ export async function GET(
 // 2. 단일 게시물 데이터 수정/병합 (PUT)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!params || !params.id) {
+  const resolvedParams = await params;
+  if (!resolvedParams || !resolvedParams.id) {
     return NextResponse.json({ error: '올바르지 않은 파라미터 요청입니다.' }, { status: 400 });
   }
 
+  const id = resolvedParams.id;
   try {
     const body = await request.json();
     const posts = (global as any).posts || [];
-    const postIndex = posts.findIndex((p: any) => String(p.id) === String(params.id));
+    const postIndex = posts.findIndex((p: any) => String(p.id) === String(id));
     
     if (postIndex === -1) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -51,13 +55,15 @@ export async function PUT(
 // 3. 단일 게시물 제거 (DELETE)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!params || !params.id) {
+  const resolvedParams = await params;
+  if (!resolvedParams || !resolvedParams.id) {
     return NextResponse.json({ error: '올바르지 않은 파라미터 요청입니다.' }, { status: 400 });
   }
 
+  const id = resolvedParams.id;
   const posts = (global as any).posts || [];
-  (global as any).posts = posts.filter((p: any) => String(p.id) !== String(params.id));
+  (global as any).posts = posts.filter((p: any) => String(p.id) !== String(id));
   return NextResponse.json({ success: true });
 }
