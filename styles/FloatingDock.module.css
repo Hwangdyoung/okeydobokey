@@ -1,0 +1,184 @@
+/* ============================================
+   FLOATING NAV DOCK
+   ============================================ */
+
+.floatingDock {
+  position: fixed;
+  right: 28px;
+  bottom: 40px;
+  z-index: var(--z-float);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* Label tooltip on left side */
+.dockLabel {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--clr-gray-2);
+  text-align: right;
+  margin-bottom: 6px;
+  transition: color var(--transition-base);
+}
+
+.dockBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: rgba(17, 17, 17, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--clr-dark-4);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  outline: none;
+  overflow: visible;
+}
+
+.dockBtn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: transparent;
+  transition: box-shadow 0.3s ease;
+}
+
+.dockBtn:hover {
+  border-color: var(--clr-accent);
+  background: rgba(17, 17, 17, 0.95);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 24, 0.3),
+    0 0 20px rgba(245, 197, 24, 0.2),
+    0 0 40px rgba(245, 197, 24, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.dockBtn:hover::after {
+  box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.15);
+}
+
+.dockBtn:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+/* Active state for current page */
+.dockBtn.active {
+  border-color: var(--clr-accent);
+  background: rgba(245, 197, 24, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(245, 197, 24, 0.3),
+    0 0 20px rgba(245, 197, 24, 0.15);
+}
+
+.dockBtn.active .dockIcon {
+  color: var(--clr-accent);
+}
+
+/* Icon inside button */
+.dockIcon {
+  font-size: 18px;
+  color: var(--clr-gray-3);
+  transition: color var(--transition-base), transform var(--transition-base);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dockBtn:hover .dockIcon {
+  color: var(--clr-accent);
+  transform: scale(1.1);
+}
+
+/* Tooltip label */
+.dockTooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: rgba(17, 17, 17, 0.95);
+  border: 1px solid var(--clr-dark-4);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--clr-gray-3);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.dockTooltip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(17, 17, 17, 0.95);
+  border-right: 1px solid var(--clr-dark-4);
+  border-top: 1px solid var(--clr-dark-4);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform: translateY(-50%) rotate(-135deg);
+}
+
+.dockBtn:hover .dockTooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Divider between buttons */
+.dockDivider {
+  width: 52px;
+  height: 1px;
+  background: var(--clr-dark-3);
+  margin: 2px 0;
+}
+
+/* Dot indicator */
+.dockDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.dockBtn.active .dockDot {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .floatingDock {
+    right: 16px;
+    bottom: 24px;
+  }
+
+  .dockBtn {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .dockTooltip {
+    display: none;
+  }
+}

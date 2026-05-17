@@ -1,0 +1,70 @@
+[
+  {
+    "id": "trap",
+    "name": "Trap",
+    "nameKo": "트랩",
+    "tagline": "808s don't lie.",
+    "description": "어두운 분위기의 하이햇과 무거운 808 베이스가 지배하는 사운드. 아틀란타 스트릿에서 태어나 전 세계를 장악했다. 단순한 음악이 아닌, 살아남은 자들의 언어.",
+    "color": "#F5C518",
+    "year": "2000s — Atlanta",
+    "artists": [
+      "Kid Milli",
+      "Dok2",
+      "Bill Stax"
+    ],
+    "bpm": "50–80 BPM (half-time feel)",
+    "direction": "left",
+    "index": 0
+  },
+  {
+    "id": "rnb",
+    "name": "R&B",
+    "nameKo": "알앤비",
+    "tagline": "Feel every note.",
+    "description": "리듬과 블루스의 정수. 소울풀한 멜로디와 감성적인 가사가 교차하는 장르. 클래식 R&B의 뿌리에서 현대 얼터너티브 R&B까지, 감정의 스펙트럼을 온전히 담아낸다.",
+    "color": "#F5C518",
+    "year": "1940s — Nationwide",
+    "artists": [
+      "Zion.T",
+      "Leellamarz",
+      "Dean"
+    ],
+    "bpm": "70–100 BPM",
+    "direction": "right",
+    "index": 1
+  },
+  {
+    "id": "drill",
+    "name": "Drill",
+    "nameKo": "드릴",
+    "tagline": "Cold beats. Colder streets.",
+    "description": "시카고의 차가운 바람처럼 냉혹한 비트. UK로 건너가 새로운 문화를 창조했고, 이제는 글로벌 언더그라운드의 심장이다. 타협 없는 사운드, 타협 없는 리얼리티.",
+    "color": "#F5C518",
+    "year": "2010s — Chicago / London",
+    "artists": [
+      "BLASÉ",
+      "Fleeky Bang",
+      "SILKYBOIS"
+    ],
+    "bpm": "140–145 BPM",
+    "direction": "left",
+    "index": 2
+  },
+  {
+    "id": "boombap",
+    "name": "Boom Bap",
+    "nameKo": "붐뱁",
+    "tagline": "Where hip-hop was born.",
+    "description": "힙합의 원형. 선명하게 끊기는 스네어, 두터운 킥 드럼, 샘플링의 예술. 90년대 뉴욕이 만들어낸 이 사운드는 힙합의 DNA 그 자체이자, 모든 장르의 뿌리다.",
+    "color": "#F5C518",
+    "year": "1990s — New York",
+    "artists": [
+      "E-Sens",
+      "nafla",
+      "Owen"
+    ],
+    "bpm": "80–100 BPM",
+    "direction": "right",
+    "index": 3
+  }
+]

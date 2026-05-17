@@ -1,0 +1,88 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  /* 매우 부드러운 전환을 위한 cubic-bezier 애니메이션 */
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.header.hidden {
+  transform: translateY(-100%);
+}
+
+.header.visible {
+  transform: translateY(0);
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-white);
+  text-decoration: none;
+  transition: text-shadow 0.3s ease;
+}
+
+.logo:hover {
+  text-shadow: 0 0 10px var(--clr-accent);
+}
+
+.logoIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--clr-accent);
+}
+
+.nav {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.navLink {
+  font-family: var(--font-body), sans-serif;
+  font-size: 1rem;
+  color: var(--clr-gray-2);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 500;
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--clr-accent);
+}
+
+.navLink.active {
+  color: var(--clr-white);
+}
+
+/* 활성화된 링크 하단 밑줄 */
+.navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--clr-accent);
+  border-radius: 2px;
+}

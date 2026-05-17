@@ -1,0 +1,57 @@
+{
+  "schedules": [
+    {
+      "id": 1,
+      "date": "2026-05-15",
+      "title": "SEOUL HIPHOP FESTIVAL 2026",
+      "location": "난지한강공원",
+      "time": "13:00 - 22:00"
+    },
+    {
+      "id": 2,
+      "date": "2026-05-20",
+      "title": "BEENZINO LIVE CONCERT",
+      "location": "올림픽공원 올림픽홀",
+      "time": "19:00"
+    },
+    {
+      "id": 3,
+      "date": "2026-05-28",
+      "title": "AOMG WORLD TOUR in SEOUL",
+      "location": "고려대 화정체육관",
+      "time": "18:00"
+    }
+  ],
+  "communityPosts": [
+    {
+      "id": 5,
+      "title": "요즘 트랩 비트 메이킹 팁 공유합니다.",
+      "author": "BeatMaker99",
+      "date": "2026.05.14"
+    },
+    {
+      "id": 4,
+      "title": "이번 빈지노 신보 들으신 분? 솔직한 후기",
+      "author": "힙합은나의빛",
+      "date": "2026.05.13"
+    },
+    {
+      "id": 3,
+      "title": "[모집] 서울/경기 크루원 모집합니다 (랩/보컬/프로듀서)",
+      "author": "CrewSeoul",
+      "date": "2026.05.11"
+    },
+    {
+      "id": 2,
+      "title": "올드스쿨 붐뱁 명반 추천 부탁드려요",
+      "author": "BoomBapKid",
+      "date": "2026.05.09"
+    },
+    {
+      "id": 1,
+      "title": "랩허브 커뮤니티 오픈을 축하합니다!",
+      "author": "Admin",
+      "date": "2026.05.01"
+    }
+  ]
+}

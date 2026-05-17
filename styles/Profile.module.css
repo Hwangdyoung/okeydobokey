@@ -1,0 +1,484 @@
+.main {
+  min-height: 100vh;
+  background-color: var(--clr-dark-1);
+  color: var(--clr-white);
+  padding-top: 100px; /* 헤더 공간 여백 */
+  padding-bottom: 4rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--clr-white);
+  letter-spacing: 0.05em;
+}
+
+/* 로그인 폼 */
+.loginCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.loginSubtitle {
+  color: var(--clr-gray-2);
+  margin-bottom: 2rem;
+  font-family: var(--font-body);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* 공통 Input & Button */
+.input {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--clr-white);
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+}
+
+.primaryBtn {
+  background: var(--clr-accent);
+  color: var(--clr-dark-1);
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+.primaryBtn:active {
+  transform: scale(0.98);
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: var(--clr-accent);
+  border: 1px solid var(--clr-accent);
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 204, 0, 0.1);
+}
+
+/* 소셜 로그인 & 보조 링크 추가 스타일 */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0 1.5rem;
+  color: var(--clr-gray-3);
+  font-size: 0.9rem;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+  padding: 0 1rem;
+}
+
+.socialLoginGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.socialBtn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.socialIcon {
+  flex-shrink: 0;
+}
+
+.socialBtn:hover {
+  opacity: 0.85;
+}
+
+.socialBtn:active {
+  transform: scale(0.98);
+}
+
+.googleBtn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.naverBtn {
+  background-color: #03C75A;
+  color: #ffffff;
+}
+
+.authLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.authLink {
+  color: var(--clr-gray-2);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.authLink:hover {
+  color: var(--clr-accent);
+}
+
+.authDivider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+}
+
+/* 뷰 전환 컨테이너 애니메이션 */
+.viewContainer {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 입력폼 오류 표시 */
+.inputError {
+  border-color: #ff4d4d !important;
+}
+
+.errorMessage {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+/* 버튼이 포함된 인풋 (이메일 인증 등) */
+.inputWithBtn {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inputWithBtn .input {
+  flex: 1;
+}
+
+.smallBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--clr-white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.smallBtn:hover {
+  background: var(--clr-accent);
+  color: var(--clr-dark-1);
+  border-color: var(--clr-accent);
+}
+
+/* 계정 찾기 탭 메뉴 */
+.tabMenu {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tabBtn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--clr-gray-2);
+  padding: 1rem 0;
+  font-size: 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tabBtn:hover {
+  color: var(--clr-white);
+}
+
+.activeTab {
+  color: var(--clr-accent);
+  border-bottom-color: var(--clr-accent);
+  font-weight: 700;
+}
+
+/* 계정 찾기 결과 */
+.findResult {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--clr-white);
+}
+
+.foundText {
+  color: var(--clr-accent);
+  font-size: 1.1rem;
+}
+
+/* 프로필 콘텐츠 */
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.sectionCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.5rem;
+  color: var(--clr-white);
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  color: var(--clr-gray-3);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.logoutBtn:hover {
+  color: var(--clr-white);
+}
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border: 2px solid var(--clr-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar span {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--clr-accent);
+}
+
+.nameEdit {
+  flex: 1;
+}
+
+.currentName {
+  font-size: 1.1rem;
+  color: var(--clr-gray-2);
+  margin-bottom: 1rem;
+}
+
+.currentName strong {
+  color: var(--clr-white);
+  font-size: 1.3rem;
+}
+
+.editForm {
+  display: flex;
+  gap: 1rem;
+}
+
+.editForm .input {
+  flex: 1;
+}
+
+/* 커뮤니티 활동 그리드 */
+.activityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.activityCard {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.activityCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.activityCard h3 {
+  font-size: 1rem;
+  color: var(--clr-gray-2);
+}
+
+.activityCount {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--clr-accent);
+}
+
+.activityDesc {
+  font-size: 0.85rem;
+  color: var(--clr-gray-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 600px) {
+  .profileRow {
+    flex-direction: column;
+    text-align: center;
+  }
+  .editForm {
+    flex-direction: column;
+  }
+}
+
+/* 최근 활동 미리보기 */
+.recentActivity {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.recentActivity h3 {
+  font-size: 1.2rem;
+  color: var(--clr-white);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-body);
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recentItem {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recentItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--clr-accent);
+  transform: translateX(5px);
+}
+
+.recentTitle {
+  font-size: 1rem;
+  color: var(--clr-white);
+  font-weight: 500;
+}
+
+.recentDate {
+  font-size: 0.85rem;
+  color: var(--clr-gray-3);
+}
+
+.noData {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--clr-gray-3);
+  font-style: italic;
+}
+
+.emailText {
+  color: var(--clr-gray-3);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}

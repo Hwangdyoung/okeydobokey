@@ -1,0 +1,344 @@
+.main {
+  min-height: 100vh;
+  background-color: var(--clr-dark-1);
+  color: var(--clr-white);
+  padding-top: 100px;
+  padding-bottom: 4rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--clr-white);
+  letter-spacing: 0.05em;
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .contentWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 캘린더 커스텀 래퍼 */
+.calendarWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 400px;
+  height: 420px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* react-calendar 오버라이딩 */
+.calendarWrapper :global(.react-calendar) {
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.calendarWrapper :global(.react-calendar__navigation button) {
+  color: var(--clr-white);
+  min-width: 44px;
+  background: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.calendarWrapper :global(.react-calendar__navigation button:disabled) {
+  color: var(--clr-gray-3);
+}
+
+.calendarWrapper :global(.react-calendar__navigation button:enabled:hover),
+.calendarWrapper :global(.react-calendar__navigation button:enabled:focus) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.calendarWrapper :global(.react-calendar__month-view__weekdays) {
+  color: var(--clr-gray-2);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  margin-bottom: 1rem;
+}
+
+.calendarWrapper :global(.react-calendar__month-view__weekdays__weekday abbr) {
+  text-decoration: none;
+}
+
+.calendarWrapper :global(.react-calendar__month-view__days__day) {
+  color: var(--clr-white);
+  padding: 1rem 0.5rem;
+  border-radius: 8px;
+  background: none;
+}
+
+.calendarWrapper :global(.react-calendar__tile:enabled:hover),
+.calendarWrapper :global(.react-calendar__tile:enabled:focus) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.calendarWrapper :global(.react-calendar__tile--now) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.calendarWrapper :global(.react-calendar__tile--active) {
+  background: var(--clr-accent) !important;
+  color: var(--clr-dark-1) !important;
+  font-weight: bold;
+}
+
+.calendarWrapper :global(.react-calendar__month-view__days__day--neighboringMonth) {
+  color: var(--clr-gray-3);
+}
+
+/* 연도 및 월 선택 타일 가시성 해결 */
+.calendarWrapper :global(.react-calendar__year-view__months__month),
+.calendarWrapper :global(.react-calendar__decade-view__years__year),
+.calendarWrapper :global(.react-calendar__century-view__decades__decade) {
+  color: var(--clr-white) !important;
+  font-family: var(--font-body);
+}
+
+.calendarWrapper :global(.react-calendar__tile:enabled:hover),
+.calendarWrapper :global(.react-calendar__tile:enabled:focus) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--clr-accent) !important;
+  border-radius: 8px;
+}
+
+/* 공연 점 표시 */
+.hasEventDot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--clr-accent);
+  border-radius: 50%;
+}
+
+/* 리스트 뷰 */
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 420px; /* 달력과 높이 동일하게 고정 */
+}
+
+.listHeader {
+  font-size: 1.5rem;
+  color: var(--clr-accent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.eventCard {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.eventCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 204, 0, 0.3);
+}
+
+.eventDate {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--clr-accent);
+  margin-bottom: 0.25rem;
+}
+
+.eventName {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--clr-white);
+  margin-bottom: 0.25rem;
+}
+
+.eventLocation {
+  font-size: 0.85rem;
+  color: var(--clr-gray-2);
+}
+
+.noEvents {
+  color: var(--clr-gray-3);
+  text-align: center;
+  padding: 3rem 0;
+  font-style: italic;
+}
+
+/* Badge Styles */
+.badgeWrapper {
+  margin-bottom: 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge.ended {
+  background-color: var(--clr-gray-1);
+  color: var(--clr-gray-4);
+  opacity: 0.7;
+}
+
+.badge.upcoming {
+  background-color: var(--clr-accent);
+  color: var(--clr-dark-1);
+  box-shadow: 0 0 10px rgba(245, 197, 24, 0.3);
+}
+
+.badge.dday {
+  background-color: #ff4444;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.badge.ongoing {
+  background-color: #00c853;
+  color: white;
+}
+
+.eventEnded {
+  opacity: 0.6;
+  filter: grayscale(0.5);
+}
+
+.eventLineup {
+  font-size: 0.85rem;
+  color: var(--clr-gray-3);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Scroll Area & Custom Scrollbar */
+.scrollArea {
+  flex: 1; /* 남은 높이 전체 차지 */
+  overflow-y: auto;
+  padding-right: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Webkit Scrollbar Customization */
+.scrollArea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+  background: var(--clr-accent);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(245, 197, 24, 0.2);
+}
+
+.scrollArea::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+
+/* Ticket Button Styles */
+.cardFooter {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.75rem;
+}
+
+.ticketBtn {
+  display: inline-block;
+  background-color: var(--clr-accent);
+  color: var(--clr-dark-1);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ticketBtn:hover {
+  background-color: #ffd700;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 197, 24, 0.4);
+}
+
+/* Inline Ticket Layout */
+.flexRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.ticketBtn {
+  display: inline-block;
+  background-color: var(--clr-accent);
+  color: var(--clr-dark-1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ticketBtn:hover {
+  background-color: #ffd700;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(245, 197, 24, 0.3);
+}

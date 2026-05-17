@@ -1,0 +1,81 @@
+{
+  "description": "미국의 음악 장르 중 하나로 Rhythm and blues의 약자. 1940년대 초중반부터 미국 흑인들 사이에서 블루스를 기반으로, 재즈의 리듬과 화성학이 섞여 탄생했다. 소울풀한 가창력과 세련된 편곡이 특징이다.",
+  "subGenres": [
+    {
+      "id": "alternative",
+      "name": "얼터너티브 R&B",
+      "description": "다양한 장르를 결합한 몽환적이고 실험적인 사운드",
+      "artists": "DEAN, Crush"
+    },
+    {
+      "id": "contemporary",
+      "name": "컨템포러리 R&B",
+      "description": "세련된 팝 사운드와 조화된 현대적 R&B",
+      "artists": "박재범"
+    },
+    {
+      "id": "soulful",
+      "name": "소울 R&B",
+      "description": "깊은 감성과 가창력이 돋보이는 소울풀한 사운드",
+      "artists": "자이언티"
+    },
+    {
+      "id": "hiphop-rnb",
+      "name": "힙합 R&B",
+      "description": "힙합 비트와 R&B 멜로디의 완벽한 조화",
+      "artists": "릴러말즈"
+    }
+  ],
+  "artists": [
+    {
+      "id": "jay-park",
+      "name": "박재범 (Jay Park)",
+      "realName": "박재범",
+      "agency": "MORE VISION",
+      "debut": "2008.09.04",
+      "hits": "EVERYTHING YOU WANTED, All I Wanna Do",
+      "features": "한국 R&B와 힙합을 넘나드는 올라운더. 세련된 보컬과 압도적인 퍼포먼스, 그리고 레이블 수장으로서의 카리스마를 겸비한 아티스트.",
+      "image": "/jaypark.png"
+    },
+    {
+      "id": "dean",
+      "name": "DEAN (딘)",
+      "realName": "권혁",
+      "agency": "유니버설 뮤직",
+      "debut": "2015.07.30",
+      "hits": "130 mood:TRBL, D (half moon)",
+      "features": "얼터너티브 R&B의 선두주자. 몽환적인 분위기와 감각적인 멜로디 라인으로 한국뿐만 아니라 전 세계적인 주목을 받고 있다.",
+      "image": "/dean.png"
+    },
+    {
+      "id": "crush",
+      "name": "Crush (크러쉬)",
+      "realName": "신효섭",
+      "agency": "P NATION",
+      "debut": "2012.12",
+      "hits": "FANG, 잊어버리지마, Beautiful",
+      "features": "독보적인 음색과 소울풀한 감성을 지닌 아티스트. 트렌디한 R&B부터 서정적인 발라드까지 폭넓은 음악적 스펙트럼을 자랑한다.",
+      "image": "/crush.png"
+    },
+    {
+      "id": "zion-t",
+      "name": "자이언티 (Zion.T)",
+      "realName": "김해솔",
+      "agency": "THEBLACKLABEL",
+      "debut": "2011년",
+      "hits": "양화대교, 꺼내 먹어요, Red Light",
+      "features": "한국 R&B와 힙합의 경계를 허문 독보적인 음색의 소유자. 일상적인 소재를 비유적으로 풀어내는 작사 실력과 독창적인 멜로디가 일품이다.",
+      "image": "/ziont.png"
+    },
+    {
+      "id": "leellamarz",
+      "name": "릴러말즈 (Leellamarz)",
+      "realName": "김민겸",
+      "agency": "앰비션 뮤직",
+      "debut": "2017년",
+      "hits": "MARZ 2 AMBITION, 인간중독",
+      "features": "바이올린 전공자 출신의 작업량 아이콘. 클래식한 음악적 베이스 위에 힙합과 R&B를 자유롭게 얹어내는 천재적인 감각을 보여준다.",
+      "image": "/leellamarz.png"
+    }
+  ]
+}

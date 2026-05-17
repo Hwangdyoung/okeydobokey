@@ -1,0 +1,274 @@
+.main {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(20,20,20,1) 100%);
+  color: var(--clr-white);
+  overflow-x: hidden;
+}
+
+.backLink {
+  color: var(--clr-gray-3);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.backLink:hover {
+  color: var(--clr-accent);
+  transform: translateX(-5px);
+}
+
+/* Intro Section */
+.introSection {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.introContent {
+  max-width: 800px;
+}
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  color: var(--clr-accent);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 15vw, 12rem);
+  line-height: 0.85;
+  margin-bottom: 2rem;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--clr-white);
+  text-transform: uppercase;
+}
+
+.description {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.8;
+  color: var(--clr-gray-2);
+  word-break: keep-all;
+}
+
+/* Sub-genre Section */
+.subGenreSection {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background-color: var(--clr-accent);
+  margin: 1rem auto 0;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.subCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.subCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--clr-accent);
+}
+
+.subCard h3 {
+  font-size: 1.5rem;
+  color: var(--clr-white);
+  margin-bottom: 1rem;
+}
+
+.subDesc {
+  color: var(--clr-gray-2);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.subArtists {
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--clr-accent);
+  color: var(--clr-accent);
+  border-radius: 20px;
+}
+
+/* Artist Section */
+.artistSection {
+  padding: 6rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.artistList {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+/* Artist Card Component */
+.artistCard {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.artistCard.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .artistCard.even {
+    flex-direction: row;
+  }
+  .artistCard.odd {
+    flex-direction: row-reverse;
+  }
+}
+
+@media (max-width: 767px) {
+  .artistCard {
+    flex-direction: column !important;
+    gap: 2rem;
+  }
+}
+
+.artistImagePlaceholder {
+  flex: 1;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+  padding: 10px;
+  position: relative;
+}
+
+.artistImagePlaceholder::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: 10px;
+  bottom: 10px;
+  border: 1px solid var(--clr-accent);
+  border-radius: 20px;
+  z-index: 0;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.artistCard:hover .artistImagePlaceholder::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+}
+
+.imageInner {
+  width: 100%;
+  height: 100%;
+  background-color: #111;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.imageInner span {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  color: rgba(255, 255, 255, 0.05);
+}
+
+.artistImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.artistCard:hover .artistImage {
+  filter: grayscale(100%);
+  transform: scale(1.05);
+}
+
+.artistInfo {
+  flex: 1;
+}
+
+.artistInfo h3 {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--clr-white);
+}
+
+.infoList {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.infoList li {
+  color: var(--clr-gray-2);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.infoList strong {
+  color: var(--clr-accent);
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.artistFeatures {
+  color: var(--clr-white);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--clr-accent);
+}

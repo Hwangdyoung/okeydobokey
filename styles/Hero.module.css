@@ -1,0 +1,268 @@
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--clr-black);
+}
+
+/* Animated background grid */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(245, 197, 24, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 197, 24, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Radial glow center */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(245, 197, 24, 0.08) 0%, transparent 70%);
+  animation: glowPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.heroEyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.3s ease forwards;
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 18vw, 18rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--clr-white);
+  position: relative;
+  opacity: 0;
+  animation: revealTitle 1.2s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.heroTitle .accent {
+  color: var(--clr-accent);
+  display: inline-block;
+  animation: accentFlicker 3s 2s ease-in-out infinite;
+}
+
+@keyframes accentFlicker {
+  0%, 94%, 96%, 98%, 100% { opacity: 1; text-shadow: 0 0 40px var(--clr-accent-glow); }
+  95%, 97% { opacity: 0.8; text-shadow: none; }
+}
+
+.heroSubtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-gray-3);
+  max-width: 400px;
+  opacity: 0;
+  animation: fadeInUp 0.8s 1s ease forwards;
+}
+
+.heroTagline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  opacity: 0;
+  animation: fadeInUp 0.8s 1.2s ease forwards;
+}
+
+.heroTagline span {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--clr-accent);
+}
+
+.heroTagline p {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--clr-gray-3);
+  letter-spacing: 0.1em;
+}
+
+/* Year counter decoration */
+.heroYear {
+  position: absolute;
+  bottom: var(--space-3xl);
+  left: var(--space-3xl);
+  z-index: 2;
+  opacity: 0;
+  animation: fadeInUp 0.8s 1.5s ease forwards;
+}
+
+.heroYear p {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: var(--clr-gray-2);
+}
+
+/* Scroll indicator */
+.scrollIndicator {
+  position: absolute;
+  bottom: var(--space-2xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  opacity: 0;
+  animation: fadeInUpCenter 0.8s 2s ease forwards;
+}
+
+@keyframes fadeInUpCenter {
+  from { 
+    opacity: 0; 
+    transform: translateX(-50%) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(-50%) translateY(0); 
+  }
+}
+
+.scrollIndicator span {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--clr-gray-2);
+}
+
+.scrollMouse {
+  width: 22px;
+  height: 36px;
+  border: 1.5px solid var(--clr-gray-2);
+  border-radius: 11px;
+  position: relative;
+  transition: border-color var(--transition-base);
+}
+
+.scrollMouse::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 7px;
+  background: var(--clr-accent);
+  border-radius: 2px;
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(14px); }
+}
+
+.scrollIndicator:hover .scrollMouse {
+  border-color: var(--clr-accent);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes revealTitle {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scaleY(0.9);
+    filter: blur(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    filter: blur(0);
+  }
+}
+
+/* Decorative line on right */
+.heroLineRight {
+  position: absolute;
+  right: var(--space-3xl);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  z-index: 2;
+  opacity: 0;
+  animation: fadeInUp 0.8s 1.8s ease forwards;
+}
+
+.heroLineRight .vertLine {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--clr-gray-1), transparent);
+}
+
+.heroLineRight p {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--clr-gray-2);
+  writing-mode: vertical-rl;
+}
+
+@media (max-width: 768px) {
+  .heroYear,
+  .heroLineRight {
+    display: none;
+  }
+
+  .heroTitle {
+    font-size: clamp(5rem, 22vw, 8rem);
+  }
+}

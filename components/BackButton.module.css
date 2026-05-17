@@ -1,0 +1,26 @@
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--clr-gray-3);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.backBtn:hover {
+  color: var(--clr-accent);
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.backBtn:hover .arrow {
+  transform: translateX(-5px);
+}

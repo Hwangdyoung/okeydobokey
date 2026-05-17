@@ -1,26 +1,198 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
+/* ============================================
+   CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --clr-black: #0a0a0a;
+  --clr-dark-1: #111111;
+  --clr-dark-2: #1a1a1a;
+  --clr-dark-3: #242424;
+  --clr-dark-4: #2e2e2e;
+  --clr-gray-1: #3d3d3d;
+  --clr-gray-2: #5a5a5a;
+  --clr-gray-3: #888888;
+  --clr-gray-4: #b0b0b0;
+  --clr-white: #f5f5f5;
+  --clr-pure-white: #ffffff;
+
+  /* Accent - Subtle Yellow */
+  --clr-accent: #f5c518;
+  --clr-accent-dim: rgba(245, 197, 24, 0.15);
+  --clr-accent-glow: rgba(245, 197, 24, 0.4);
+  --clr-accent-dark: #c9a000;
+
+  /* Typography */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-ui: 'Inter', sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 5rem;
+  --space-4xl: 8rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Z-index layers */
+  --z-base: 1;
+  --z-float: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--clr-black);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-ui);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--clr-dark-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clr-gray-1);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-accent);
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+::selection {
+  background: var(--clr-accent);
+  color: var(--clr-black);
+}
+
+/* ============================================
+   NOISE TEXTURE OVERLAY
+   ============================================ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: var(--z-overlay);
+  opacity: 0.4;
+}
+
+/* Custom Cursor Styles */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+    /* 데스크톱에서 기본 커서 숨김 */
+  }
+
+  /* 강제로 호버 상태인 요소들도 커서 안보이게 처리 */
+  a,
+  button,
+  input,
+  textarea,
+  [role="button"] {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-inner,
+.custom-cursor-outer {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+/* Inner Dot (점) */
+.custom-cursor-inner {
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff; /* 평상시 흰색 */
+  transition: all 0.2s ease-out;
+}
+
+/* Outer Ring (링) */
+.custom-cursor-outer {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #ffffff; /* 평상시 흰색 테두리 */
+  background-color: transparent;
+  /* 부드럽게 따라다니는 효과를 위한 transition 설정 */
+  transition: top 0.1s ease-out, left 0.1s ease-out, border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Hover Effect: 색상 전환 (노란색) */
+.custom-cursor-inner.hover {
+  width: 8px; /* 크기 유지 */
+  height: 8px;
+  background-color: var(--clr-accent);
+}
+
+.custom-cursor-outer.hover {
+  width: 32px; /* 크기 고정 */
+  height: 32px;
+  border-width: 2.5px;
+  border-color: var(--clr-accent);
+  background-color: rgba(245, 197, 24, 0.1);
+  box-shadow: 0 0 15px var(--clr-accent-glow);
+  backdrop-filter: blur(1px);
 }

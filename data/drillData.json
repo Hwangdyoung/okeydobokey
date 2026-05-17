@@ -1,0 +1,81 @@
+{
+  "description": "UK·시카고·브롱스 드릴에서 영향받은 변칙 스네어와 808 슬라이딩 베이스가 특징인 장르. 2020년대 한국 힙합 씬에서 가장 빠르게 성장하며 강렬한 에너지를 전달하고 있다.",
+  "subGenres": [
+    {
+      "id": "uk-drill",
+      "name": "UK 드릴",
+      "description": "런던에서 발전한 변칙적인 슬라이딩 베이스와 드럼 패턴",
+      "artists": "블라세"
+    },
+    {
+      "id": "bronx-drill",
+      "name": "브롱스 드릴",
+      "description": "올드스쿨 샘플링을 결합한 에너제틱한 드릴 스타일",
+      "artists": "플리키뱅"
+    },
+    {
+      "id": "korean-drill",
+      "name": "K-드릴",
+      "description": "한국적 감성과 랩 스타일이 결합된 독자적인 드릴",
+      "artists": "NSW yoon"
+    },
+    {
+      "id": "experimental-drill",
+      "name": "익스페리멘탈 드릴",
+      "description": "기존 드릴의 틀을 깨는 실험적인 사운드 결합",
+      "artists": "실키보이즈"
+    }
+  ],
+  "artists": [
+    {
+      "id": "blase",
+      "name": "블라세 (BLASÉ)",
+      "realName": "신영덕",
+      "agency": "AT AREA",
+      "debut": "2019년",
+      "hits": "BLASÉ, Multrill-ionaire",
+      "features": "한국 드릴 씬의 정점으로 평가받는 아티스트. 탄탄한 발성과 딜리버리, 그리고 압도적인 피지컬로 비트를 찢어놓는 카리스마를 보여준다.",
+      "image": "/blase.png"
+    },
+    {
+      "id": "fleeky-bang",
+      "name": "플리키뱅 (Fleeky Bang)",
+      "realName": "이재준",
+      "agency": "DIRTY PLAY RECORDS",
+      "debut": "2022년",
+      "hits": "The Predator, My Name Is Fleeky",
+      "features": "강렬한 허스키 보이스와 거침없는 가사로 드릴 팬들을 사로잡은 아티스트. 뉴욕 드릴 사운드를 한국적으로 완벽하게 소화해낸다.",
+      "image": "/fleekybang.png"
+    },
+    {
+      "id": "silkybois",
+      "name": "실키보이즈 (SILKYBOIS)",
+      "realName": "블랙넛, 지미페이지",
+      "agency": "저스트뮤직 / THE NICE MUSIC GROUP",
+      "debut": "2021년",
+      "hits": "VOLUME ONE, SILKYBOIS",
+      "features": "블랙넛과 지미페이지의 결합으로 탄생한 드릴 듀오. 위트 있는 가사와 독보적인 랩 스킬로 드릴 장르의 새로운 재미를 선사한다.",
+      "image": "/silkybois.png"
+    },
+    {
+      "id": "jimmy-paige",
+      "name": "지미페이지 (Jimmy Paige)",
+      "realName": "김동건",
+      "agency": "THE NICE MUSIC GROUP",
+      "debut": "2018년",
+      "hits": "Yellow Niki Lauda, 몽키매직",
+      "features": "특유의 로우톤 and 변칙적인 플로우가 매력적인 아티스트. 실키보이즈의 멤버로서 드릴 사운드의 깊이를 더해주는 역할을 한다.",
+      "image": "/jimmypaige.png"
+    },
+    {
+      "id": "nsw-yoon",
+      "name": "NSW yoon",
+      "realName": "이윤",
+      "agency": "팀플레이 뮤직",
+      "debut": "2022년",
+      "hits": "BALLON D'OR, 으랏차차",
+      "features": "차세대 드릴 강자로 떠오른 아티스트. 어린 나이가 믿기지 않는 깊은 로우톤과 탄탄한 랩 기본기로 드릴의 미래를 책임지고 있다.",
+      "image": "/nswyoon.png"
+    }
+  ]
+}
