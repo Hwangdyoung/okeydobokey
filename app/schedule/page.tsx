@@ -66,6 +66,10 @@ export default function SchedulePage() {
     return scheduleData.filter(event => {
       const eventStart = event.startDate || event.date;
       const eventEnd = event.endDate || event.date;
+      
+      // 방어막: 시작일이나 종료일이 없으면 필터링에서 제외 (false 반환)
+      if (!eventStart || !eventEnd) return false;
+      
       return eventStart <= monthEnd && eventEnd >= monthStart;
     });
   };
@@ -97,7 +101,10 @@ export default function SchedulePage() {
     const badgeB = getBadge(b);
     if (badgeA.isPast && !badgeB.isPast) return 1;
     if (!badgeA.isPast && badgeB.isPast) return -1;
-    return new Date(a.startDate || a.date).getTime() - new Date(b.startDate || b.date).getTime();
+    
+    const timeA = new Date(a.startDate || a.date || '').getTime();
+    const timeB = new Date(b.startDate || b.date || '').getTime();
+    return timeA - timeB;
   });
 
   const displayTitle = value ? `${value.getFullYear()}년 ${value.getMonth() + 1}월 ${value.getDate()}일 일정` : `${activeDate.getFullYear()}년 ${activeDate.getMonth() + 1}월 주요 일정`;
