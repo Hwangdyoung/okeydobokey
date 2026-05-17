@@ -224,7 +224,7 @@ export default function PostDetailPage() {
 
   if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
   
-  if (!isLoading && !post) {
+  if (!post) {
     return (
       <main className={styles.main}>
         <div className={styles.container}>
@@ -275,23 +275,23 @@ export default function PostDetailPage() {
         
         <article className={styles.postArea}>
           <header className={styles.postHeader}>
-            <h1 className={styles.postTitle}>{post.title}</h1>
+            <h1 className={styles.postTitle}>{post?.title}</h1>
             <div className={styles.postMeta}>
-              <span>작성자: {post.author}</span>
-              <span>{post.date}</span>
+              <span>작성자: {post?.author}</span>
+              <span>{post?.date}</span>
             </div>
           </header>
           
           <div className={styles.postContent}>
-            {post.content.split('\n').map((line, i) => <p key={i}>{line}</p>)}
+            {(post?.content || '').split('\n').map((line, i) => <p key={i}>{line}</p>)}
           </div>
           
           <div className={styles.postActions}>
             <button 
-              className={`${styles.likeBtn} ${post.likedBy.includes(currentEmail) ? styles.liked : ''}`}
+              className={`${styles.likeBtn} ${(post?.likedBy || []).includes(currentEmail) ? styles.liked : ''}`}
               onClick={handleLikePost}
             >
-              👍 {post.likes}
+              👍 {post?.likes || 0}
             </button>
           </div>
         </article>
