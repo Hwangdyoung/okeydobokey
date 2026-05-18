@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signIn } from 'next-auth/react';
+import { createClient } from '@/utils/supabase/client';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import styles from '@/styles/Profile.module.css';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const supabase = createClient();
   const { localUser, setLocalUser, isLoggedIn, logout, currentNickname, currentEmail } = useAuth();
 
   const [view, setView] = useState<'login' | 'signup' | 'find'>('login');
@@ -51,12 +53,12 @@ export default function ProfilePage() {
     return users ? JSON.parse(users) : [];
   };
 
-  const fetchActivity = async () => {
+  const fetchActivity = () => {
     if (!isLoggedIn || !currentEmail) return;
 
     try {
-      const res = await fetch('/api/posts');
-      const allPosts = await res.json();
+      const stored = localStorage.getItem('okeybokey_posts');
+      const allPosts: any[] = stored ? JSON.parse(stored) : [];
 
       // 1. 내가 쓴 글
       const myPosts = allPosts.filter((p: any) => p.authorEmail === currentEmail);
@@ -64,18 +66,16 @@ export default function ProfilePage() {
       // 2. 내가 쓴 댓글 (대댓글 포함)
       let myCommentCount = 0;
       allPosts.forEach((p: any) => {
-        if (p.comments) {
-          p.comments.forEach((c: any) => {
-            if (c.authorEmail === currentEmail) myCommentCount++;
-            if (c.replies) {
-              myCommentCount += c.replies.filter((r: any) => r.authorEmail === currentEmail).length;
-            }
-          });
-        }
+        const comments = Array.isArray(p.comments) ? p.comments : [];
+        comments.forEach((c: any) => {
+          if (c.authorEmail === currentEmail) myCommentCount++;
+          const replies = Array.isArray(c.replies) ? c.replies : [];
+          myCommentCount += replies.filter((r: any) => r.authorEmail === currentEmail).length;
+        });
       });
 
       // 3. 좋아요 누른 게시글
-      const likedPosts = allPosts.filter((p: any) => p.likedBy && p.likedBy.includes(currentEmail));
+      const likedPosts = allPosts.filter((p: any) => Array.isArray(p.likedBy) && p.likedBy.includes(currentEmail));
 
       setActivity({
         postCount: myPosts.length,
@@ -84,7 +84,7 @@ export default function ProfilePage() {
         recentPosts: myPosts.slice(0, 3)
       });
     } catch (e) {
-      console.error('Failed to fetch profile activity', e);
+      console.error('Failed to fetch profile activity from localStorage', e);
     }
   };
 
@@ -138,7 +138,7 @@ export default function ProfilePage() {
     }
 
     const users = getUsers();
-    
+
     // 아이디 중복 체크
     if (users.some((u: any) => u.id === signupId)) {
       setSignupError('이미 사용 중인 아이디입니다.');
@@ -160,7 +160,7 @@ export default function ProfilePage() {
 
     localStorage.setItem('okeybokey_users', JSON.stringify([...users, newUser]));
     alert('회원가입이 완료되었습니다! 로그인해 주세요.');
-    
+
     // 상태 초기화
     setSignupId('');
     setSignupEmail('');
@@ -179,7 +179,7 @@ export default function ProfilePage() {
     e.preventDefault();
     const users = getUsers();
     const user = users.find((u: any) => u.email === findIdEmail);
-    
+
     if (user) {
       setFoundUser(user);
       setFindError('');
@@ -194,7 +194,7 @@ export default function ProfilePage() {
     e.preventDefault();
     const users = getUsers();
     const user = users.find((u: any) => u.id === findPwId && u.email === findPwEmail);
-    
+
     if (user) {
       setFindSuccessMessage('이메일로 비밀번호 재설정 링크가 성공적으로 발송되었습니다.');
       setFindError('');
@@ -204,12 +204,20 @@ export default function ProfilePage() {
     }
   };
 
-  // 실제 NextAuth.js 소셜 로그인 함수 호출
-  // * 안내: 로컬 개발 환경에서 테스트 시 반드시 .env.local에 GOOGLE/NAVER 자격 증명이 주입되어 있어야 하며, 
-  //   터미널에 `npm install next-auth`가 설치되어 있어야 정상 연동됩니다.
+  // Supabase Auth 소셜 로그인 호출
   const handleSocialLogin = async (provider: string) => {
     try {
-      await signIn(provider, { callbackUrl: '/profile' });
+      if (provider === 'google') {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: 'https://okeydobokey.vercel.app/auth/callback'
+          }
+        });
+        if (error) throw error;
+      } else {
+        alert('Supabase Auth 연동 하에서는 현재 Google 로그인만 데모 제공합니다. 구글로 로그인해 주세요!');
+      }
     } catch (error) {
       console.error(`${provider} login failed`, error);
     }
@@ -239,17 +247,17 @@ export default function ProfilePage() {
                 <div className={styles.socialLoginGroup}>
                   <button onClick={() => handleSocialLogin('google')} className={`${styles.socialBtn} ${styles.googleBtn}`}>
                     <svg className={styles.socialIcon} width="20" height="20" viewBox="0 0 24 24">
-                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                     </svg>
                     Google로 시작하기
                   </button>
                   <button onClick={() => handleSocialLogin('naver')} className={`${styles.socialBtn} ${styles.naverBtn}`}>
                     <svg className={styles.socialIcon} width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <rect width="24" height="24" rx="4" fill="#03C75A"/>
-                      <path d="M7 6.5H10.2L13.8 12.3V6.5H17V17.5H13.8L10.2 11.7V17.5H7V6.5Z" fill="white"/>
+                      <rect width="24" height="24" rx="4" fill="#03C75A" />
+                      <path d="M7 6.5H10.2L13.8 12.3V6.5H17V17.5H13.8L10.2 11.7V17.5H7V6.5Z" fill="white" />
                     </svg>
                     Naver로 시작하기
                   </button>
@@ -268,7 +276,7 @@ export default function ProfilePage() {
                 <p className={styles.loginSubtitle}>회원가입</p>
                 <form onSubmit={handleSignup} className={styles.formGroup}>
                   <input type="text" placeholder="아이디" className={styles.input} value={signupId} onChange={(e) => setSignupId(e.target.value)} required />
-                  
+
                   {/* 이메일 인증 영역 */}
                   <div className={styles.inputWithBtn}>
                     <input type="email" placeholder="이메일" className={styles.input} value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} disabled={isEmailVerified} required />
@@ -289,17 +297,17 @@ export default function ProfilePage() {
 
                   <input type="password" placeholder="비밀번호" className={styles.input} value={signupPw} onChange={(e) => setSignupPw(e.target.value)} required />
                   <input type="password" placeholder="비밀번호 확인" className={`${styles.input} ${signupConfirmPw && signupPw !== signupConfirmPw ? styles.inputError : ''}`} value={signupConfirmPw} onChange={(e) => setSignupConfirmPw(e.target.value)} required />
-                  
+
                   {signupConfirmPw && signupPw !== signupConfirmPw && (
                     <p className={styles.errorMessage}>비밀번호가 일치하지 않습니다.</p>
                   )}
 
                   <input type="text" placeholder="닉네임" className={styles.input} value={signupNickname} onChange={(e) => setSignupNickname(e.target.value)} required />
-                  
+
                   {signupError && <p className={styles.errorMessage}>{signupError}</p>}
-                  
-                  <button 
-                    type="submit" 
+
+                  <button
+                    type="submit"
                     className={styles.primaryBtn}
                     disabled={
                       !signupId.trim() ||
@@ -354,18 +362,18 @@ export default function ProfilePage() {
             {view === 'find' && (
               <div className={styles.loginCard}>
                 <p className={styles.loginSubtitle}>계정 정보 찾기</p>
-                
+
                 {/* 탭 구분 메뉴 */}
                 <div className={styles.tabMenu}>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => { setFindTab('id'); setFindError(''); setFoundUser(null); setFindSuccessMessage(''); }}
                     className={`${styles.tabBtn} ${findTab === 'id' ? styles.activeTab : ''}`}
                   >
                     아이디 찾기
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => { setFindTab('password'); setFindError(''); setFoundUser(null); setFindSuccessMessage(''); }}
                     className={`${styles.tabBtn} ${findTab === 'password' ? styles.activeTab : ''}`}
                   >
@@ -402,14 +410,14 @@ export default function ProfilePage() {
                 )}
 
                 <div style={{ marginTop: '1.5rem' }}>
-                  <span onClick={() => { 
-                    setView('login'); 
-                    setFoundUser(null); 
-                    setFindIdEmail(''); 
-                    setFindPwId(''); 
-                    setFindPwEmail(''); 
-                    setFindSuccessMessage(''); 
-                    setFindError(''); 
+                  <span onClick={() => {
+                    setView('login');
+                    setFoundUser(null);
+                    setFindIdEmail('');
+                    setFindPwId('');
+                    setFindPwEmail('');
+                    setFindSuccessMessage('');
+                    setFindError('');
                   }} className={styles.authLink}>← 뒤로 가기</span>
                 </div>
               </div>
@@ -434,18 +442,24 @@ export default function ProfilePage() {
             <section className={styles.sectionCard}>
               <h2>나의 커뮤니티 활동</h2>
               <div className={styles.activityGrid}>
-                <div className={styles.activityCard}>
-                  <h3>내가 쓴 글</h3>
-                  <span className={styles.activityCount}>{activity.postCount}</span>
-                </div>
-                <div className={styles.activityCard}>
-                  <h3>내가 쓴 댓글</h3>
-                  <span className={styles.activityCount}>{activity.commentCount}</span>
-                </div>
-                <div className={styles.activityCard}>
-                  <h3>좋아요 게시물</h3>
-                  <span className={styles.activityCount}>{activity.likeCount}</span>
-                </div>
+                <Link href="/profile/activity?tab=posts" className={styles.activityLinkCard}>
+                  <div className={styles.activityCard}>
+                    <h3>내가 쓴 글</h3>
+                    <span className={styles.activityCount}>{activity.postCount}</span>
+                  </div>
+                </Link>
+                <Link href="/profile/activity?tab=comments" className={styles.activityLinkCard}>
+                  <div className={styles.activityCard}>
+                    <h3>내가 쓴 댓글</h3>
+                    <span className={styles.activityCount}>{activity.commentCount}</span>
+                  </div>
+                </Link>
+                <Link href="/profile/activity?tab=likes" className={styles.activityLinkCard}>
+                  <div className={styles.activityCard}>
+                    <h3>좋아요 게시물</h3>
+                    <span className={styles.activityCount}>{activity.likeCount}</span>
+                  </div>
+                </Link>
               </div>
 
               <div className={styles.recentActivity}>

@@ -21,6 +21,7 @@ interface Comment {
   authorEmail: string;
   text: string;
   likes: number;
+  likedBy?: string[];
   date: string;
   replies: Reply[];
 }
@@ -50,6 +51,10 @@ export default function PostDetailPage() {
   const [replyTarget, setReplyTarget] = useState<number | null>(null);
   const [replyText, setReplyText] = useState('');
 
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+
   const fetchPost = () => {
     if (!id) return;
     setIsLoading(true);
@@ -59,6 +64,10 @@ export default function PostDetailPage() {
         const postsList: Post[] = JSON.parse(stored);
         const found = postsList.find(p => String(p.id) === String(id));
         setPost(found || null);
+        if (found) {
+          setEditTitle(found.title);
+          setEditContent(found.content);
+        }
       } else {
         setPost(null);
       }
@@ -103,6 +112,44 @@ export default function PostDetailPage() {
       }
     } catch (e) {
       console.error('Failed to like post in localStorage:', e);
+    }
+  };
+
+  const handleSaveEdit = () => {
+    if (!editTitle.trim() || !editContent.trim() || !post) return;
+    try {
+      const stored = localStorage.getItem('okeybokey_posts');
+      const postsList: Post[] = stored ? JSON.parse(stored) : [];
+      const postIndex = postsList.findIndex(p => String(p.id) === String(id));
+      if (postIndex !== -1) {
+        const updatedPost = {
+          ...postsList[postIndex],
+          title: editTitle,
+          content: editContent
+        };
+        postsList[postIndex] = updatedPost;
+        localStorage.setItem('okeybokey_posts', JSON.stringify(postsList));
+        setPost(updatedPost);
+        setIsEditMode(false);
+        alert('게시글이 성공적으로 수정되었습니다.');
+      }
+    } catch (e) {
+      console.error('Failed to edit post in localStorage:', e);
+    }
+  };
+
+  const handleDeletePost = () => {
+    if (!post) return;
+    if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
+    try {
+      const stored = localStorage.getItem('okeybokey_posts');
+      const postsList: Post[] = stored ? JSON.parse(stored) : [];
+      const updatedList = postsList.filter(p => String(p.id) !== String(id));
+      localStorage.setItem('okeybokey_posts', JSON.stringify(updatedList));
+      alert('게시글이 삭제되었습니다.');
+      router.push('/community');
+    } catch (e) {
+      console.error('Failed to delete post from localStorage:', e);
     }
   };
 
@@ -204,7 +251,16 @@ export default function PostDetailPage() {
           : [];
         const updatedComments = currentComments.map(c => {
           if (c.id === commentId) {
-            return { ...c, likes: (c.likes || 0) + 1 };
+            const currentLikedBy = Array.isArray(c.likedBy) ? c.likedBy : [];
+            const hasLiked = currentLikedBy.includes(currentEmail);
+            const newLikedBy = hasLiked
+              ? currentLikedBy.filter(email => email !== currentEmail)
+              : [...currentLikedBy, currentEmail];
+            return { 
+              ...c, 
+              likedBy: newLikedBy,
+              likes: newLikedBy.length 
+            };
           }
           return c;
         });
@@ -274,26 +330,56 @@ export default function PostDetailPage() {
         </div>
         
         <article className={styles.postArea}>
-          <header className={styles.postHeader}>
-            <h1 className={styles.postTitle}>{post?.title}</h1>
-            <div className={styles.postMeta}>
-              <span>작성자: {post?.author}</span>
-              <span>{post?.date}</span>
+          {isEditMode ? (
+            <div>
+              <input 
+                type="text" 
+                value={editTitle} 
+                onChange={(e) => setEditTitle(e.target.value)} 
+                className={styles.editInput}
+              />
+              <textarea 
+                value={editContent} 
+                onChange={(e) => setEditContent(e.target.value)} 
+                className={styles.editTextarea}
+              />
+              <div className={styles.editActionGroup}>
+                <button onClick={handleSaveEdit} className={styles.saveBtn}>저장</button>
+                <button onClick={() => { setIsEditMode(false); setEditTitle(post?.title || ''); setEditContent(post?.content || ''); }} className={styles.cancelBtn}>취소</button>
+              </div>
             </div>
-          </header>
-          
-          <div className={styles.postContent}>
-            {(post?.content || '').split('\n').map((line, i) => <p key={i}>{line}</p>)}
-          </div>
-          
-          <div className={styles.postActions}>
-            <button 
-              className={`${styles.likeBtn} ${(post?.likedBy || []).includes(currentEmail) ? styles.liked : ''}`}
-              onClick={handleLikePost}
-            >
-              👍 {post?.likes || 0}
-            </button>
-          </div>
+          ) : (
+            <>
+              <header className={styles.postHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <h1 className={styles.postTitle}>{post?.title}</h1>
+                  <div className={styles.postMeta}>
+                    <span>작성자: {post?.author}</span>
+                    <span>{post?.date}</span>
+                  </div>
+                </div>
+                {isLoggedIn && (post?.authorEmail === currentEmail || post?.author === currentNickname) && (
+                  <div className={styles.postCtrlGroup}>
+                    <button onClick={() => setIsEditMode(true)} className={styles.editBtn}>수정</button>
+                    <button onClick={handleDeletePost} className={styles.deleteBtn}>삭제</button>
+                  </div>
+                )}
+              </header>
+              
+              <div className={styles.postContent}>
+                {(post?.content || '').split('\n').map((line, i) => <p key={i}>{line}</p>)}
+              </div>
+              
+              <div className={styles.postActions}>
+                <button 
+                  className={`${styles.likeBtn} ${(post?.likedBy || []).includes(currentEmail) ? styles.liked : ''}`}
+                  onClick={handleLikePost}
+                >
+                  👍 {post?.likes || 0}
+                </button>
+              </div>
+            </>
+          )}
         </article>
 
         <section className={styles.commentSection}>
@@ -326,7 +412,10 @@ export default function PostDetailPage() {
                   <p className={styles.commentText}>{comment.text}</p>
                   
                   <div className={styles.commentActions}>
-                    <button className={styles.actionBtn} onClick={() => handleLikeComment(comment.id)}>
+                    <button 
+                      className={`${styles.actionBtn} ${(comment.likedBy || []).includes(currentEmail) ? styles.likedComment : ''}`} 
+                      onClick={() => handleLikeComment(comment.id)}
+                    >
                       ♥ {comment.likes}
                     </button>
                     <button className={styles.actionBtn} onClick={() => setReplyTarget(replyTarget === comment.id ? null : comment.id)}>

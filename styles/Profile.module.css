@@ -482,3 +482,20 @@
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
+
+.activityLinkCard {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.activityLinkCard:hover .activityCard {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
+}
+
+.activityLinkCard:hover .activityCount,
+.activityLinkCard:hover h3 {
+  color: var(--clr-accent) !important;
+  text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}

@@ -1,0 +1,163 @@
+.main {
+  min-height: 100vh;
+  background-color: var(--clr-dark-1);
+  color: var(--clr-white);
+  padding-top: 120px; /* 고정 헤더와 겹침 방지 */
+  padding-bottom: 5rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--clr-white);
+  letter-spacing: 0.05em;
+}
+
+.tabHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.backLink {
+  color: var(--clr-gray-3);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+.backLink:hover {
+  color: var(--clr-white);
+}
+
+.divider {
+  color: rgba(255, 255, 255, 0.1);
+  margin: 0 0.5rem;
+}
+
+.tabMenu {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 2.5rem;
+  gap: 1rem;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  color: var(--clr-gray-2);
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tabBtn:hover {
+  color: var(--clr-white);
+}
+
+.activeTab {
+  color: var(--clr-accent);
+  border-bottom-color: var(--clr-accent);
+  font-weight: 700;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.activityCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.8rem 2.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.activityCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--clr-accent);
+  transform: translateX(6px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--clr-white);
+  transition: color 0.3s;
+}
+
+.activityCard:hover .cardTitle {
+  color: var(--clr-accent);
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--clr-gray-3);
+}
+
+.metaLeft {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.cardSnippet {
+  font-size: 1rem;
+  color: var(--clr-gray-1);
+  line-height: 1.6;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--clr-accent);
+}
+
+.cardContext {
+  font-size: 0.85rem;
+  color: var(--clr-gray-3);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contextValue {
+  color: var(--clr-accent);
+  font-weight: 500;
+}
+
+.noData {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: var(--clr-gray-3);
+  font-size: 1.1rem;
+}
