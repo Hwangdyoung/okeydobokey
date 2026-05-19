@@ -58,14 +58,23 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hiphopIssues, setHiphopIssues] = useState<any[]>([]);
+  const [isIssuesLoading, setIsIssuesLoading] = useState(true);
 
-  // 힙합 뉴스 데이터 패칭 (실시간 연동 대비 구조)
+  // 실시간 힙합 뉴스 연동 데이터 패칭
   useEffect(() => {
-    // TODO: 실제 네이버 뉴스 API 또는 RSS 피드 엔드포인트 연동 예정
     const fetchNews = async () => {
-      setTimeout(() => {
-        setHiphopIssues(MOCK_ISSUES);
-      }, 500);
+      setIsIssuesLoading(true);
+      try {
+        const res = await fetch('/api/issues');
+        if (res.ok) {
+          const data = await res.json();
+          setHiphopIssues(data);
+        }
+      } catch (error) {
+        console.error('실시간 이슈를 불러오는 도중 오류 발생:', error);
+      } finally {
+        setIsIssuesLoading(false);
+      }
     };
     fetchNews();
   }, []);
@@ -303,19 +312,33 @@ export default function CommunityPage() {
           {/* HIPHOP ISSUE 섹션 */}
           <section className={styles.issueCard}>
             <h2 className={styles.sidebarTitle}>HIPHOP ISSUE 📰</h2>
-            <ul className={styles.issueList}>
-              {hiphopIssues.map((issue, idx) => (
-                <li key={issue.id}>
-                  <a href={issue.url} target="_blank" rel="noopener noreferrer" className={styles.issueItem}>
-                    <span className={styles.issueIndex}>{idx + 1}.</span>
-                    <div className={styles.issueContent}>
-                      <span className={styles.issueText}>{issue.title}</span>
-                      <span className={styles.issueSource}>{issue.source}</span>
+            {isIssuesLoading ? (
+              <div className={styles.issueSkeleton}>
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <div key={num} className={styles.skeletonItem}>
+                    <div className={styles.skeletonIndex} />
+                    <div className={styles.skeletonTextContainer}>
+                      <div className={styles.skeletonText} style={{ width: num % 2 === 0 ? '85%' : '95%' }} />
+                      <div className={styles.skeletonSource} />
                     </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <ul className={styles.issueList}>
+                {hiphopIssues.map((issue, idx) => (
+                  <li key={issue.id}>
+                    <a href={issue.url} target="_blank" rel="noopener noreferrer" className={styles.issueItem}>
+                      <span className={styles.issueIndex}>{idx + 1}.</span>
+                      <div className={styles.issueContent}>
+                        <span className={styles.issueText} title={issue.title}>{issue.title}</span>
+                        <span className={styles.issueSource}>{issue.source}</span>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           {/* HOT VIDEO 섹션 */}

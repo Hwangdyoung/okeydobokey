@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-calendar/dist/Calendar.css';
 import styles from '@/styles/Schedule.module.css';
@@ -8,29 +8,30 @@ import styles from '@/styles/Schedule.module.css';
 // 하이드레이션 이슈 방지를 위해 Calendar를 클라이언트 전용으로 동적 임포트 (ssr: false)
 const Calendar = dynamic(() => import('react-calendar'), { ssr: false });
 
-// 대규모 힙합/R&B 공연 일정 데이터 (티켓 링크 포함)
-const scheduleData = [
-  // [과거/완료된 공연]
-  { id: 1, title: 'RAP HOUSE VOL.50', date: '2026-03-27', location: '플렉스라운지', ticketLink: "" },
-  { id: 2, title: 'RAP HOUSE VOL.51', date: '2026-04-17', location: '플렉스라운지', ticketLink: "" },
-  { id: 3, title: 'HIPHOPPLAYA FESTIVAL 2026', date: '2026-05-02', location: '킨텍스', lineup: '이센스, 지코, 박재범, 크러쉬 등', ticketLink: "" },
-  { id: 4, title: 'CHANGMO : THE EMPEROR', startDate: '2026-05-08', endDate: '2026-05-10', location: '세종문화회관 대극장', ticketLink: "" },
-  { id: 5, title: 'D-Hack 콘서트 [디핵과 별빛연맹]', date: '2026-05-09', location: 'KT&G 상상마당', ticketLink: "" },
-  { id: 6, title: 'RAP HOUSE VOL.52', date: '2026-05-15', location: '플렉스라운지', ticketLink: "" },
-  
-  // [예정된 공연]
-  { id: 7, title: 'RAPBEAT 2026', startDate: '2026-06-20', endDate: '2026-06-21', location: '마포 문화비축기지', lineup: '지코, 박재범, 씨잼 등', ticketLink: "https://ticket.melon.com" },
-  { id: 8, title: 'WATERBOMB SEOUL 2026', startDate: '2026-07-24', endDate: '2026-07-26', location: '서울', ticketLink: "https://tickets.interpark.com" },
-  { id: 9, title: '빈지노 단독 콘서트 \'NOWITZKI\' 앙코르', date: '2026-08-15', location: '올림픽공원 올림픽홀', ticketLink: "https://ticket.melon.com" },
-  { id: 10, title: '이센스(E SENS) 전국 투어', date: '2026-09-12', location: 'KBS 아레나', ticketLink: "https://yes24.com" },
-  { id: 11, title: 'Post Malone 투어', date: '2026-10-02', location: '고양', ticketLink: "https://tickets.interpark.com" },
-  { id: 12, title: 'The Weeknd 내한공연', startDate: '2026-10-07', endDate: '2026-10-08', location: '고양종합운동장', ticketLink: "https://tickets.interpark.com" },
-  { id: 13, title: '키드밀리(Kid Milli) & 양홍원 조인트 콘서트', date: '2026-11-20', location: '블루스퀘어', ticketLink: "https://ticket.melon.com" },
-];
-
 export default function SchedulePage() {
   const [value, setValue] = useState<Date | null>(null);
   const [activeDate, setActiveDate] = useState<Date>(new Date('2026-05-17')); // 현재 날짜 기준
+  const [scheduleEvents, setScheduleEvents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 실시간 크롤러 API 연동 데이터 패칭
+  useEffect(() => {
+    const loadSchedule = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch('/api/schedule');
+        if (res.ok) {
+          const data = await res.json();
+          setScheduleEvents(data);
+        }
+      } catch (err) {
+        console.error('공연 스케줄 연동 오류:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadSchedule();
+  }, []);
 
   // 배지 및 상태 계산 로직
   const getBadge = (event: any) => {
@@ -63,7 +64,7 @@ export default function SchedulePage() {
   const getEventsForMonth = (year: number, monthIndex: number) => {
     const monthStart = new Date(year, monthIndex, 1).toISOString().split('T')[0];
     const monthEnd = new Date(year, monthIndex + 1, 0).toISOString().split('T')[0];
-    return scheduleData.filter(event => {
+    return scheduleEvents.filter(event => {
       const eventStart = event.startDate || event.date;
       const eventEnd = event.endDate || event.date;
       
@@ -77,7 +78,7 @@ export default function SchedulePage() {
   const getEventsForDate = (date: Date) => {
     const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
     const dateStr = localDate.toISOString().split('T')[0];
-    return scheduleData.filter(event => isDateInEvent(dateStr, event));
+    return scheduleEvents.filter(event => isDateInEvent(dateStr, event));
   };
 
   const tileContent = ({ date, view }: { date: Date, view: string }) => {
@@ -115,6 +116,7 @@ export default function SchedulePage() {
         <h1 className={styles.title}>{activeDate.getFullYear()} SCHEDULE</h1>
         
         <div className={styles.contentWrapper}>
+          {/* 달력 영역 */}
           <div className={styles.calendarWrapper}>
             <Calendar 
               locale="ko-KR"
@@ -127,10 +129,13 @@ export default function SchedulePage() {
             />
           </div>
 
+          {/* 공연 목록 카드 영역 */}
           <div className={styles.listWrapper}>
             <h2 className={styles.listHeader}>{displayTitle}</h2>
             <div className={styles.scrollArea}>
-              {sortedEvents.length > 0 ? (
+              {isLoading ? (
+                <div className={styles.noEvents}>실시간 공연 일정을 불러오는 중입니다...</div>
+              ) : sortedEvents.length > 0 ? (
                 sortedEvents.map(event => {
                   const status = getBadge(event);
                   return (
@@ -145,10 +150,38 @@ export default function SchedulePage() {
                         <div className={styles.eventName}>{event.title}</div>
                         <div className={styles.flexRow}>
                           <div className={styles.eventLocation}>📍 {event.location}</div>
-                          {!status.isPast && event.ticketLink && (
-                            <a href={event.ticketLink} target="_blank" rel="noopener noreferrer" className={styles.ticketBtn}>
-                              티켓 구매
-                            </a>
+                          {!status.isPast && event.ticketLinks && event.ticketLinks.length > 0 && (
+                            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                              {event.ticketLinks.map((link: any, idx: number) => (
+                                <a 
+                                  key={idx} 
+                                  href={link.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className={styles.ticketBtn}
+                                  style={{
+                                    border: '1px solid var(--clr-accent)',
+                                    background: 'transparent',
+                                    color: 'var(--clr-accent)',
+                                    fontSize: '0.7rem',
+                                    padding: '3px 8px',
+                                    borderRadius: '4px',
+                                    fontWeight: 'bold',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'var(--clr-accent)';
+                                    e.currentTarget.style.color = 'var(--clr-dark-1)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'transparent';
+                                    e.currentTarget.style.color = 'var(--clr-accent)';
+                                  }}
+                                >
+                                  {link.vendor}
+                                </a>
+                              ))}
+                            </div>
                           )}
                         </div>
                         {event.lineup && <div className={styles.eventLineup}>Lineup: {event.lineup}</div>}
