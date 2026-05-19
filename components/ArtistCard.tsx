@@ -31,49 +31,37 @@ export default function ArtistCard({ artist, index }: ArtistCardProps) {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
+    if (cardRef.current) observer.observe(cardRef.current);
     return () => observer.disconnect();
   }, []);
 
-  const isEven = index % 2 === 0;
-
   return (
-    <div 
-      ref={cardRef} 
-      className={`${styles.artistCard} ${isEven ? styles.even : styles.odd} ${isVisible ? styles.visible : ''}`}
+    <div
+      ref={cardRef}
+      className={`${styles.artistCard} ${isVisible ? styles.visible : ''}`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
     >
-      <div className={styles.artistImagePlaceholder}>
-        <div className={styles.imageInner}>
-          {artist.image && !imgError ? (
-            <Image 
-              src={artist.image} 
-              alt={artist.name} 
-              fill
-              sizes="(max-width: 768px) 100vw, 400px"
-              className={styles.artistImage}
-              priority={index < 2}
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <span>{artist.name.charAt(0)}</span>
-          )}
-        </div>
+      <div className={styles.artistImageWrap}>
+        {artist.image && !imgError ? (
+          <Image
+            src={artist.image}
+            alt={artist.name}
+            fill
+            sizes="200px"
+            className={styles.artistImage}
+            priority={index < 3}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <span className={styles.artistInitial}>{artist.name.charAt(0)}</span>
+        )}
       </div>
       <div className={styles.artistInfo}>
         <h3>{artist.name}</h3>
-        <ul className={styles.infoList}>
-          <li><strong>본명:</strong> {artist.realName}</li>
-          <li><strong>소속:</strong> {artist.agency}</li>
-          <li><strong>데뷔:</strong> {artist.debut}</li>
-          <li><strong>대표곡/앨범:</strong> {artist.hits}</li>
-        </ul>
-        <p className={styles.artistFeatures}>{artist.features}</p>
+        <p className={styles.artistAgency}>{artist.agency}</p>
+        <p className={styles.artistHits}>{artist.hits}</p>
       </div>
     </div>
   );
