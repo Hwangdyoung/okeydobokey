@@ -108,54 +108,54 @@ const playlistData: Record<string, Record<string, { title: string; artist: strin
       { title: 'PRIDE', artist: '나플라 (nafla)', album: 'PRIDE' },
     ],
   },
-
-  export default function PlaylistRecommend({ subGenres, genre }: PlaylistRecommendProps) {
-    const [selectedSubGenre, setSelectedSubGenre] = useState<string | null>(null);
-
-const genreData = playlistData[genre];
-
-const getPlaylist = (subGenreId: string) => {
-  if (!genreData) return [];
-  if (Array.isArray(genreData)) return genreData;
-  return genreData[subGenreId] || [];
 };
+export default function PlaylistRecommend({ subGenres, genre }: PlaylistRecommendProps) {
+  const [selectedSubGenre, setSelectedSubGenre] = useState<string | null>(null);
 
-return (
-  <section className={styles.section}>
-    <h2 className={styles.sectionTitle}>플레이리스트 추천</h2>
-    <p className={styles.sectionDesc}>세부 스타일을 선택하면 어울리는 곡을 추천해드려요</p>
+  const genreData = playlistData[genre];
 
-    <div className={styles.subGenreButtons}>
-      {subGenres.map((sub) => (
-        <button
-          key={sub.id}
-          className={`${styles.subBtn} ${selectedSubGenre === sub.id ? styles.active : ''}`}
-          onClick={() => setSelectedSubGenre(selectedSubGenre === sub.id ? null : sub.id)}
-        >
-          {sub.name}
-        </button>
-      ))}
-    </div>
+  const getPlaylist = (subGenreId: string) => {
+    if (!genreData) return [];
+    if (Array.isArray(genreData)) return genreData;
+    return genreData[subGenreId] || [];
+  };
 
-    {selectedSubGenre && (
-      <div className={styles.playlistWrap}>
-        <h3 className={styles.playlistTitle}>
-          {subGenres.find(s => s.id === selectedSubGenre)?.name} 플레이리스트
-        </h3>
-        <ul className={styles.trackList}>
-          {getPlaylist(selectedSubGenre).map((track, i) => (
-            <li key={i} className={styles.trackItem}>
-              <span className={styles.trackNum}>{String(i + 1).padStart(2, '0')}</span>
-              <div className={styles.trackInfo}>
-                <span className={styles.trackTitle}>{track.title}</span>
-                <span className={styles.trackArtist}>{track.artist}</span>
-              </div>
-              <span className={styles.trackAlbum}>{track.album}</span>
-            </li>
-          ))}
-        </ul>
+  return (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>플레이리스트 추천</h2>
+      <p className={styles.sectionDesc}>세부 스타일을 선택하면 어울리는 곡을 추천해드려요</p>
+
+      <div className={styles.subGenreButtons}>
+        {subGenres.map((sub) => (
+          <button
+            key={sub.id}
+            className={`${styles.subBtn} ${selectedSubGenre === sub.id ? styles.active : ''}`}
+            onClick={() => setSelectedSubGenre(selectedSubGenre === sub.id ? null : sub.id)}
+          >
+            {sub.name}
+          </button>
+        ))}
       </div>
-    )}
-  </section>
-);
+
+      {selectedSubGenre && (
+        <div className={styles.playlistWrap}>
+          <h3 className={styles.playlistTitle}>
+            {subGenres.find(s => s.id === selectedSubGenre)?.name} 플레이리스트
+          </h3>
+          <ul className={styles.trackList}>
+            {getPlaylist(selectedSubGenre).map((track, i) => (
+              <li key={i} className={styles.trackItem}>
+                <span className={styles.trackNum}>{String(i + 1).padStart(2, '0')}</span>
+                <div className={styles.trackInfo}>
+                  <span className={styles.trackTitle}>{track.title}</span>
+                  <span className={styles.trackArtist}>{track.artist}</span>
+                </div>
+                <span className={styles.trackAlbum}>{track.album}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
 }
