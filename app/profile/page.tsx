@@ -10,17 +10,38 @@ import styles from '@/styles/Profile.module.css';
 export default function ProfilePage() {
   const router = useRouter();
   const supabase = createClient();
-  const { localUser, setLocalUser, isLoggedIn, logout, currentNickname, currentEmail } = useAuth();
+  const { localUser, setLocalUser, isLoggedIn, logout, currentNickname, currentEmail, supabaseUser } = useAuth();
 
-  const [view, setView] = useState<'login' | 'signup' | 'find'>('login');
-  const [loginId, setLoginId] = useState('');
+  // 닉네임 변경 관련 상태
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [editNickname, setEditNickname] = useState('');
+  const [nicknameError, setNicknameError] = useState('');
+  const [nicknameSuccess, setNicknameSuccess] = useState('');
+
+  // 비밀번호 변경 관련 상태
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+
+  useEffect(() => {
+    if (currentNickname) {
+      setEditNickname(currentNickname);
+    }
+  }, [currentNickname]);
+
+  const [view, setView] = useState<'login' | 'signup' | 'find' | 'changePassword'>('login');
+  const [loginId, setLoginId] = useState(''); // 이메일 로그인 입력값
   const [loginPw, setLoginPw] = useState('');
   const [loginError, setLoginError] = useState('');
 
   // 회원가입 관련 상태
-  const [signupId, setSignupId] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPw, setSignupPw] = useState('');
+  const isPwLongEnough = signupPw.length >= 6;
+  const isPwHasSpecial = /[!@#$%^&*]/.test(signupPw);
+  const isPwValid = isPwLongEnough && isPwHasSpecial;
   const [signupConfirmPw, setSignupConfirmPw] = useState('');
   const [signupNickname, setSignupNickname] = useState('');
   const [signupError, setSignupError] = useState('');
@@ -34,10 +55,8 @@ export default function ProfilePage() {
   // 계정 찾기 관련 상태 (탭 분리)
   const [findTab, setFindTab] = useState<'id' | 'password'>('id');
   const [findIdEmail, setFindIdEmail] = useState('');
-  const [findPwId, setFindPwId] = useState('');
   const [findPwEmail, setFindPwEmail] = useState('');
   const [findSuccessMessage, setFindSuccessMessage] = useState('');
-  const [foundUser, setFoundUser] = useState<any | null>(null);
   const [findError, setFindError] = useState('');
 
   const [activity, setActivity] = useState({
@@ -46,12 +65,6 @@ export default function ProfilePage() {
     likeCount: 0,
     recentPosts: [] as any[]
   });
-
-  const getUsers = () => {
-    if (typeof window === 'undefined') return [];
-    const users = localStorage.getItem('okeybokey_users');
-    return users ? JSON.parse(users) : [];
-  };
 
   const fetchActivity = () => {
     if (!isLoggedIn || !currentEmail) return;
@@ -92,115 +105,112 @@ export default function ProfilePage() {
     fetchActivity();
   }, [isLoggedIn, currentEmail]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Supabase Auth 이메일 로그인 호출
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const users = getUsers();
-    const user = users.find((u: any) => u.id === loginId && u.password === loginPw);
-    if (user) {
-      setLocalUser(user);
-    } else {
-      setLoginError('아이디 또는 비밀번호가 잘못되었습니다.');
+    setLoginError('');
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: loginId, // loginId state를 이메일 입력값으로 활용
+        password: loginPw,
+      });
+      if (error) throw error;
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setLoginError('이메일 또는 비밀번호가 잘못되었습니다.');
     }
   };
 
-  // 이메일 인증 발송 핸들러
-  const handleSendVerification = () => {
-    if (!signupEmail) {
-      alert('이메일 주소를 먼저 입력해 주세요.');
+  // Supabase Auth 회원가입 및 OTP 메일 발송
+  const handleSendVerification = async () => {
+    if (!signupNickname.trim() || !signupEmail.trim() || !signupPw.trim() || !signupConfirmPw.trim()) {
+      alert('모든 가입 정보를 입력해 주세요.');
       return;
     }
-    setVerificationSent(true);
-    setIsEmailVerified(false);
-    alert('인증번호 [1234]가 전송되었습니다. 테스트용 번호를 입력해 주세요.');
-  };
-
-  // 이메일 인증 확인 핸들러
-  const handleVerifyCode = () => {
-    if (verificationCode === '1234') {
-      setIsEmailVerified(true);
-      setVerificationError('');
-      alert('이메일 인증이 성공적으로 완료되었습니다.');
-    } else {
-      setIsEmailVerified(false);
-      setVerificationError('인증번호가 일치하지 않습니다. (테스트용: 1234)');
-    }
-  };
-
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
     if (signupPw !== signupConfirmPw) {
-      setSignupError('비밀번호가 일치하지 않습니다.');
+      alert('비밀번호가 일치하지 않습니다.');
       return;
     }
-    if (!isEmailVerified) {
-      setSignupError('이메일 인증을 완료해 주세요.');
-      return;
+    try {
+      setSignupError('');
+      setVerificationError('');
+      const { error } = await supabase.auth.signUp({
+        email: signupEmail,
+        password: signupPw,
+        options: {
+          data: {
+            full_name: signupNickname
+          },
+          emailRedirectTo: undefined
+        }
+      });
+      if (error) throw error;
+      setVerificationSent(true);
+      alert('인증 메일이 발송되었습니다. 이메일로 전송된 6자리 OTP 코드를 입력해 주세요.');
+    } catch (err: any) {
+      console.error('Send verification OTP error:', err);
+      alert(err.message || '인증 메일 발송에 실패했습니다.');
     }
-
-    const users = getUsers();
-
-    // 아이디 중복 체크
-    if (users.some((u: any) => u.id === signupId)) {
-      setSignupError('이미 사용 중인 아이디입니다.');
-      return;
-    }
-    // 이메일 중복 체크
-    if (users.some((u: any) => u.email === signupEmail)) {
-      setSignupError('이미 사용 중인 이메일입니다.');
-      return;
-    }
-
-    const newUser = {
-      id: signupId,
-      email: signupEmail,
-      password: signupPw,
-      nickname: signupNickname,
-      role: 'user'
-    };
-
-    localStorage.setItem('okeybokey_users', JSON.stringify([...users, newUser]));
-    alert('회원가입이 완료되었습니다! 로그인해 주세요.');
-
-    // 상태 초기화
-    setSignupId('');
-    setSignupEmail('');
-    setSignupPw('');
-    setSignupConfirmPw('');
-    setSignupNickname('');
-    setVerificationSent(false);
-    setVerificationCode('');
-    setIsEmailVerified(false);
-    setSignupError('');
-    setView('login');
   };
 
-  // 아이디 찾기 핸들러
+  // Supabase OTP 인증 확인 (가입 최종 완료)
+  const handleVerifyCode = async () => {
+    if (!verificationCode) {
+      setVerificationError('인증코드를 입력해 주세요.');
+      return;
+    }
+    try {
+      setVerificationError('');
+      const { error } = await supabase.auth.verifyOtp({
+        email: signupEmail,
+        token: verificationCode,
+        type: 'signup' // type: signup
+      });
+      if (error) throw error;
+
+      alert('회원가입이 완료되었습니다!');
+
+      // 가입 완료 후 상태 초기화 및 로그인 뷰 전환
+      setSignupEmail('');
+      setSignupPw('');
+      setSignupConfirmPw('');
+      setSignupNickname('');
+      setSignupError('');
+      setVerificationSent(false);
+      setVerificationCode('');
+      setIsEmailVerified(false);
+      setView('login');
+    } catch (err: any) {
+      console.error('Verify OTP error:', err);
+      setVerificationError('인증 코드가 올바르지 않습니다.');
+    }
+  };
+
+  // 아이디 찾기 핸들러 (이메일 기반 로그인에서는 이메일 주소 정보 재확인 안내)
   const handleFindId = (e: React.FormEvent) => {
     e.preventDefault();
-    const users = getUsers();
-    const user = users.find((u: any) => u.email === findIdEmail);
-
-    if (user) {
-      setFoundUser(user);
-      setFindError('');
+    setFindError('');
+    if (findIdEmail) {
+      setFindSuccessMessage(`이메일 로그인 체계입니다. 로그인 시 입력하신 이메일(${findIdEmail})을 그대로 ID 칸에 입력해 주세요.`);
     } else {
-      setFoundUser(null);
-      setFindError('해당 이메일로 가입된 아이디를 찾을 수 없습니다.');
+      setFindError('이메일 주소를 정확히 입력해 주세요.');
     }
   };
 
-  // 비밀번호 재설정 핸들러
-  const handleResetPassword = (e: React.FormEvent) => {
+  // 비밀번호 재설정 핸들러 (Supabase)
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    const users = getUsers();
-    const user = users.find((u: any) => u.id === findPwId && u.email === findPwEmail);
-
-    if (user) {
+    setFindError('');
+    setFindSuccessMessage('');
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(findPwEmail, {
+        redirectTo: `${window.location.origin}/profile`,
+      });
+      if (error) throw error;
       setFindSuccessMessage('이메일로 비밀번호 재설정 링크가 성공적으로 발송되었습니다.');
-      setFindError('');
-    } else {
-      setFindSuccessMessage('');
-      setFindError('일치하는 회원 정보를 찾을 수 없습니다.');
+    } catch (err: any) {
+      console.error('Reset password error:', err);
+      setFindError(err.message || '비밀번호 재설정 링크 발송에 실패했습니다.');
     }
   };
 
@@ -223,6 +233,68 @@ export default function ProfilePage() {
     }
   };
 
+  // 닉네임 수정 요청 핸들러
+  const handleUpdateNickname = async () => {
+    if (!editNickname.trim()) {
+      setNicknameError('닉네임을 입력해 주세요.');
+      return;
+    }
+
+    try {
+      setNicknameError('');
+      setNicknameSuccess('');
+
+      if (supabaseUser) {
+        const { error } = await supabase.auth.updateUser({
+          data: { full_name: editNickname }
+        });
+        if (error) throw error;
+      }
+
+      setNicknameSuccess('닉네임이 변경되었습니다!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (err: any) {
+      console.error(err);
+      setNicknameError(err.message || '닉네임 변경에 실패했습니다.');
+    }
+  };
+
+  // 비밀번호 수정 요청 핸들러
+  const handleUpdatePassword = async () => {
+    if (!newPassword || !confirmNewPassword) {
+      setPasswordError('모든 비밀번호 필드를 입력해 주세요.');
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      return;
+    }
+
+    try {
+      setPasswordError('');
+      setPasswordSuccess('');
+
+      if (supabaseUser) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) throw error;
+      }
+
+      setPasswordSuccess('비밀번호가 변경되었습니다!');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      setTimeout(() => {
+        setView('login');
+        setPasswordSuccess('');
+      }, 1500);
+    } catch (err: any) {
+      console.error(err);
+      setPasswordError(err.message || '비밀번호 변경에 실패했습니다.');
+    }
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
@@ -234,7 +306,7 @@ export default function ProfilePage() {
               <div className={styles.loginCard}>
                 <p className={styles.loginSubtitle}>OkeyDoBokey 커뮤니티에 합류하세요</p>
                 <form onSubmit={handleLogin} className={styles.formGroup}>
-                  <input type="text" placeholder="아이디" className={styles.input} value={loginId} onChange={(e) => setLoginId(e.target.value)} required />
+                  <input type="email" placeholder="이메일" className={styles.input} value={loginId} onChange={(e) => setLoginId(e.target.value)} required />
                   <input type="password" placeholder="비밀번호" className={styles.input} value={loginPw} onChange={(e) => setLoginPw(e.target.value)} required />
                   {loginError && <p className={styles.errorMessage}>{loginError}</p>}
                   <button type="submit" className={styles.primaryBtn}>로그인</button>
@@ -274,86 +346,93 @@ export default function ProfilePage() {
             {view === 'signup' && (
               <div className={styles.loginCard}>
                 <p className={styles.loginSubtitle}>회원가입</p>
-                <form onSubmit={handleSignup} className={styles.formGroup}>
-                  <input type="text" placeholder="아이디" className={styles.input} value={signupId} onChange={(e) => setSignupId(e.target.value)} required />
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!verificationSent) {
+                      handleSendVerification();
+                    }
+                  }}
+                  className={styles.formGroup}
+                >
+                  <input type="text" placeholder="닉네임" className={styles.input} value={signupNickname} onChange={(e) => setSignupNickname(e.target.value)} disabled={verificationSent} required />
+                  <input type="email" placeholder="이메일" className={styles.input} value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} disabled={verificationSent} required />
+                  <input type="password" placeholder="비밀번호" className={styles.input} value={signupPw} onChange={(e) => setSignupPw(e.target.value)} disabled={verificationSent} required />
 
-                  {/* 이메일 인증 영역 */}
-                  <div className={styles.inputWithBtn}>
-                    <input type="email" placeholder="이메일" className={styles.input} value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} disabled={isEmailVerified} required />
-                    <button type="button" onClick={handleSendVerification} className={styles.smallBtn} disabled={isEmailVerified}>
-                      {isEmailVerified ? '인증 완료' : '인증번호 발송'}
-                    </button>
-                  </div>
+                  <p style={{
+                    fontSize: '0.78rem',
+                    color: !isPwValid && signupPw ? '#ff4444' : '#888',
+                    marginTop: '-0.3rem',
+                    animation: !isPwValid && signupPw ? 'shake 0.4s ease' : 'none'
+                  }}>
+                    6자리 이상, 특수문자(!@#$%^&* 등) 포함
+                  </p>
 
-                  {verificationSent && !isEmailVerified && (
-                    <div className={styles.inputWithBtn}>
-                      <input type="text" placeholder="인증번호 입력 (1234)" className={styles.input} value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} required />
-                      <button type="button" onClick={handleVerifyCode} className={styles.smallBtn}>인증 확인</button>
-                    </div>
-                  )}
-
-                  {verificationError && <p className={styles.errorMessage}>{verificationError}</p>}
-                  {isEmailVerified && <p style={{ color: '#03C75A', fontSize: '0.85rem', textAlign: 'left' }}>이메일 인증이 완료되었습니다.</p>}
-
-                  <input type="password" placeholder="비밀번호" className={styles.input} value={signupPw} onChange={(e) => setSignupPw(e.target.value)} required />
-                  <input type="password" placeholder="비밀번호 확인" className={`${styles.input} ${signupConfirmPw && signupPw !== signupConfirmPw ? styles.inputError : ''}`} value={signupConfirmPw} onChange={(e) => setSignupConfirmPw(e.target.value)} required />
+                  <input type="password" placeholder="비밀번호 확인" className={`${styles.input} ${signupConfirmPw && signupPw !== signupConfirmPw ? styles.inputError : ''}`} value={signupConfirmPw} onChange={(e) => setSignupConfirmPw(e.target.value)} disabled={verificationSent} required />
 
                   {signupConfirmPw && signupPw !== signupConfirmPw && (
                     <p className={styles.errorMessage}>비밀번호가 일치하지 않습니다.</p>
                   )}
 
-                  <input type="text" placeholder="닉네임" className={styles.input} value={signupNickname} onChange={(e) => setSignupNickname(e.target.value)} required />
+                  {!verificationSent ? (
+                    <button
+                      type="submit"
+                      className={styles.primaryBtn}
+                      disabled={
+                        !signupEmail.trim() ||
+                        !signupPw.trim() ||
+                        !signupConfirmPw.trim() ||
+                        !signupNickname.trim() ||
+                        signupPw !== signupConfirmPw || !isPwValid
+                      }
+                      style={{
+                        opacity: (
+                          signupEmail.trim() &&
+                          signupPw.trim() &&
+                          signupConfirmPw.trim() &&
+                          signupNickname.trim() &&
+                          signupPw === signupConfirmPw
+                        ) ? 1 : 0.5,
+                        cursor: (
+                          signupEmail.trim() &&
+                          signupPw.trim() &&
+                          signupConfirmPw.trim() &&
+                          signupNickname.trim() &&
+                          signupPw === signupConfirmPw
+                        ) ? 'pointer' : 'not-allowed'
+                      }}
+                    >
+                      인증 메일 발송
+                    </button>
+                  ) : (
+                    <>
+                      <div className={styles.inputWithBtn} style={{ marginTop: '0.5rem' }}>
+                        <input type="text" placeholder="6자리 인증코드 입력" className={styles.input} value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} required />
+                        <button type="button" onClick={handleVerifyCode} className={styles.smallBtn}>인증 확인</button>
+                      </div>
+                      {verificationError && <p className={styles.errorMessage}>{verificationError}</p>}
+                    </>
+                  )}
+
+                  {isEmailVerified && (
+                    <button type="button" className={styles.primaryBtn} style={{ marginTop: '0.5rem' }}>
+                      가입 완료
+                    </button>
+                  )}
 
                   {signupError && <p className={styles.errorMessage}>{signupError}</p>}
-
-                  <button
-                    type="submit"
-                    className={styles.primaryBtn}
-                    disabled={
-                      !signupId.trim() ||
-                      !signupEmail.trim() ||
-                      !signupPw.trim() ||
-                      !signupConfirmPw.trim() ||
-                      !signupNickname.trim() ||
-                      signupPw !== signupConfirmPw ||
-                      !isEmailVerified
-                    }
-                    style={{
-                      opacity: (
-                        signupId.trim() &&
-                        signupEmail.trim() &&
-                        signupPw.trim() &&
-                        signupConfirmPw.trim() &&
-                        signupNickname.trim() &&
-                        signupPw === signupConfirmPw &&
-                        isEmailVerified
-                      ) ? 1 : 0.5,
-                      cursor: (
-                        signupId.trim() &&
-                        signupEmail.trim() &&
-                        signupPw.trim() &&
-                        signupConfirmPw.trim() &&
-                        signupNickname.trim() &&
-                        signupPw === signupConfirmPw &&
-                        isEmailVerified
-                      ) ? 'pointer' : 'not-allowed'
-                    }}
-                  >
-                    가입하기
-                  </button>
                 </form>
                 <div style={{ marginTop: '1.5rem' }}>
                   <span onClick={() => {
                     setView('login');
-                    setSignupId('');
                     setSignupEmail('');
                     setSignupPw('');
                     setSignupConfirmPw('');
                     setSignupNickname('');
+                    setSignupError('');
                     setVerificationSent(false);
                     setVerificationCode('');
                     setIsEmailVerified(false);
-                    setSignupError('');
                   }} className={styles.authLink}>← 뒤로 가기</span>
                 </div>
               </div>
@@ -367,14 +446,14 @@ export default function ProfilePage() {
                 <div className={styles.tabMenu}>
                   <button
                     type="button"
-                    onClick={() => { setFindTab('id'); setFindError(''); setFoundUser(null); setFindSuccessMessage(''); }}
+                    onClick={() => { setFindTab('id'); setFindError(''); setFindSuccessMessage(''); }}
                     className={`${styles.tabBtn} ${findTab === 'id' ? styles.activeTab : ''}`}
                   >
                     아이디 찾기
                   </button>
                   <button
                     type="button"
-                    onClick={() => { setFindTab('password'); setFindError(''); setFoundUser(null); setFindSuccessMessage(''); }}
+                    onClick={() => { setFindTab('password'); setFindError(''); setFindSuccessMessage(''); }}
                     className={`${styles.tabBtn} ${findTab === 'password' ? styles.activeTab : ''}`}
                   >
                     비밀번호 찾기
@@ -389,20 +468,12 @@ export default function ProfilePage() {
                   </form>
                 ) : (
                   <form onSubmit={handleResetPassword} className={styles.formGroup}>
-                    <input type="text" placeholder="아이디" className={styles.input} value={findPwId} onChange={(e) => setFindPwId(e.target.value)} required />
                     <input type="email" placeholder="가입 시 등록한 이메일" className={styles.input} value={findPwEmail} onChange={(e) => setFindPwEmail(e.target.value)} required />
                     {findError && <p className={styles.errorMessage}>{findError}</p>}
                     <button type="submit" className={styles.primaryBtn}>재설정 링크 발송</button>
                   </form>
                 )}
 
-                {/* 결과 노출 */}
-                {foundUser && (
-                  <div className={styles.findResult}>
-                    <p style={{ marginBottom: '0.5rem' }}>찾은 아이디: <strong className={styles.foundText}>{foundUser.id}</strong></p>
-                    <p>비밀번호: <strong className={styles.foundText}>{foundUser.password}</strong></p>
-                  </div>
-                )}
                 {findSuccessMessage && (
                   <div className={styles.findResult}>
                     <p style={{ color: '#03C75A', fontWeight: 600 }}>{findSuccessMessage}</p>
@@ -412,9 +483,7 @@ export default function ProfilePage() {
                 <div style={{ marginTop: '1.5rem' }}>
                   <span onClick={() => {
                     setView('login');
-                    setFoundUser(null);
                     setFindIdEmail('');
-                    setFindPwId('');
                     setFindPwEmail('');
                     setFindSuccessMessage('');
                     setFindError('');
@@ -425,59 +494,126 @@ export default function ProfilePage() {
           </div>
         ) : (
           <div className={styles.profileContent}>
-            <section className={styles.sectionCard}>
-              <div className={styles.sectionHeader}>
-                <h2>프로필 설정</h2>
-                <button onClick={() => logout()} className={styles.logoutBtn}>로그아웃</button>
-              </div>
-              <div className={styles.profileRow}>
-                <div className={styles.avatar}><span>{currentNickname.charAt(0).toUpperCase()}</span></div>
-                <div className={styles.nameEdit}>
-                  <p className={styles.currentName}>현재 닉네임: <strong>{currentNickname}</strong></p>
-                  <p className={styles.emailText}>{currentEmail}</p>
+            {view === 'changePassword' ? (
+              <div className={styles.loginCard}>
+                <p className={styles.loginSubtitle}>비밀번호 변경</p>
+                <div className={styles.formGroup}>
+                  <input
+                    type="password"
+                    placeholder="새 비밀번호"
+                    className={styles.input}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="password"
+                    placeholder="새 비밀번호 확인"
+                    className={styles.input}
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    required
+                  />
+                  {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}
+                  {passwordSuccess && <p style={{ color: '#03C75A', fontSize: '0.85rem' }}>{passwordSuccess}</p>}
+                  <button onClick={handleUpdatePassword} className={styles.primaryBtn}>저장</button>
+                  <button
+                    type="button"
+                    onClick={() => { setView('login'); setNewPassword(''); setConfirmNewPassword(''); setPasswordError(''); setPasswordSuccess(''); }}
+                    className={styles.smallBtn}
+                    style={{ background: 'rgba(255,255,255,0.05)', color: '#fff' }}
+                  >
+                    취소
+                  </button>
                 </div>
               </div>
-            </section>
+            ) : (
+              <>
+                <section className={styles.sectionCard}>
+                  <div className={styles.sectionHeader}>
+                    <h2>프로필 설정</h2>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      {supabaseUser?.app_metadata?.provider === 'email' && (
+                        <span onClick={() => { setView('changePassword'); setPasswordError(''); setPasswordSuccess(''); }} className={styles.authLink}>비밀번호 변경</span>
+                      )}
+                      <button onClick={() => logout()} className={styles.logoutBtn}>로그아웃</button>
+                    </div>
+                  </div>
+                  <div className={styles.profileRow}>
+                    <div className={styles.avatar}><span>{currentNickname.charAt(0).toUpperCase()}</span></div>
+                    <div className={styles.nameEdit}>
+                      {!isEditingNickname ? (
+                        <>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                            <p className={styles.currentName} style={{ margin: 0 }}>현재 닉네임: <strong>{currentNickname}</strong></p>
+                            <button onClick={() => { setIsEditingNickname(true); setNicknameError(''); setNicknameSuccess(''); }} className={styles.smallBtn}>닉네임 변경</button>
+                          </div>
+                          <p className={styles.emailText}>{currentEmail}</p>
+                        </>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                          <div className={styles.editForm}>
+                            <input
+                              type="text"
+                              className={styles.input}
+                              value={editNickname}
+                              onChange={(e) => setEditNickname(e.target.value)}
+                              placeholder="새 닉네임 입력"
+                              required
+                            />
+                            <button onClick={handleUpdateNickname} className={styles.primaryBtn}>저장</button>
+                            <button onClick={() => { setIsEditingNickname(false); setNicknameError(''); setNicknameSuccess(''); }} className={styles.smallBtn} style={{ background: 'rgba(255,255,255,0.05)', color: '#fff' }}>취소</button>
+                          </div>
+                          {nicknameError && <p className={styles.errorMessage}>{nicknameError}</p>}
+                          {nicknameSuccess && <p style={{ color: '#03C75A', fontSize: '0.85rem' }}>{nicknameSuccess}</p>}
+                          <p className={styles.emailText}>{currentEmail}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </section>
 
-            <section className={styles.sectionCard}>
-              <h2>나의 커뮤니티 활동</h2>
-              <div className={styles.activityGrid}>
-                <Link href="/profile/activity?tab=posts" className={styles.activityLinkCard}>
-                  <div className={styles.activityCard}>
-                    <h3>내가 쓴 글</h3>
-                    <span className={styles.activityCount}>{activity.postCount}</span>
-                  </div>
-                </Link>
-                <Link href="/profile/activity?tab=comments" className={styles.activityLinkCard}>
-                  <div className={styles.activityCard}>
-                    <h3>내가 쓴 댓글</h3>
-                    <span className={styles.activityCount}>{activity.commentCount}</span>
-                  </div>
-                </Link>
-                <Link href="/profile/activity?tab=likes" className={styles.activityLinkCard}>
-                  <div className={styles.activityCard}>
-                    <h3>좋아요 게시물</h3>
-                    <span className={styles.activityCount}>{activity.likeCount}</span>
-                  </div>
-                </Link>
-              </div>
-
-              <div className={styles.recentActivity}>
-                <h3>최근 작성한 글</h3>
-                <div className={styles.recentList}>
-                  {activity.recentPosts.length > 0 ? (
-                    activity.recentPosts.map((post: any) => (
-                      <div key={post.id} className={styles.recentItem} onClick={() => router.push(`/community/${post.id}`)}>
-                        <span className={styles.recentTitle}>{post.title}</span>
-                        <span className={styles.recentDate}>{post.date}</span>
+                <section className={styles.sectionCard}>
+                  <h2>나의 커뮤니티 활동</h2>
+                  <div className={styles.activityGrid}>
+                    <Link href="/profile/activity?tab=posts" className={styles.activityLinkCard}>
+                      <div className={styles.activityCard}>
+                        <h3>내가 쓴 글</h3>
+                        <span className={styles.activityCount}>{activity.postCount}</span>
                       </div>
-                    ))
-                  ) : (
-                    <p className={styles.noData}>최근 활동이 없습니다.</p>
-                  )}
-                </div>
-              </div>
-            </section>
+                    </Link>
+                    <Link href="/profile/activity?tab=comments" className={styles.activityLinkCard}>
+                      <div className={styles.activityCard}>
+                        <h3>내가 쓴 댓글</h3>
+                        <span className={styles.activityCount}>{activity.commentCount}</span>
+                      </div>
+                    </Link>
+                    <Link href="/profile/activity?tab=likes" className={styles.activityLinkCard}>
+                      <div className={styles.activityCard}>
+                        <h3>좋아요 게시물</h3>
+                        <span className={styles.activityCount}>{activity.likeCount}</span>
+                      </div>
+                    </Link>
+                  </div>
+
+                  <div className={styles.recentActivity}>
+                    <h3>최근 작성한 글</h3>
+                    <div className={styles.recentList}>
+                      {activity.recentPosts.length > 0 ? (
+                        activity.recentPosts.map((post: any) => (
+                          <div key={post.id} className={styles.recentItem} onClick={() => router.push(`/community/${post.id}`)}>
+                            <span className={styles.recentTitle}>{post.title}</span>
+                            <span className={styles.recentDate}>{post.date}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className={styles.noData}>최근 활동이 없습니다.</p>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              </>
+            )}
           </div>
         )}
       </div>

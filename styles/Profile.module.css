@@ -2,7 +2,8 @@
   min-height: 100vh;
   background-color: var(--clr-dark-1);
   color: var(--clr-white);
-  padding-top: 100px; /* 헤더 공간 여백 */
+  padding-top: 100px;
+  /* 헤더 공간 여백 */
   padding-bottom: 4rem;
 }
 
@@ -190,8 +191,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 입력폼 오류 표시 */
@@ -416,6 +424,7 @@
     flex-direction: column;
     text-align: center;
   }
+
   .editForm {
     flex-direction: column;
   }
@@ -498,4 +507,28 @@
 .activityLinkCard:hover h3 {
   color: var(--clr-accent) !important;
   text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
 }
