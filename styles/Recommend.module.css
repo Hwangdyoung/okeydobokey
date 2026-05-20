@@ -1,229 +1,150 @@
-.main {
-  min-height: 100vh;
-  background: #0a0a0a;
-  color: #f0f0f0;
-}
-
 .container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 0 1.5rem 4rem;
-}
-
-.backLink {
-  color: #666;
-  text-decoration: none;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  transition: color 0.2s;
-}
-
-.backLink:hover {
-  color: #f0f0f0;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #FFD600;
-  margin-bottom: 0.75rem;
+  min-height: 100vh;
+  padding: 120px 20px 60px; /* Header spacing */
+  background-color: #0a0a0a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: inherit;
 }
 
 .title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: 2.5rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #fff;
 }
 
-.desc {
-  color: #888;
-  font-size: 1rem;
-  line-height: 1.6;
+.highlight {
+  color: #FFD600;
 }
 
-/* 퀴즈 */
-.quizWrap {
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
 }
 
-.progressBar {
+.progressBarContainer {
   width: 100%;
-  height: 3px;
-  background: #1a1a1a;
-  border-radius: 999px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-bottom: 30px;
   overflow: hidden;
 }
 
-.progressFill {
+.progressBar {
   height: 100%;
-  background: #FFD600;
-  border-radius: 999px;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #FFD600;
+  transition: width 0.3s ease;
 }
 
-.stepLabel {
-  font-size: 0.8rem;
-  color: #555;
-  letter-spacing: 0.1em;
-}
-
-.questionCard {
-  width: 100%;
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 16px;
-  padding: 2.5rem 2rem;
-  animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.question {
-  font-size: clamp(1.3rem, 3vw, 1.8rem);
+.questionTitle {
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 30px;
   text-align: center;
-  letter-spacing: -0.02em;
+  line-height: 1.4;
 }
 
-.options {
+.optionsGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  grid-template-columns: 1fr;
+  gap: 15px;
 }
 
 .optionBtn {
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  color: #f0f0f0;
-  padding: 1rem 1.2rem;
-  font-size: 0.95rem;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #fff;
   cursor: pointer;
-  text-align: left;
-  line-height: 1.4;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-weight: 500;
 }
 
 .optionBtn:hover {
-  background: #222;
+  background: rgba(255, 214, 0, 0.15);
   border-color: #FFD600;
-  color: #FFD600;
   transform: translateY(-2px);
 }
 
-/* 결과 */
-.resultWrap {
-  animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.resultEyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #FFD600;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.resultTitle {
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 2.5rem;
-  text-align: center;
-}
-
-.trackList {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2.5rem;
+.resultContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.trackItem {
-  display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding: 1rem 1.2rem;
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  transition: border-color 0.2s;
+  width: 100%;
 }
 
-.trackItem:hover {
-  border-color: rgba(255, 214, 0, 0.3);
+.playlistTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #FFD600;
+  text-align: center;
 }
 
-.trackNum {
-  font-size: 0.75rem;
-  color: #444;
-  font-variant-numeric: tabular-nums;
-  min-width: 24px;
-}
-
-.trackInfo {
+.songList {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 12px;
+  margin-bottom: 40px;
 }
 
-.trackTitle {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #f0f0f0;
+.songItem {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.trackArtist {
-  font-size: 0.8rem;
-  color: #666;
+.songName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
-.retryBtn {
-  display: block;
-  width: 100%;
-  padding: 1rem;
+.artistName {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.restartBtn {
   background: #FFD600;
-  color: #000;
+  color: #0a0a0a;
   border: none;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: all 0.2s ease;
+  align-self: center;
 }
 
-.retryBtn:hover {
-  opacity: 0.85;
-  transform: translateY(-1px);
+.restartBtn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 214, 0, 0.3);
 }
 
-@media (max-width: 480px) {
-  .options {
-    grid-template-columns: 1fr;
+@media (min-width: 768px) {
+  .optionsGrid {
+    grid-template-columns: 1fr 1fr;
   }
 }

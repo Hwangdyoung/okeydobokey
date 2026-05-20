@@ -3,27 +3,31 @@
   "subGenres": [
     {
       "id": "alternative",
-      "name": "얼터너티브 R&B",
-      "description": "다양한 장르를 결합한 몽환적이고 실험적인 사운드",
-      "artists": "DEAN, Crush"
+      "name": "Alternative R&B",
+      "tagline": "Dreamy soundscapes and experimental vibes",
+      "description": "몽환적인 사운드와 다양한 장르의 실험적 조화",
+      "artists": "DEAN, Rad Museum, Colde"
     },
     {
-      "id": "contemporary",
-      "name": "컨템포러리 R&B",
-      "description": "세련된 팝 사운드와 조화된 현대적 R&B",
-      "artists": "박재범"
+      "id": "chill",
+      "name": "Chill Korean R&B",
+      "tagline": "Smooth grooves and laid-back lazy afternoons",
+      "description": "편안한 그루브와 일상적이고 칠한 분위기의 멜로디",
+      "artists": "릴러말즈, Crush, BIG Naughty"
     },
     {
-      "id": "soulful",
-      "name": "소울 R&B",
-      "description": "깊은 감성과 가창력이 돋보이는 소울풀한 사운드",
-      "artists": "자이언티"
+      "id": "emotional",
+      "name": "Emotional R&B",
+      "tagline": "Heartfelt melodies and late-night nostalgia",
+      "description": "호소력 짙은 감성과 가창력이 돋보이는 서정적 멜로디",
+      "artists": "Crush, 헤이즈, 우원재"
     },
     {
-      "id": "hiphop-rnb",
-      "name": "힙합 R&B",
-      "description": "힙합 비트와 R&B 멜로디의 완벽한 조화",
-      "artists": "릴러말즈"
+      "id": "neo",
+      "name": "Neo Soul",
+      "tagline": "Warm vintage keys and soulful acoustic grooves",
+      "description": "소울 고유의 아날로그 질감과 깊은 그루브의 조화",
+      "artists": "자이언티, 서사무엘, 크러쉬"
     }
   ],
   "artists": [

@@ -3,27 +3,31 @@
   "subGenres": [
     {
       "id": "melody",
-      "name": "멜로디 트랩",
-      "description": "오토튠과 감성 멜로디 중심",
-      "artists": "식케이, 노엘"
+      "name": "Melody Trap",
+      "tagline": "Autotune-soaked melodic waves",
+      "description": "오토튠을 극대화한 보컬라인과 서정적이고 대중적인 비트의 조화",
+      "artists": "식케이, 노엘, 릴러말즈"
     },
     {
       "id": "emo",
-      "name": "감성 트랩",
-      "description": "몽환적인 분위기와 우울한 감정 표현",
-      "artists": "해쉬스완"
+      "name": "Emo Trap",
+      "tagline": "Dreamy, introspective late-night thoughts",
+      "description": "우울하고 감성적인 정서와 몽환적인 신스 사운드가 결합한 트랩 스타일",
+      "artists": "해쉬스완, ASH ISLAND"
     },
     {
       "id": "hard",
-      "name": "하드/실험적 트랩",
-      "description": "독특한 비트와 변칙적인 플로우 사용",
-      "artists": "키드밀리"
+      "name": "Hard/Experimental Trap",
+      "tagline": "Experimental flows and boundary-pushing beats",
+      "description": "변칙적인 드럼 패턴과 전위적인 베이스 신스로 랩 스킬을 극대화하는 스타일",
+      "artists": "키드밀리, 빌스택스, 릴 체리"
     },
     {
       "id": "pop",
-      "name": "대중형 트랩",
-      "description": "히트성 멜로디와 쉬운 훅 중심",
-      "artists": "창모"
+      "name": "Pop Trap",
+      "tagline": "Chart-topping anthems and addictive hooks",
+      "description": "피아노나 스트링 샘플링 기반의 웅장한 사운드와 대중적인 멜로디의 트랩",
+      "artists": "창모, 슈퍼비"
     }
   ],
   "artists": [

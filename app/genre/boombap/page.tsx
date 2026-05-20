@@ -1,24 +1,21 @@
 import boombapData from '@/data/boombapData.json';
 import ArtistCard from '@/components/ArtistCard';
+import PlaylistRecommend from '@/components/PlaylistRecommend';
 import styles from '@/styles/Trap.module.css';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Boom Bap Genre | OkeyBokey',
   description: '붐뱁(Boom Bap) 장르 상세 가이드',
 };
 
-import Link from 'next/link';
-
 export default function BoombapGenrePage() {
   return (
     <main className={styles.main}>
       <div style={{ paddingTop: '90px', paddingLeft: '2rem', paddingRight: '2rem', maxWidth: '1200px', margin: '0 auto', marginBottom: '1rem' }}>
-        <Link href="/" className={styles.backLink}>
-          ← 뒤로 가기
-        </Link>
+        <Link href="/" className={styles.backLink}>← 뒤로 가기</Link>
       </div>
 
-      {/* 1. Intro Section */}
       <section className={styles.introSection}>
         <div className={styles.introContent}>
           <p className={styles.eyebrow}>GENRE GUIDE</p>
@@ -27,7 +24,6 @@ export default function BoombapGenrePage() {
         </div>
       </section>
 
-      {/* 2. Sub-genre Section */}
       <section className={styles.subGenreSection}>
         <h2 className={styles.sectionTitle}>붐뱁의 세부 스타일</h2>
         <div className={styles.gridContainer}>
@@ -41,7 +37,8 @@ export default function BoombapGenrePage() {
         </div>
       </section>
 
-      {/* 3. Artist Profile Section */}
+      <PlaylistRecommend subGenres={boombapData.subGenres} genre="boombap" />
+
       <section className={styles.artistSection}>
         <h2 className={styles.sectionTitle}>대표 아티스트</h2>
         <div className={styles.artistList}>

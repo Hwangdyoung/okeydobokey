@@ -2,28 +2,32 @@
   "description": "1990년대 미국 동부(New York)를 중심으로 발전한 힙합의 가장 클래식한 장르. 킥(boom)과 스네어(bap) 중심의 무거운 비트가 특징이며, 샘플링의 예술이라 불린다.",
   "subGenres": [
     {
-      "id": "hardcore",
-      "name": "하드코어 붐뱁",
-      "description": "거칠고 공격적인 가사와 둔탁한 드럼 사운드",
-      "artists": "딥플로우, 던밀스"
+      "id": "classic",
+      "name": "Classic Boom Bap",
+      "tagline": "Vintage vinyl dust and timeless storytelling",
+      "description": "질박한 드럼 샘플링과 가사 중심의 90년대 정통 이스트코스트 붐뱁 사운드",
+      "artists": "이센스, 나플라, 딥플로우"
     },
     {
-      "id": "conscious",
-      "name": "컨셔스/리리컬 붐뱁",
-      "description": "사회적 메시지와 철학적인 가사에 집중한 스타일",
-      "artists": "이센스, 화지"
+      "id": "jazz",
+      "name": "Jazz Boom Bap",
+      "tagline": "Smooth brass loops and laid-back golden era vibes",
+      "description": "재즈 레코드 샘플링을 얹은 감미롭고 세련된 분위기의 붐뱁 스타일",
+      "artists": "Jazzyfact, 화지, 팔로알토"
     },
     {
-      "id": "jazzy",
-      "name": "재지/스무스 붐뱁",
-      "description": "재즈 샘플링을 활용한 세련되고 부드러운 분위기",
-      "artists": "팔로알토"
+      "id": "underground",
+      "name": "Underground Boom Bap",
+      "tagline": "Raw dusty beats and uncompromising lyricism",
+      "description": "메인스트림 타협 없이 묵직하고 마이너한 감성을 고수하는 매니악 붐뱁 비트",
+      "artists": "나플라, 저스디스, 오웬"
     },
     {
-      "id": "technical",
-      "name": "테크니컬 붐뱁",
-      "description": "화려한 라임과 정교한 박자 감각을 강조한 랩",
-      "artists": "나플라, 넉살"
+      "id": "oldschool",
+      "name": "Old School Korean Hip-Hop",
+      "tagline": "Nostalgic piano loops and legendary flow history",
+      "description": "2000년대 초반 한국 힙합 르네상스를 이끈 서정적인 샘플링과 전설적인 플로우",
+      "artists": "다이나믹 듀오, 리쌍, 에픽하이"
     }
   ],
   "artists": [

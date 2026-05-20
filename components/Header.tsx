@@ -37,6 +37,7 @@ export default function Header() {
     { label: '소개', href: '/' },
     { label: '공연일정', href: '/schedule' },
     { label: '커뮤니티', href: '/community' },
+    { label: '취향 분석 플리', href: '/recommend' },
     { label: '내정보', href: '/profile' }
   ];
 

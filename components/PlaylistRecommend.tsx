@@ -6,6 +6,7 @@ import styles from '@/styles/PlaylistRecommend.module.css';
 interface SubGenre {
   id: string;
   name: string;
+  tagline?: string;
   description: string;
   artists: string;
 }
@@ -47,68 +48,97 @@ const playlistData: Record<string, Record<string, { title: string; artist: strin
     ],
   },
   rnb: {
-    classic: [
-      { title: 'Always', artist: 'Zion.T', album: 'Red Light' },
-      { title: '양화대교', artist: '자이언티 (Zion.T)', album: '양화대교' },
-      { title: 'Oppa', artist: '딘 (DEAN)', album: '130 Mood: TRBL' },
-      { title: 'D (Half Moon)', artist: '딘 (DEAN) ft. 에릭남', album: 'D (Half Moon)' },
-      { title: 'Gone', artist: '딘 (DEAN)', album: 'Gone' },
+    alternative: [
+      { title: 'instagram', artist: 'DEAN', album: 'instagram' },
+      { title: 'Dancing In The Rain', artist: 'Rad Museum', album: 'RAD' },
+      { title: '마음대로', artist: 'Colde (콜드)', album: 'Wave' },
+      { title: '어떻게 지내', artist: 'Crush (크러쉬)', album: 'wonderlost' },
+      { title: '멋지게 인사하는 법 (feat. 슬기)', artist: 'Zion.T', album: 'ZZZ' }
     ],
-    alt: [
-      { title: 'Hopeless Romantic', artist: '딘 (DEAN)', album: 'Hopeless Romantic' },
-      { title: 'Violet', artist: '릴러말즈 (Leellamarz)', album: 'Violet' },
-      { title: 'Villain', artist: '릴러말즈 (Leellamarz)', album: 'Villain' },
-      { title: 'Daydream', artist: '크러쉬 (Crush)', album: 'Daydream' },
-      { title: 'Cereal', artist: '크러쉬 (Crush)', album: 'Cereal' },
+    chill: [
+      { title: '야망 (feat. Ash Island)', artist: '릴러말즈 (Leellamarz)', album: 'MARZ 2 AMBITION' },
+      { title: 'NAPPA', artist: 'Crush (크러쉬)', album: 'From Midnight To Sunrise' },
+      { title: '정이라고 하자 (feat. 10CM)', artist: 'BIG Naughty (서동현)', album: '정이라고 하자' },
+      { title: 'L.I.E', artist: '페노메코 (Penomeco)', album: 'Garden' },
+      { title: 'Homebody', artist: 'pH-1', album: 'HALO' }
     ],
-    soul: [
-      { title: 'Eyes, Nose, Lips', artist: '태양 ft. 빅뱅', album: 'RISE' },
-      { title: 'Be My Baby', artist: '위너 (WINNER)', album: '2014 S/S' },
-      { title: '그대여', artist: '박재범 (Jay Park)', album: '그대여' },
-      { title: 'Metronome', artist: '크러쉬 (Crush)', album: 'Metronome' },
-      { title: 'Beautiful', artist: '자이언티 (Zion.T)', album: 'Beautiful' },
+    emotional: [
+      { title: 'D (Half Moon) (feat. 개코)', artist: 'DEAN', album: '130 mood: TRBL' },
+      { title: '돌아오지마 (feat. 용준형)', artist: '헤이즈 (Heize)', album: 'And July' },
+      { title: '잊어버리지마 (feat. 태연)', artist: 'Crush (크러쉬)', album: '잊어버리지마' },
+      { title: 'Hate Everything', artist: '지소울 (GSoul)', album: 'Hate Everything' },
+      { title: '시차 (We Are) (Feat. 로꼬 & GRAY)', artist: '우원재', album: '시차' }
     ],
     neo: [
-      { title: 'Winterfall', artist: '딘 (DEAN)', album: 'Winterfall' },
-      { title: 'Red', artist: '릴러말즈 (Leellamarz)', album: 'Red' },
-      { title: 'Nosedive', artist: '크러쉬 (Crush)', album: 'Nosedive' },
-      { title: 'Nappa', artist: '릴러말즈 (Leellamarz)', album: 'Nappa' },
-      { title: 'Starry Night', artist: '마마무 (MAMAMOO)', album: 'Starry Night' },
-    ],
+      { title: '양화대교', artist: '자이언티 (Zion.T)', album: '양화대교' },
+      { title: '창문', artist: '서사무엘 (Samuel Seo)', album: 'Ego Expand (100%)' },
+      { title: '물음표 (feat. 최자, Zion.T)', artist: '프라이머리 (Primary)', album: 'Primary And Messengers LP' },
+      { title: 'Sofa', artist: 'Crush (크러쉬)', album: 'Sofa' },
+      { title: '21', artist: 'DEAN', album: '130 mood: TRBL' }
+    ]
   },
   drill: {
     uk: [
-      { title: 'BLASÉ', artist: '블라세 (BLASÉ)', album: 'BLASÉ' },
-      { title: 'Cold', artist: '실키보이즈 (SILKYBOIZ)', album: 'Cold' },
-      { title: 'Opp Thot', artist: '플리키뱅 (Flikey Bang)', album: 'Opp Thot' },
-      { title: 'Slide', artist: '블라세 (BLASÉ)', album: 'Slide' },
-      { title: 'DRILL', artist: '실키보이즈 (SILKYBOIZ)', album: 'DRILL' },
+      { title: '치트키 (feat. 이영지)', artist: '블라세 (BLASÉ)', album: '치트키' },
+      { title: '으랏차차 (feat. Homies)', artist: 'NSW yoon', album: '으랏차차' },
+      { title: 'My Name Is Fleeky', artist: '플리키뱅 (Fleeky Bang)', album: 'My Name Is Fleeky' },
+      { title: 'VOLUME ONE', artist: '실키보이즈 (SILKYBOIZ)', album: 'VOLUME ONE' },
+      { title: 'Peace Out (Mega Mix)', artist: '블라세 (BLASÉ)', album: 'Multrill-ionaire' }
     ],
-    chicago: [
-      { title: 'No Hook', artist: '플리키뱅 (Flikey Bang)', album: 'No Hook' },
-      { title: 'Pressure', artist: '블라세 (BLASÉ)', album: 'Pressure' },
-      { title: 'Street', artist: '실키보이즈 (SILKYBOIZ)', album: 'Street' },
-      { title: 'Hood', artist: '플리키뱅 (Flikey Bang)', album: 'Hood' },
-      { title: 'Opps', artist: '블라세 (BLASÉ)', album: 'Opps' },
+    dark: [
+      { title: 'BALLON D\'OR', artist: 'NSW yoon', album: 'BALLON D\'OR' },
+      { title: 'The Predator', artist: '플리키뱅 (Fleeky Bang)', album: 'The Predator' },
+      { title: 'Pop It (feat. Koonta)', artist: '블라세 (BLASÉ)', album: 'Pop It' },
+      { title: 'Drill Killa', artist: 'Polodred (폴로드레드)', album: 'Drill Killa' },
+      { title: 'Drill Type Sh*t', artist: 'Street Baby', album: 'Drill Type Sh*t' }
+    ],
+    aggressive: [
+      { title: 'Block', artist: '플리키뱅 (Fleeky Bang)', album: 'Block' },
+      { title: 'Run!', artist: 'NSW yoon', album: 'Run!' },
+      { title: 'Drop It', artist: '블라세 (BLASÉ)', album: 'Drop It' },
+      { title: 'GANG GANG', artist: 'Polodred (폴로드레드)', album: 'GANG GANG' },
+      { title: 'Drill Out', artist: 'Street Baby', album: 'Drill Out' }
     ],
     melodic: [
+      { title: 'Melody', artist: '애쉬 아일랜드 (ASH ISLAND)', album: 'ISLAND' },
+      { title: 'STILL', artist: '릴러말즈 (Leellamarz)', album: 'STILL' },
       { title: 'Melody Drill', artist: '실키보이즈 (SILKYBOIZ)', album: 'Melody Drill' },
       { title: 'Pain Drill', artist: '블라세 (BLASÉ)', album: 'Pain Drill' },
-      { title: 'Love Drill', artist: '플리키뱅 (Flikey Bang)', album: 'Love Drill' },
-      { title: 'Sad Drill', artist: '실키보이즈 (SILKYBOIZ)', album: 'Sad Drill' },
-      { title: 'Emo Drill', artist: '블라세 (BLASÉ)', album: 'Emo Drill' },
-    ],
+      { title: 'Love Drill', artist: '플리키뱅 (Fleeky Bang)', album: 'Love Drill' }
+    ]
   },
   boombap: {
-    all: [
-      { title: '소외', artist: '이센스 (E SENS)', album: '소외' },
-      { title: 'Anok', artist: '나플라 (nafla)', album: 'Anok' },
-      { title: 'Grey', artist: '오웬 (Owen Ovadoz)', album: 'Grey' },
+    classic: [
+      { title: '비행 (Flight)', artist: '이센스 (E SENS)', album: 'The Anecdote' },
       { title: '독', artist: '이센스 (E SENS)', album: '독' },
-      { title: 'PRIDE', artist: '나플라 (nafla)', album: 'PRIDE' },
+      { title: 'Wu', artist: '나플라 (nafla)', album: 'Angels' },
+      { title: '작두 (feat. 넉살, Huckleberry P)', artist: '딥플로우 (Deepflow)', album: '양화' },
+      { title: 'Good Times (feat. Babylon)', artist: '팔로알토 (Paloalto)', album: 'Good Times' }
     ],
-  },
+    jazz: [
+      { title: '아까워', artist: '재지팩트 (Jazzyfact)', album: 'Lifes Like' },
+      { title: 'Smoking Dreams', artist: '재지팩트 (Jazzyfact)', album: 'Lifes Like' },
+      { title: '히피의 아침', artist: '화지 (Hwaji)', album: 'ZISSOU' },
+      { title: 'Fancy (feat. Dean)', artist: '팔로알토 (Paloalto)', album: 'Fancy' },
+      { title: 'Writer\'s Block', artist: '이센스 (E SENS)', album: 'The Anecdote' }
+    ],
+    underground: [
+      { title: 'JAIL', artist: '나플라 (nafla)', album: 'Angels' },
+      { title: 'Gone', artist: '저스디스 (JUSTHIS)', album: '2 Many Homes 4 1 Kid' },
+      { title: '당산대형', artist: '딥플로우 (Deepflow)', album: '양화' },
+      { title: 'City', artist: '오웬 (Owen)', album: 'City' },
+      { title: 'MOMMY', artist: '나플라 (nafla)', album: 'Angels' }
+    ],
+    oldschool: [
+      { title: '고백 (feat. 정인)', artist: '다이나믹 듀오 (Dynamic Duo)', album: 'Double Dynamite' },
+      { title: '발레리노 (feat. Ali)', artist: '리쌍 (Leessang)', album: 'Black Sun' },
+      { title: 'Fly', artist: '에픽하이 (Epik High)', album: 'Swan Songs' },
+      { title: '영순위 (feat. 넉업샤)', artist: '가리온 (Garion)', album: 'Garion 2' },
+      { title: '8:45 Heaven', artist: '드렁큰 타이거 (Drunken Tiger)', album: 'Sky Is The Limit' }
+    ]
+  }
 };
+
 export default function PlaylistRecommend({ subGenres, genre }: PlaylistRecommendProps) {
   const [selectedSubGenre, setSelectedSubGenre] = useState<string | null>(null);
 
@@ -116,31 +146,58 @@ export default function PlaylistRecommend({ subGenres, genre }: PlaylistRecommen
 
   const getPlaylist = (subGenreId: string) => {
     if (!genreData) return [];
-    if (Array.isArray(genreData)) return genreData;
     return genreData[subGenreId] || [];
   };
 
-  return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>플레이리스트 추천</h2>
-      <p className={styles.sectionDesc}>세부 스타일을 선택하면 어울리는 곡을 추천해드려요</p>
+  const handleCardClick = (subGenreId: string) => {
+    setSelectedSubGenre(selectedSubGenre === subGenreId ? null : subGenreId);
+  };
 
-      <div className={styles.subGenreButtons}>
+  return (
+    <section className={`${styles.section} ${styles[genre]}`}>
+      <h2 className={styles.sectionTitle}>플레이리스트 추천</h2>
+      <p className={styles.sectionDesc}>세부 스타일에 어울리는 국내 대표 아카이브 플레이리스트</p>
+
+      <div className={styles.gridContainer}>
         {subGenres.map((sub) => (
-          <button
+          <div
             key={sub.id}
-            className={`${styles.subBtn} ${selectedSubGenre === sub.id ? styles.active : ''}`}
-            onClick={() => setSelectedSubGenre(selectedSubGenre === sub.id ? null : sub.id)}
+            className={`${styles.subCard} ${selectedSubGenre === sub.id ? styles.active : ''}`}
+            onClick={() => handleCardClick(sub.id)}
           >
-            {sub.name}
-          </button>
+            {sub.tagline && <span className={styles.tagline}>{sub.tagline}</span>}
+            <h3>{sub.name}</h3>
+            <p className={styles.subDesc}>{sub.description}</p>
+            <div className={styles.artistsWrap}>
+              <span className={styles.artistLabel}>대표 아티스트:</span>
+              <span className={styles.subArtists}>{sub.artists}</span>
+            </div>
+            <button
+              type="button"
+              className={styles.spotifyBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCardClick(sub.id);
+              }}
+            >
+              {selectedSubGenre === sub.id ? (
+                <>
+                  <span className={styles.btnIcon}>✕</span> 닫기
+                </>
+              ) : (
+                <>
+                  <span className={styles.btnIcon}>▶</span> 들으러 가기
+                </>
+              )}
+            </button>
+          </div>
         ))}
       </div>
 
       {selectedSubGenre && (
         <div className={styles.playlistWrap}>
           <h3 className={styles.playlistTitle}>
-            {subGenres.find(s => s.id === selectedSubGenre)?.name} 플레이리스트
+            {subGenres.find((s) => s.id === selectedSubGenre)?.name} 플레이리스트
           </h3>
           <ul className={styles.trackList}>
             {getPlaylist(selectedSubGenre).map((track, i) => (

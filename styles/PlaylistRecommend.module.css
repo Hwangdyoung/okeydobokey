@@ -2,6 +2,29 @@
   padding: 6rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  --genre-accent: var(--clr-accent, #FFD600);
+  --genre-glow: rgba(255, 214, 0, 0.15);
+}
+
+/* Genre specific themes */
+.section.trap {
+  --genre-accent: #FFD600;
+  --genre-glow: rgba(255, 214, 0, 0.15);
+}
+
+.section.rnb {
+  --genre-accent: #bf55ec;
+  --genre-glow: rgba(191, 85, 236, 0.15);
+}
+
+.section.drill {
+  --genre-accent: #00e5ff;
+  --genre-glow: rgba(0, 229, 255, 0.15);
+}
+
+.section.boombap {
+  --genre-accent: #ff9f43;
+  --genre-glow: rgba(255, 159, 67, 0.15);
 }
 
 .sectionTitle {
@@ -17,7 +40,7 @@
   display: block;
   width: 60px;
   height: 2px;
-  background-color: var(--clr-accent);
+  background-color: var(--genre-accent);
   margin: 1rem auto 0;
 }
 
@@ -28,52 +51,147 @@
   margin-bottom: 3rem;
 }
 
-.subGenreButtons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 3rem;
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
-.subBtn {
-  padding: 0.7rem 1.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: transparent;
-  color: var(--clr-gray-2);
-  border-radius: 30px;
-  font-size: 0.9rem;
+.subCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 16px;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.subCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--genre-accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.subCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--genre-accent);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--genre-glow);
+}
+
+.subCard:hover::before {
+  opacity: 1;
+}
+
+.subCard.active {
+  border-color: var(--genre-accent);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--genre-glow);
+}
+
+.subCard.active::before {
+  opacity: 1;
+}
+
+.tagline {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--genre-accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.subCard h3 {
+  font-size: 1.5rem;
+  color: var(--clr-white);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+}
+
+.subDesc {
+  color: var(--clr-gray-2);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 0.92rem;
+  flex-grow: 1;
+}
+
+.artistsWrap {
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.artistLabel {
+  color: var(--clr-gray-3);
+  margin-right: 0.5rem;
+}
+
+.subArtists {
+  color: var(--clr-white);
+  font-weight: 500;
+}
+
+/* Spotify-style Play/Listen Button */
+.spotifyBtn {
+  align-self: flex-start;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--genre-accent);
+  background: transparent;
+  color: var(--genre-accent);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-ui);
 }
 
-.subBtn:hover {
-  border-color: var(--clr-accent);
-  color: var(--clr-accent);
+.spotifyBtn:hover {
+  background: var(--genre-accent);
+  color: #0a0a0a;
+  box-shadow: 0 4px 12px var(--genre-glow);
 }
 
-.subBtn.active {
-  background: var(--clr-accent);
-  border-color: var(--clr-accent);
-  color: var(--clr-dark-1);
-  font-weight: 700;
+.subCard.active .spotifyBtn {
+  background: var(--genre-accent);
+  color: #0a0a0a;
+  box-shadow: 0 4px 12px var(--genre-glow);
 }
 
+.btnIcon {
+  font-size: 0.7rem;
+}
+
+/* Playlist tracks layout */
 .playlistWrap {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   padding: 2.5rem;
   animation: fadeIn 0.4s ease;
+  margin-top: 2rem;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -94,7 +212,6 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .trackItem {
@@ -114,7 +231,7 @@
 .trackNum {
   font-family: var(--font-ui);
   font-size: 0.85rem;
-  color: var(--clr-accent);
+  color: var(--genre-accent);
   min-width: 28px;
   font-weight: 600;
 }
@@ -141,7 +258,7 @@
   font-size: 0.8rem;
   color: var(--clr-gray-3);
   text-align: right;
-  min-width: 100px;
+  min-width: 120px;
 }
 
 @media (max-width: 600px) {

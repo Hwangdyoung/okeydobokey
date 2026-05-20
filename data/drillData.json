@@ -2,28 +2,32 @@
   "description": "UK·시카고·브롱스 드릴에서 영향받은 변칙 스네어와 808 슬라이딩 베이스가 특징인 장르. 2020년대 한국 힙합 씬에서 가장 빠르게 성장하며 강렬한 에너지를 전달하고 있다.",
   "subGenres": [
     {
-      "id": "uk-drill",
-      "name": "UK 드릴",
-      "description": "런던에서 발전한 변칙적인 슬라이딩 베이스와 드럼 패턴",
-      "artists": "블라세"
+      "id": "uk",
+      "name": "UK Drill Inspired",
+      "tagline": "Sliding 808s and aggressive London energy",
+      "description": "런던 씬에서 파생된 복잡한 슬라이딩 808 베이스와 독보적 드럼 패턴",
+      "artists": "블라세, NSW yoon, Fleeky Bang"
     },
     {
-      "id": "bronx-drill",
-      "name": "브롱스 드릴",
-      "description": "올드스쿨 샘플링을 결합한 에너제틱한 드릴 스타일",
-      "artists": "플리키뱅"
+      "id": "dark",
+      "name": "Dark Drill",
+      "tagline": "Cold, heavy atmosphere and ominous vibes",
+      "description": "어둡고 오싹한 멜로디 루프와 무거운 서브 베이스의 드릴 사운드",
+      "artists": "NSW yoon, Fleeky Bang, Blase"
     },
     {
-      "id": "korean-drill",
-      "name": "K-드릴",
-      "description": "한국적 감성과 랩 스타일이 결합된 독자적인 드릴",
-      "artists": "NSW yoon"
+      "id": "aggressive",
+      "name": "Aggressive Drill",
+      "tagline": "Raw street stories and explosive production",
+      "description": "날카롭고 타격감 강한 랩과 분노를 뿜어내는 강렬한 비트",
+      "artists": "Fleeky Bang, NSW yoon, Polodred"
     },
     {
-      "id": "experimental-drill",
-      "name": "익스페리멘탈 드릴",
-      "description": "기존 드릴의 틀을 깨는 실험적인 사운드 결합",
-      "artists": "실키보이즈"
+      "id": "melodic",
+      "name": "Melodic Drill",
+      "tagline": "Gritty drill drums with emotional vocal samples",
+      "description": "감성적인 보컬 샘플링이나 감미로운 탑라인을 드릴 리듬에 얹은 스타일",
+      "artists": "실키보이즈, Blase, Fleeky Bang"
     }
   ],
   "artists": [
