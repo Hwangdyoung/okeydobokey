@@ -1,13 +1,13 @@
 import trapData from '@/data/trapData.json';
 import ArtistCard from '@/components/ArtistCard';
+import PlaylistRecommend from '@/components/PlaylistRecommend';
 import styles from '@/styles/Trap.module.css';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Trap Genre | OkeyBokey',
   description: '트랩(Trap) 장르 상세 가이드',
 };
-
-import Link from 'next/link';
 
 export default function TrapGenrePage() {
   return (
@@ -41,7 +41,10 @@ export default function TrapGenrePage() {
         </div>
       </section>
 
-      {/* 3. Artist Profile Section */}
+      {/* 3. Playlist Section */}
+      <PlaylistRecommend subGenres={trapData.subGenres} genre="trap" />
+
+      {/* 4. Artist Profile Section */}
       <section className={styles.artistSection}>
         <h2 className={styles.sectionTitle}>대표 아티스트</h2>
         <div className={styles.artistList}>
