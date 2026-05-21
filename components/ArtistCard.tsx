@@ -51,6 +51,7 @@ export default function ArtistCard({ artist, index }: ArtistCardProps) {
             fill
             sizes="200px"
             className={styles.artistImage}
+            style={{ filter: 'grayscale(100%)' }}
             priority={index < 3}
             onError={() => setImgError(true)}
           />
