@@ -32,7 +32,7 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.1em;
+  gap: 0em;
   font-family: var(--font-display), sans-serif;
   font-size: 1.5rem;
   font-weight: 700;

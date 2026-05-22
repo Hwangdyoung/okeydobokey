@@ -11,14 +11,14 @@ export default function Header() {
 
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
-    
+
     const handleScroll = () => {
       // 스크롤 중에는 헤더를 숨김
       setIsVisible(false);
-      
+
       // 기존 타이머 취소
       clearTimeout(scrollTimeout);
-      
+
       // 스크롤이 멈추면 150ms 후에 헤더를 다시 표시
       scrollTimeout = setTimeout(() => {
         setIsVisible(true);
@@ -48,10 +48,7 @@ export default function Header() {
         <Link href="/" className={styles.logo} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <span>Okey</span>
           <span className={styles.logoIcon}>
-            <svg width="0.8em" height="0.8em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <img src="/do.png" alt="logo icon" style={{ width: '1.6em', height: '1.6em', objectFit: 'contain', display: 'block', margin: '0 -0.5em 0 -0em' }} />
           </span>
           <span>Bokey</span>
         </Link>
