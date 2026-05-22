@@ -2,17 +2,21 @@
   min-height: 100vh;
   background-color: var(--clr-dark-1);
   color: var(--clr-white);
-  padding-top: 120px; /* 고정 헤더와 겹침 방지 */
+  padding-top: 120px;
+  /* 고정 헤더와 겹침 방지 */
   padding-bottom: 4rem;
 }
 
 .container {
-  max-width: 1400px; /* 더 넉넉한 최대 너비 */
+  max-width: 1400px;
+  /* 더 넉넉한 최대 너비 */
   margin: 0 auto;
   padding: 2rem;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 350px; /* 메인 영역 뭉개짐 방지 (minmax(0, 1fr)) */
-  gap: 4rem; /* 간격 넓힘 */
+  grid-template-columns: minmax(0, 1fr) 350px;
+  /* 메인 영역 뭉개짐 방지 (minmax(0, 1fr)) */
+  gap: 4rem;
+  /* 간격 넓힘 */
   align-items: start;
 }
 
@@ -68,7 +72,8 @@
 
 .tabMenu {
   display: flex;
-  align-items: center; /* 수직 정렬의 핵심 */
+  align-items: center;
+  /* 수직 정렬의 핵심 */
   gap: 0.5rem;
   margin-bottom: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -87,7 +92,8 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
-  line-height: 1.2; /* 높이 통일 */
+  line-height: 1.2;
+  /* 높이 통일 */
 }
 
 .activeTab {
@@ -103,8 +109,10 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 0.5rem 1rem; /* tabBtn과 패딩 통일 */
-  line-height: 1.2; /* 높이 통일 */
+  padding: 0.5rem 1rem;
+  /* tabBtn과 패딩 통일 */
+  line-height: 1.2;
+  /* 높이 통일 */
 }
 
 .backLink:hover {
@@ -143,7 +151,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 0; /* 자식 요소의 truncate 작동을 위함 */
+  min-width: 0;
+  /* 자식 요소의 truncate 작동을 위함 */
 }
 
 .postTitle {
@@ -153,7 +162,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1; /* 제목이 가능한 많은 공간 차지 */
+  flex: 1;
+  /* 제목이 가능한 많은 공간 차지 */
 }
 
 .noticeBadge {
@@ -193,7 +203,8 @@
   font-family: var(--font-display);
 }
 
-.issueCard, .videoCard {
+.issueCard,
+.videoCard {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 15px;
@@ -241,7 +252,8 @@
 .videoWrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
+  /* 16:9 */
   height: 0;
   border-radius: 10px;
   overflow: hidden;
@@ -302,11 +314,13 @@
   padding: 1rem;
   border-radius: 8px;
   outline: none;
-  width: 100%; /* 너비 100% 확보 */
+  width: 100%;
+  /* 너비 100% 확보 */
 }
 
 .textarea {
-  min-height: 450px; /* 가이드라인이 잘 보이도록 높이 확장 */
+  min-height: 450px;
+  /* 가이드라인이 잘 보이도록 높이 확장 */
   resize: vertical;
 }
 
@@ -327,7 +341,7 @@
 }
 
 .cancelBtn {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
   padding: 0.7rem 2rem;
   border-radius: 8px;
@@ -402,6 +416,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
