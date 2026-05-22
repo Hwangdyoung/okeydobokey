@@ -17,6 +17,7 @@ interface Genre {
   bpm: string;
   direction: 'left' | 'right';
   index: number;
+  image?: string;
 }
 
 /* ---- Sub-component: one genre card ---- */
@@ -72,6 +73,21 @@ function GenreCard({ genre }: { genre: Genre }) {
       >
         <div className={styles.genreVisualInner}>
           <div className={`${styles.visualBg} ${styles[genre.id as keyof typeof styles]}`} />
+          {genre.image && (
+            <img
+              src={genre.image}
+              alt={genre.name}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                opacity: 0.3,
+                mixBlendMode: 'luminosity',
+              }}
+            />
+          )}
 
           {/* Abstract geometric visual */}
           <div className={styles.visualGeometric}>

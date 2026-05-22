@@ -48,7 +48,7 @@
   direction: rtl;
 }
 
-.genreCard.reverse > * {
+.genreCard.reverse>* {
   direction: ltr;
 }
 
@@ -74,19 +74,19 @@
 }
 
 .visualBg.trap {
-  background: radial-gradient(ellipse at 30% 70%, rgba(245, 197, 24, 0.12) 0%, var(--clr-dark-1) 60%);
+  background: radial-gradient(ellipse at 30% 70%, rgba(120, 60, 220, 0.25) 0%, var(--clr-dark-1) 65%);
 }
 
 .visualBg.rnb {
-  background: radial-gradient(ellipse at 70% 30%, rgba(245, 197, 24, 0.08) 0%, var(--clr-dark-1) 60%);
+  background: radial-gradient(ellipse at 70% 30%, rgba(220, 80, 120, 0.22) 0%, var(--clr-dark-1) 65%);
 }
 
 .visualBg.drill {
-  background: radial-gradient(ellipse at 20% 80%, rgba(245, 197, 24, 0.1) 0%, var(--clr-dark-1) 60%);
+  background: radial-gradient(ellipse at 20% 80%, rgba(30, 140, 200, 0.22) 0%, var(--clr-dark-1) 65%);
 }
 
 .visualBg.boombap {
-  background: radial-gradient(ellipse at 80% 20%, rgba(245, 197, 24, 0.09) 0%, var(--clr-dark-1) 60%);
+  background: radial-gradient(ellipse at 80% 20%, rgba(160, 110, 40, 0.25) 0%, var(--clr-dark-1) 65%);
 }
 
 .visualGeometric {
@@ -105,14 +105,16 @@
 .geometricCircle:nth-child(1) {
   width: 280px;
   height: 280px;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   animation: rotateSlow 20s linear infinite;
 }
 
 .geometricCircle:nth-child(2) {
   width: 200px;
   height: 200px;
-  top: 40px; left: 40px;
+  top: 40px;
+  left: 40px;
   border-color: rgba(245, 197, 24, 0.15);
   animation: rotateSlow 15s linear infinite reverse;
 }
@@ -120,21 +122,27 @@
 .geometricCircle:nth-child(3) {
   width: 120px;
   height: 120px;
-  top: 80px; left: 80px;
+  top: 80px;
+  left: 80px;
   border-color: rgba(245, 197, 24, 0.3);
   animation: rotateSlow 10s linear infinite;
 }
 
 @keyframes rotateSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .genreNumberBig {
   position: absolute;
   font-family: var(--font-display);
   font-size: 20rem;
-  color: rgba(255,255,255,0.03);
+  color: rgba(255, 255, 255, 0.03);
   line-height: 1;
   bottom: -2rem;
   right: -1rem;
@@ -148,7 +156,7 @@
   left: var(--space-xl);
   font-family: var(--font-display);
   font-size: clamp(3rem, 6vw, 6rem);
-  color: rgba(255,255,255,0.05);
+  color: rgba(255, 255, 255, 0.05);
   line-height: 1;
   text-transform: uppercase;
   user-select: none;
@@ -330,14 +338,14 @@
   opacity: 0;
   transform: translateX(-60px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .slideFromRight {
   opacity: 0;
   transform: translateX(60px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fadeUp {
@@ -351,12 +359,29 @@
   transform: translate(0) !important;
 }
 
-.delay100 { transition-delay: 0.1s; }
-.delay200 { transition-delay: 0.2s; }
-.delay300 { transition-delay: 0.3s; }
-.delay400 { transition-delay: 0.4s; }
-.delay500 { transition-delay: 0.5s; }
-.delay600 { transition-delay: 0.6s; }
+.delay100 {
+  transition-delay: 0.1s;
+}
+
+.delay200 {
+  transition-delay: 0.2s;
+}
+
+.delay300 {
+  transition-delay: 0.3s;
+}
+
+.delay400 {
+  transition-delay: 0.4s;
+}
+
+.delay500 {
+  transition-delay: 0.5s;
+}
+
+.delay600 {
+  transition-delay: 0.6s;
+}
 
 /* ============================================
    RESPONSIVE

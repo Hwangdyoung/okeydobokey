@@ -1,0 +1,227 @@
+.main {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(20,20,20,1) 100%);
+  color: var(--clr-white);
+  padding-top: 90px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--clr-accent);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--clr-white);
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: var(--clr-gray-2);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 1.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.card:hover {
+  border-color: var(--clr-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card.active {
+  border-color: var(--clr-accent);
+  background: rgba(245, 197, 24, 0.05);
+}
+
+.cardInitial {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(245, 197, 24, 0.1);
+  border: 1px solid rgba(245, 197, 24, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--clr-accent);
+  flex-shrink: 0;
+}
+
+.cardInfo {
+  flex: 1;
+}
+
+.cardTag {
+  font-size: 0.72rem;
+  color: var(--clr-gray-3);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.cardName {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--clr-white);
+  margin-bottom: 0.2rem;
+}
+
+.cardGenre {
+  font-size: 0.78rem;
+  color: var(--clr-accent);
+}
+
+/* Detail Panel */
+.detail {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(245, 197, 24, 0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  animation: fadeIn 0.4s ease;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.detailInitial {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(245, 197, 24, 0.1);
+  border: 2px solid var(--clr-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--clr-accent);
+  flex-shrink: 0;
+}
+
+.detailName {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: var(--clr-white);
+  margin-bottom: 0.3rem;
+}
+
+.detailGenre {
+  color: var(--clr-accent);
+  font-size: 0.9rem;
+}
+
+.detailDesc {
+  color: var(--clr-gray-2);
+  line-height: 1.8;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--clr-accent);
+}
+
+.detailMeta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  color: var(--clr-gray-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.metaValue {
+  font-size: 0.95rem;
+  color: var(--clr-white);
+  font-weight: 500;
+}
+
+.repSong {
+  color: var(--clr-accent);
+}
+
+.closeBtn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--clr-gray-3);
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  border-color: var(--clr-accent);
+  color: var(--clr-accent);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailMeta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .detail {
+    padding: 2rem;
+  }
+}
