@@ -166,7 +166,8 @@ body::after {
 .custom-cursor-inner {
   width: 8px;
   height: 8px;
-  background-color: #ffffff; /* 평상시 흰색 */
+  background-color: #ffffff;
+  /* 평상시 흰색 */
   transition: all 0.2s ease-out;
 }
 
@@ -174,7 +175,8 @@ body::after {
 .custom-cursor-outer {
   width: 32px;
   height: 32px;
-  border: 1.5px solid #ffffff; /* 평상시 흰색 테두리 */
+  border: 1.5px solid #ffffff;
+  /* 평상시 흰색 테두리 */
   background-color: transparent;
   /* 부드럽게 따라다니는 효과를 위한 transition 설정 */
   transition: top 0.1s ease-out, left 0.1s ease-out, border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -182,17 +184,60 @@ body::after {
 
 /* Hover Effect: 색상 전환 (노란색) */
 .custom-cursor-inner.hover {
-  width: 8px; /* 크기 유지 */
+  width: 8px;
+  /* 크기 유지 */
   height: 8px;
   background-color: var(--clr-accent);
 }
 
 .custom-cursor-outer.hover {
-  width: 32px; /* 크기 고정 */
+  width: 32px;
+  /* 크기 고정 */
   height: 32px;
   border-width: 2.5px;
   border-color: var(--clr-accent);
   background-color: rgba(245, 197, 24, 0.1);
   box-shadow: 0 0 15px var(--clr-accent-glow);
   backdrop-filter: blur(1px);
+}
+
+.gridBackground {
+  position: relative;
+  background-color: #050505;
+  overflow: hidden;
+}
+
+.gridBackground::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(255, 196, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 196, 0, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at center,
+      rgba(255, 196, 0, 0.08) 0%,
+      rgba(255, 196, 0, 0.03) 18%,
+      rgba(0, 0, 0, 0) 45%);
+
+  background-size:
+    52px 52px,
+    52px 52px,
+    100% 100%;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gridBackground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle,
+      transparent 45%,
+      rgba(0, 0, 0, 0.45) 100%);
+
+  pointer-events: none;
 }

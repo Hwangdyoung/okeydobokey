@@ -157,9 +157,8 @@ export default function CommunityPage() {
   const filteredPosts = getFilteredPosts();
 
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} gridBackground`}>
       <div className={styles.container}>
-
         {/* ====== 중앙 메인 영역 (게시판) ====== */}
         <div className={styles.mainContent}>
           <div className={styles.header}>

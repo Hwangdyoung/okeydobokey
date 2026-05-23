@@ -42,11 +42,11 @@ function ActivityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isLoggedIn, currentEmail } = useAuth();
-  
+
   // URL tab 파라미터가 있으면 디폴트로 사용 (posts, comments, likes)
   const defaultTab = searchParams.get('tab') || 'posts';
   const [activeTab, setActiveTab] = useState(defaultTab);
-  
+
   const [postsList, setPostsList] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -132,20 +132,20 @@ function ActivityContent() {
 
       {/* 탭 버튼 그룹 */}
       <div className={styles.tabMenu}>
-        <button 
-          onClick={() => setActiveTab('posts')} 
+        <button
+          onClick={() => setActiveTab('posts')}
           className={`${styles.tabBtn} ${activeTab === 'posts' ? styles.activeTab : ''}`}
         >
           내가 쓴 글 ({myPosts.length})
         </button>
-        <button 
-          onClick={() => setActiveTab('comments')} 
+        <button
+          onClick={() => setActiveTab('comments')}
           className={`${styles.tabBtn} ${activeTab === 'comments' ? styles.activeTab : ''}`}
         >
           내가 쓴 댓글 ({myComments.length})
         </button>
-        <button 
-          onClick={() => setActiveTab('likes')} 
+        <button
+          onClick={() => setActiveTab('likes')}
           className={`${styles.tabBtn} ${activeTab === 'likes' ? styles.activeTab : ''}`}
         >
           좋아요 누른 글 ({likedPosts.length})
@@ -157,9 +157,9 @@ function ActivityContent() {
         {activeTab === 'posts' && (
           myPosts.length > 0 ? (
             myPosts.map(post => (
-              <div 
-                key={post.id} 
-                className={styles.activityCard} 
+              <div
+                key={post.id}
+                className={styles.activityCard}
                 onClick={() => router.push(`/community/${post.id}`)}
               >
                 <h2 className={styles.cardTitle}>{post.title}</h2>
@@ -180,9 +180,9 @@ function ActivityContent() {
         {activeTab === 'comments' && (
           myComments.length > 0 ? (
             myComments.map(comment => (
-              <div 
-                key={comment.commentId} 
-                className={styles.activityCard} 
+              <div
+                key={comment.commentId}
+                className={styles.activityCard}
                 onClick={() => router.push(`/community/${comment.postId}`)}
               >
                 <div className={styles.cardContext}>
@@ -203,9 +203,9 @@ function ActivityContent() {
         {activeTab === 'likes' && (
           likedPosts.length > 0 ? (
             likedPosts.map(post => (
-              <div 
-                key={post.id} 
-                className={styles.activityCard} 
+              <div
+                key={post.id}
+                className={styles.activityCard}
                 onClick={() => router.push(`/community/${post.id}`)}
               >
                 <h2 className={styles.cardTitle}>{post.title}</h2>
@@ -230,7 +230,7 @@ function ActivityContent() {
 
 export default function ProfileActivityPage() {
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} gridBackground`}>
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', color: 'var(--clr-accent)', fontSize: '1.5rem' }}>로딩 중...</div>}>
         <ActivityContent />
       </Suspense>

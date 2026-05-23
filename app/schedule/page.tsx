@@ -67,10 +67,10 @@ export default function SchedulePage() {
     return scheduleEvents.filter(event => {
       const eventStart = event.startDate || event.date;
       const eventEnd = event.endDate || event.date;
-      
+
       // 방어막: 시작일이나 종료일이 없으면 필터링에서 제외 (false 반환)
       if (!eventStart || !eventEnd) return false;
-      
+
       return eventStart <= monthEnd && eventEnd >= monthStart;
     });
   };
@@ -102,7 +102,7 @@ export default function SchedulePage() {
     const badgeB = getBadge(b);
     if (badgeA.isPast && !badgeB.isPast) return 1;
     if (!badgeA.isPast && badgeB.isPast) return -1;
-    
+
     const timeA = new Date(a.startDate || a.date || '').getTime();
     const timeB = new Date(b.startDate || b.date || '').getTime();
     return timeA - timeB;
@@ -111,16 +111,16 @@ export default function SchedulePage() {
   const displayTitle = value ? `${value.getFullYear()}년 ${value.getMonth() + 1}월 ${value.getDate()}일 일정` : `${activeDate.getFullYear()}년 ${activeDate.getMonth() + 1}월 주요 일정`;
 
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} gridBackground`}>
       <div className={styles.container}>
         <h1 className={styles.title}>{activeDate.getFullYear()} SCHEDULE</h1>
-        
+
         <div className={styles.contentWrapper}>
           {/* 달력 영역 */}
           <div className={styles.calendarWrapper}>
-            <Calendar 
+            <Calendar
               locale="ko-KR"
-              onChange={(val) => setValue(val as Date)} 
+              onChange={(val) => setValue(val as Date)}
               value={value}
               activeStartDate={activeDate}
               onActiveStartDateChange={handleActiveStartDateChange}
@@ -153,11 +153,11 @@ export default function SchedulePage() {
                           {!status.isPast && event.ticketLinks && event.ticketLinks.length > 0 && (
                             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                               {event.ticketLinks.map((link: any, idx: number) => (
-                                <a 
-                                  key={idx} 
-                                  href={link.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer" 
+                                <a
+                                  key={idx}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                   className={styles.ticketBtn}
                                   style={{
                                     border: '1px solid var(--clr-accent)',

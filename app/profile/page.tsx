@@ -296,8 +296,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
+    <main className={`${styles.main} gridBackground`}>
+      < div className={styles.container}>
         <h1 className={styles.title}>MY PROFILE</h1>
 
         {!isLoggedIn ? (
@@ -617,6 +617,6 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
-    </main>
+    </main >
   );
 }

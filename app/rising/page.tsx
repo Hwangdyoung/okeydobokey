@@ -82,9 +82,8 @@ export default function RisingPage() {
   }, []);
 
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} gridBackground`}>
       <div className={styles.container}>
-
         <div className={styles.hero}>
           <p className={styles.eyebrow}>RISING ARTISTS · KHA 2026</p>
           <h1 className={styles.title}>저점매수</h1>

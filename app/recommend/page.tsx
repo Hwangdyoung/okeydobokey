@@ -188,71 +188,73 @@ export default function RecommendPage() {
   }
 
   return (
-    <main className={styles.container}>
-      <h1 className={styles.title}>
-        나만의 <span className={styles.highlight}>취향 분석 플리</span>
-      </h1>
+    <main className={`${styles.main} gridBackground`}>
+      <main className={styles.container}>
+        <h1 className={styles.title}>
+          나만의 <span className={styles.highlight}>취향 분석 플리</span>
+        </h1>
 
-      <div className={styles.card}>
-        <div className={styles.progressBarContainer}>
-          <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }} />
+        <div className={styles.card}>
+          <div className={styles.progressBarContainer}>
+            <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }} />
+          </div>
+
+          {/* ── 인트로 ── */}
+          {step === -1 && (
+            <div className={styles.introContainer}>
+              <p className={styles.introEyebrow}>K-HIP HOP QUIZ</p>
+              <h2 className={styles.introHeading}>당신의 힙합은<br />무엇인가요?</h2>
+              <p className={styles.introSub}>
+                4가지 질문으로 지금 이 순간에 딱 맞는<br />한국 힙합 플레이리스트를 찾아드려요.
+              </p>
+              <button className={styles.startBtn} onClick={() => setStep(0)}>
+                알아보러 가기 →
+              </button>
+            </div>
+          )}
+
+          {/* ── 질문 ── */}
+          {!isFinished && step >= 0 && (
+            <>
+              <button className={styles.backBtn} onClick={handleBack}>
+                ← 이전
+              </button>
+              <h2 className={styles.questionTitle}>
+                Q{questions[step].id}. {questions[step].title}
+              </h2>
+              <div className={styles.optionsGrid}>
+                {questions[step].options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={styles.optionBtn}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option.text}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* ── 결과 ── */}
+          {isFinished && (
+            <div className={styles.resultContainer}>
+              <h2 className={styles.playlistTitle}>{selectedPlaylist.title}</h2>
+              <div className={styles.songList}>
+                {selectedPlaylist.songs.map((song, index) => (
+                  <div key={index} className={styles.songItem}>
+                    <span className={styles.songName}>{song.name}</span>
+                    <span className={styles.artistName}>{song.artist}</span>
+                  </div>
+                ))}
+              </div>
+              <button className={styles.restartBtn} onClick={handleRestart}>
+                다시 분석하기
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* ── 인트로 ── */}
-        {step === -1 && (
-          <div className={styles.introContainer}>
-            <p className={styles.introEyebrow}>K-HIP HOP QUIZ</p>
-            <h2 className={styles.introHeading}>당신의 힙합은<br />무엇인가요?</h2>
-            <p className={styles.introSub}>
-              4가지 질문으로 지금 이 순간에 딱 맞는<br />한국 힙합 플레이리스트를 찾아드려요.
-            </p>
-            <button className={styles.startBtn} onClick={() => setStep(0)}>
-              알아보러 가기 →
-            </button>
-          </div>
-        )}
-
-        {/* ── 질문 ── */}
-        {!isFinished && step >= 0 && (
-          <>
-            <button className={styles.backBtn} onClick={handleBack}>
-              ← 이전
-            </button>
-            <h2 className={styles.questionTitle}>
-              Q{questions[step].id}. {questions[step].title}
-            </h2>
-            <div className={styles.optionsGrid}>
-              {questions[step].options.map((option, index) => (
-                <button
-                  key={index}
-                  className={styles.optionBtn}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option.text}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* ── 결과 ── */}
-        {isFinished && (
-          <div className={styles.resultContainer}>
-            <h2 className={styles.playlistTitle}>{selectedPlaylist.title}</h2>
-            <div className={styles.songList}>
-              {selectedPlaylist.songs.map((song, index) => (
-                <div key={index} className={styles.songItem}>
-                  <span className={styles.songName}>{song.name}</span>
-                  <span className={styles.artistName}>{song.artist}</span>
-                </div>
-              ))}
-            </div>
-            <button className={styles.restartBtn} onClick={handleRestart}>
-              다시 분석하기
-            </button>
-          </div>
-        )}
-      </div>
+      </main>
     </main>
   );
 }

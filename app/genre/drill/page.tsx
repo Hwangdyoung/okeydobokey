@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function DrillGenrePage() {
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} gridBackground`}>
       <div style={{ paddingTop: '90px', paddingLeft: '2rem', paddingRight: '2rem', maxWidth: '1200px', margin: '0 auto', marginBottom: '1rem' }}>
         <Link href="/" className={styles.backLink}>← 뒤로 가기</Link>
       </div>
