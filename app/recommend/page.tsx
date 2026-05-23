@@ -133,55 +133,57 @@ const playlists: Record<PlaylistKey, { title: string; songs: { name: string; art
 };
 
 const initialScores: Record<PlaylistKey, number> = {
-  trap_hype: 0,
-  trap_sad: 0,
-  trap_melodic: 0,
-  drill_dark: 0,
-  rnb_smooth: 0,
-  rnb_chill: 0,
-  boombap_lyrical: 0
+  trap_hype: 0, trap_sad: 0, trap_melodic: 0,
+  drill_dark: 0, rnb_smooth: 0, rnb_chill: 0, boombap_lyrical: 0
 };
 
+// step: -1 = 인트로, 0~3 = 질문, 4 = 결과
 export default function RecommendPage() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [step, setStep] = useState(-1);
   const [scores, setScores] = useState<Record<PlaylistKey, number>>({ ...initialScores });
-  
+  const [history, setHistory] = useState<Record<PlaylistKey, number>[]>([]);
+
   const handleOptionClick = (option: Option) => {
-    // 점수 누적
     const newScores = { ...scores };
     Object.entries(option.scores).forEach(([key, value]) => {
-      if (value) {
-        newScores[key as PlaylistKey] += value;
-      }
+      if (value) newScores[key as PlaylistKey] += value;
     });
-    
+    setHistory([...history, scores]); // 현재 scores 스냅샷 저장
     setScores(newScores);
-    setCurrentStep(currentStep + 1);
+    setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    if (step === 0) {
+      // 첫 질문 → 인트로로
+      setStep(-1);
+      setScores({ ...initialScores });
+      setHistory([]);
+    } else {
+      // 이전 질문 점수 복원
+      const prev = history[history.length - 1];
+      setScores(prev);
+      setHistory(history.slice(0, -1));
+      setStep(step - 1);
+    }
   };
 
   const handleRestart = () => {
-    setCurrentStep(0);
+    setStep(-1);
     setScores({ ...initialScores });
+    setHistory([]);
   };
 
-  const isFinished = currentStep >= questions.length;
-  
-  // Progress calculation
-  const progressPercentage = isFinished ? 100 : ((currentStep) / questions.length) * 100;
+  const isFinished = step >= questions.length;
+  const progressPercentage = isFinished ? 100 : step < 0 ? 0 : (step / questions.length) * 100;
 
-  // 가장 높은 점수의 플레이리스트 도출
-  let selectedPlaylist = playlists['trap_hype']; // default
+  let selectedPlaylist = playlists['trap_hype'];
   if (isFinished) {
     let maxScore = -1;
     let maxKey: PlaylistKey = 'trap_hype';
-    
     Object.entries(scores).forEach(([key, value]) => {
-      if (value > maxScore) {
-        maxScore = value;
-        maxKey = key as PlaylistKey;
-      }
+      if (value > maxScore) { maxScore = value; maxKey = key as PlaylistKey; }
     });
-    
     selectedPlaylist = playlists[maxKey];
   }
 
@@ -192,22 +194,36 @@ export default function RecommendPage() {
       </h1>
 
       <div className={styles.card}>
-        {/* Progress Bar */}
         <div className={styles.progressBarContainer}>
-          <div 
-            className={styles.progressBar} 
-            style={{ width: `${progressPercentage}%` }}
-          ></div>
+          <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }} />
         </div>
 
-        {!isFinished ? (
+        {/* ── 인트로 ── */}
+        {step === -1 && (
+          <div className={styles.introContainer}>
+            <p className={styles.introEyebrow}>K-HIP HOP QUIZ</p>
+            <h2 className={styles.introHeading}>당신의 힙합은<br />무엇인가요?</h2>
+            <p className={styles.introSub}>
+              4가지 질문으로 지금 이 순간에 딱 맞는<br />한국 힙합 플레이리스트를 찾아드려요.
+            </p>
+            <button className={styles.startBtn} onClick={() => setStep(0)}>
+              알아보러 가기 →
+            </button>
+          </div>
+        )}
+
+        {/* ── 질문 ── */}
+        {!isFinished && step >= 0 && (
           <>
+            <button className={styles.backBtn} onClick={handleBack}>
+              ← 이전
+            </button>
             <h2 className={styles.questionTitle}>
-              Q{questions[currentStep].id}. {questions[currentStep].title}
+              Q{questions[step].id}. {questions[step].title}
             </h2>
             <div className={styles.optionsGrid}>
-              {questions[currentStep].options.map((option, index) => (
-                <button 
+              {questions[step].options.map((option, index) => (
+                <button
                   key={index}
                   className={styles.optionBtn}
                   onClick={() => handleOptionClick(option)}
@@ -217,7 +233,10 @@ export default function RecommendPage() {
               ))}
             </div>
           </>
-        ) : (
+        )}
+
+        {/* ── 결과 ── */}
+        {isFinished && (
           <div className={styles.resultContainer}>
             <h2 className={styles.playlistTitle}>{selectedPlaylist.title}</h2>
             <div className={styles.songList}>

@@ -9,7 +9,12 @@
   justify-content: space-between;
   gap: var(--space-xl);
   background: var(--clr-dark-1);
+  position: sticky;
+  /* 추가 */
+  bottom: 0;
+  /* 추가 */
 }
+
 
 .footerLogo {
   font-family: var(--font-display);
@@ -25,7 +30,7 @@
 .footerText {
   font-family: var(--font-ui);
   font-size: 0.7rem;
-  color: var(--clr-gray-2);
+  color: rgba(249, 249, 249, 0.878);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -36,4 +41,12 @@
     text-align: center;
     padding: var(--space-2xl) var(--space-lg);
   }
+}
+
+.footerMembers {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: rgba(249, 249, 249, 0.878);
+  letter-spacing: 0.15em;
+  text-align: right;
 }

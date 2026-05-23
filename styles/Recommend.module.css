@@ -1,150 +1,201 @@
 .container {
-  min-height: 100vh;
-  padding: 120px 20px 60px; /* Header spacing */
-  background-color: #0a0a0a;
-  color: #fff;
+  min-height: 50vh;
+  padding: 8rem 1.5rem 4rem;
+  background: #080808;
+  color: #f0f0f0;
+  font-family: 'Noto Sans KR', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: inherit;
+  justify-content: center;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 300;
   margin-bottom: 2rem;
-  text-align: center;
-  color: #fff;
+  letter-spacing: -0.02em;
 }
 
 .highlight {
-  color: #FFD600;
+  color: #f5c518;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 40px;
   width: 100%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
+  max-width: 560px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
 }
 
 .progressBarContainer {
   width: 100%;
-  height: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  margin-bottom: 30px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  margin-bottom: 2rem;
   overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
-  background-color: #FFD600;
+  background: #f5c518;
+  border-radius: 999px;
   transition: width 0.3s ease;
 }
 
 .questionTitle {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 30px;
-  text-align: center;
+  margin-bottom: 1.5rem;
   line-height: 1.4;
 }
 
 .optionsGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
 }
 
 .optionBtn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 20px;
-  font-size: 1.1rem;
-  color: #fff;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #f0f0f0;
+  font-size: 0.88rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-  font-weight: 500;
+  text-align: left;
+  line-height: 1.4;
+  transition: all 0.15s ease;
 }
 
 .optionBtn:hover {
-  background: rgba(255, 214, 0, 0.15);
-  border-color: #FFD600;
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .resultContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  gap: 1rem;
 }
 
 .playlistTitle {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 25px;
-  color: #FFD600;
-  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .songList {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 40px;
+  gap: 0.5rem;
 }
 
 .songItem {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 15px 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .songName {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f0f0f0;
 }
 
 .artistName {
-  font-size: 0.9rem;
-  color: #aaa;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 0.15rem;
 }
 
 .restartBtn {
-  background: #FFD600;
-  color: #0a0a0a;
-  border: none;
-  border-radius: 12px;
-  padding: 16px 32px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  align-self: center;
+  transition: all 0.15s ease;
 }
 
 .restartBtn:hover {
-  background: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 214, 0, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0f0f0;
 }
 
-@media (min-width: 768px) {
-  .optionsGrid {
-    grid-template-columns: 1fr 1fr;
-  }
+/* ── 인트로 ── */
+.introContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  gap: 1rem;
+}
+
+.introEyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+}
+
+.introHeading {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.introSub {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.7;
+}
+
+.startBtn {
+  margin-top: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0f0f0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+}
+
+.startBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── 뒤로가기 ── */
+.backBtn {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.75rem;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.15s ease;
+}
+
+.backBtn:hover {
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
 }

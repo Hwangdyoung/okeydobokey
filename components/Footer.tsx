@@ -35,9 +35,14 @@ export default function Footer() {
           오키도보키
         </span>
       </Link>
-      <p className={styles.footerText}>
-        © {year} OkeyBokey. The culture lives on.
-      </p>
-    </footer>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem' }}>
+        <p className={styles.footerText}>
+          © {year} OkeyDoBokey. The culture lives on.
+        </p>
+        <p className={styles.footerMembers}>
+          디지털인문예술입문 - 황도영 · 김서연 · 김민준 · 권예주 · 김주희 · 임다빈
+        </p>
+      </div>
+    </footer >
   );
 }
