@@ -328,8 +328,7 @@ export default function ProfilePage() {
                   </button>
                   <button onClick={() => handleSocialLogin('kakao')} className={`${styles.socialBtn} ${styles.kakaoBtn}`}>
                     <svg className={styles.socialIcon} width="20" height="20" viewBox="0 0 24 24">
-                      <rect width="24" height="24" rx="4" fill="#FEE500" />
-                      <path d="M12 5C8.13 5 5 7.46 5 10.5c0 1.93 1.28 3.63 3.21 4.6l-.82 3.06 3.57-2.35c.34.05.68.08 1.04.08 3.87 0 7-2.46 7-5.5S15.87 5 12 5z" fill="#3C1E1E" />
+                      <path d="M12 3C6.48 3 2 6.69 2 11.25c0 2.91 1.82 5.47 4.58 6.99L5.5 21.5l4.18-2.76c.76.12 1.54.18 2.32.18 5.52 0 10-3.69 10-8.25S17.52 3 12 3z" fill="#000" />
                     </svg>
                     카카오로 시작하기
                   </button>

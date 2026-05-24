@@ -532,3 +532,12 @@
     transform: translateX(4px);
   }
 }
+
+.kakaoBtn {
+  background-color: #FEE500;
+  color: #000000;
+}
+
+.kakaoBtn:hover {
+  background-color: #e6cf00;
+}
