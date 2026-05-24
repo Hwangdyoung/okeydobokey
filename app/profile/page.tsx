@@ -66,38 +66,42 @@ export default function ProfilePage() {
     recentPosts: [] as any[]
   });
 
-  const fetchActivity = () => {
+  const fetchActivity = async () => {
     if (!isLoggedIn || !currentEmail) return;
-
     try {
-      const stored = localStorage.getItem('okeybokey_posts');
-      const allPosts: any[] = stored ? JSON.parse(stored) : [];
+      const { data: allPosts } = await supabase
+        .from('posts')
+        .select('*, comments(*)')
+        .order('created_at', { ascending: false });
 
-      // 1. 내가 쓴 글
-      const myPosts = allPosts.filter((p: any) => p.authorEmail === currentEmail);
+      if (!allPosts) return;
 
-      // 2. 내가 쓴 댓글 (대댓글 포함)
+      const myPosts = allPosts.filter((p: any) => p.author_email === currentEmail);
+
       let myCommentCount = 0;
       allPosts.forEach((p: any) => {
         const comments = Array.isArray(p.comments) ? p.comments : [];
         comments.forEach((c: any) => {
-          if (c.authorEmail === currentEmail) myCommentCount++;
-          const replies = Array.isArray(c.replies) ? c.replies : [];
-          myCommentCount += replies.filter((r: any) => r.authorEmail === currentEmail).length;
+          if (c.author_email === currentEmail) myCommentCount++;
         });
       });
 
-      // 3. 좋아요 누른 게시글
-      const likedPosts = allPosts.filter((p: any) => Array.isArray(p.likedBy) && p.likedBy.includes(currentEmail));
+      const likedPosts = allPosts.filter((p: any) =>
+        Array.isArray(p.liked_by) && p.liked_by.includes(currentEmail)
+      );
 
       setActivity({
         postCount: myPosts.length,
         commentCount: myCommentCount,
         likeCount: likedPosts.length,
-        recentPosts: myPosts.slice(0, 3)
+        recentPosts: myPosts.slice(0, 3).map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          date: p.date,
+        })),
       });
     } catch (e) {
-      console.error('Failed to fetch profile activity from localStorage', e);
+      console.error('Failed to fetch activity from Supabase', e);
     }
   };
 
@@ -217,17 +221,13 @@ export default function ProfilePage() {
   // Supabase Auth 소셜 로그인 호출
   const handleSocialLogin = async (provider: string) => {
     try {
-      if (provider === 'google') {
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: 'https://okeydobokey.vercel.app/auth/callback'
-          }
-        });
-        if (error) throw error;
-      } else {
-        alert('Supabase Auth 연동 하에서는 현재 Google 로그인만 데모 제공합니다. 구글로 로그인해 주세요!');
-      }
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: provider as any,
+        options: {
+          redirectTo: 'https://okeydobokey.vercel.app/auth/callback'
+        }
+      });
+      if (error) throw error;
     } catch (error) {
       console.error(`${provider} login failed`, error);
     }
@@ -326,12 +326,12 @@ export default function ProfilePage() {
                     </svg>
                     Google로 시작하기
                   </button>
-                  <button onClick={() => handleSocialLogin('naver')} className={`${styles.socialBtn} ${styles.naverBtn}`}>
-                    <svg className={styles.socialIcon} width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <rect width="24" height="24" rx="4" fill="#03C75A" />
-                      <path d="M7 6.5H10.2L13.8 12.3V6.5H17V17.5H13.8L10.2 11.7V17.5H7V6.5Z" fill="white" />
+                  <button onClick={() => handleSocialLogin('kakao')} className={`${styles.socialBtn} ${styles.kakaoBtn}`}>
+                    <svg className={styles.socialIcon} width="20" height="20" viewBox="0 0 24 24">
+                      <rect width="24" height="24" rx="4" fill="#FEE500" />
+                      <path d="M12 5C8.13 5 5 7.46 5 10.5c0 1.93 1.28 3.63 3.21 4.6l-.82 3.06 3.57-2.35c.34.05.68.08 1.04.08 3.87 0 7-2.46 7-5.5S15.87 5 12 5z" fill="#3C1E1E" />
                     </svg>
-                    Naver로 시작하기
+                    카카오로 시작하기
                   </button>
                 </div>
 
