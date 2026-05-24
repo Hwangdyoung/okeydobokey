@@ -5,7 +5,7 @@ import styles from '@/styles/Trap.module.css';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Drill Genre | OkeyBokey',
+  title: 'Drill Genre | OkeyDoBokey',
   description: '드릴(Drill) 장르 상세 가이드',
 };
 

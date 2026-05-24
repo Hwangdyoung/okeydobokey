@@ -38,7 +38,7 @@
 .genreCard {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 80vh;
+  min-height: 50vh;
   border-top: 1px solid var(--clr-dark-3);
   overflow: hidden;
   position: relative;
@@ -74,19 +74,19 @@
 }
 
 .visualBg.trap {
-  background: radial-gradient(ellipse at 30% 70%, rgba(120, 60, 220, 0.25) 0%, var(--clr-dark-1) 65%);
+  background: radial-gradient(ellipse at 30% 70%, rgba(120, 60, 220, 0.08) 0%, var(--clr-dark-1) 80%);
 }
 
 .visualBg.rnb {
-  background: radial-gradient(ellipse at 70% 30%, rgba(220, 80, 120, 0.22) 0%, var(--clr-dark-1) 65%);
+  background: radial-gradient(ellipse at 70% 30%, rgba(220, 80, 120, 0.08) 0%, var(--clr-dark-1) 80%);
 }
 
 .visualBg.drill {
-  background: radial-gradient(ellipse at 20% 80%, rgba(30, 140, 200, 0.22) 0%, var(--clr-dark-1) 65%);
+  background: radial-gradient(ellipse at 20% 80%, rgba(30, 140, 200, 0.08) 0%, var(--clr-dark-1) 80%);
 }
 
 .visualBg.boombap {
-  background: radial-gradient(ellipse at 80% 20%, rgba(160, 110, 40, 0.25) 0%, var(--clr-dark-1) 65%);
+  background: radial-gradient(ellipse at 80% 20%, rgba(160, 110, 40, 0.08) 0%, var(--clr-dark-1) 80%);
 }
 
 .visualGeometric {

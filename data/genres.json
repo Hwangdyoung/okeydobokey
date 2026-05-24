@@ -1,7 +1,7 @@
 [
   {
     "id": "trap",
-    "image": "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=800&q=80",
+    "image": "/trap.png",
     "name": "Trap",
     "nameKo": "트랩",
     "tagline": "808s don't lie.",
@@ -19,7 +19,7 @@
   },
   {
     "id": "rnb",
-    "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+    "image": "/rnb.png",
     "name": "R&B",
     "nameKo": "알앤비",
     "tagline": "Feel every note.",
@@ -37,7 +37,7 @@
   },
   {
     "id": "drill",
-    "image": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80",
+    "image": "/drill.png",
     "name": "Drill",
     "nameKo": "드릴",
     "tagline": "Cold beats. Colder streets.",
@@ -55,7 +55,7 @@
   },
   {
     "id": "boombap",
-    "image": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&q=80",
+    "image": "boombap.png",
     "name": "Boom Bap",
     "nameKo": "붐뱁",
     "tagline": "Where hip-hop was born.",

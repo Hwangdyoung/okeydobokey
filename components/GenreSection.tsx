@@ -20,7 +20,6 @@ interface Genre {
   image?: string;
 }
 
-/* ---- Sub-component: one genre card ---- */
 function GenreCard({ genre }: { genre: Genre }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
@@ -42,7 +41,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           if (entry.isIntersecting) {
             entry.target.classList.add(styles.visible);
           } else {
-            // 요소가 화면 밖으로 벗어나면 클래스를 제거하여 초기 상태(투명도 0, 이동 전 위치)로 되돌림
             entry.target.classList.remove(styles.visible);
           }
         });
@@ -72,7 +70,7 @@ function GenreCard({ genre }: { genre: Genre }) {
         className={`${styles.genreVisual} ${genre.direction === 'left' ? styles.slideFromLeft : styles.slideFromRight}`}
       >
         <div className={styles.genreVisualInner}>
-          <div className={`${styles.visualBg} ${styles[genre.id as keyof typeof styles]}`} />
+          {/* 이미지 먼저 (맨 아래) */}
           {genre.image && (
             <img
               src={genre.image}
@@ -83,21 +81,17 @@ function GenreCard({ genre }: { genre: Genre }) {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                opacity: 0.3,
+                opacity: 0.45,
                 mixBlendMode: 'luminosity',
+                maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 85%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 85%)',
               }}
             />
           )}
-
-          {/* Abstract geometric visual */}
-          <div className={styles.visualGeometric}>
-            <div className={styles.geometricCircle} />
-            <div className={styles.geometricCircle} />
-            <div className={styles.geometricCircle} />
-          </div>
+          {/* 그라디언트 위에 살짝 덮기 */}
+          <div className={`${styles.visualBg} ${styles[genre.id as keyof typeof styles]}`} />
 
           <span className={styles.genreNameBig}>{genre.name}</span>
-          <span className={styles.genreNumberBig}>0{genre.index + 1}</span>
         </div>
       </div>
 
@@ -106,7 +100,6 @@ function GenreCard({ genre }: { genre: Genre }) {
         ref={contentRef}
         className={`${styles.genreContent} ${isReverse ? styles.slideFromRight : styles.slideFromLeft}`}
       >
-        {/* Index label */}
         <div
           ref={(el) => addChildRef(el as HTMLElement | null, 0)}
           className={`${styles.genreIndex} ${styles.fadeUp} ${delays[0]}`}
@@ -114,7 +107,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           {String(genre.index + 1).padStart(2, '0')} / {genre.nameKo}
         </div>
 
-        {/* Genre name */}
         <h2
           ref={(el) => addChildRef(el as HTMLElement | null, 1)}
           className={`${styles.genreName} ${styles.fadeUp} ${delays[1]}`}
@@ -122,7 +114,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           {genre.name}
         </h2>
 
-        {/* Tagline */}
         <p
           ref={(el) => addChildRef(el as HTMLElement | null, 2)}
           className={`${styles.genreTagline} ${styles.fadeUp} ${delays[2]}`}
@@ -130,7 +121,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           &ldquo;{genre.tagline}&rdquo;
         </p>
 
-        {/* Description */}
         <p
           ref={(el) => addChildRef(el as HTMLElement | null, 3)}
           className={`${styles.genreDesc} ${styles.fadeUp} ${delays[3]}`}
@@ -138,7 +128,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           {genre.description}
         </p>
 
-        {/* Meta info */}
         <div
           ref={(el) => addChildRef(el as HTMLElement | null, 4)}
           className={`${styles.genreMeta} ${styles.fadeUp} ${delays[4]}`}
@@ -161,7 +150,6 @@ function GenreCard({ genre }: { genre: Genre }) {
           </div>
         </div>
 
-        {/* CTA Button */}
         <Link
           href={`/genre/${genre.id}`}
           ref={(el) => addChildRef(el as HTMLAnchorElement | null, 5)}
@@ -178,7 +166,6 @@ function GenreCard({ genre }: { genre: Genre }) {
   );
 }
 
-/* ---- Main export ---- */
 export default function GenreSection() {
   const genres = genreData as Genre[];
 

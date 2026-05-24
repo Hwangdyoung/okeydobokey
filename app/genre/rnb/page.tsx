@@ -5,7 +5,7 @@ import styles from '@/styles/Trap.module.css';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'R&B Genre | OkeyBokey',
+  title: 'R&B Genre | OkeyDoBokey',
   description: '알앤비(R&B) 장르 상세 가이드',
 };
 

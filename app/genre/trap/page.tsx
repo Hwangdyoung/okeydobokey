@@ -5,7 +5,7 @@ import styles from '@/styles/Trap.module.css';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Trap Genre | OkeyBokey',
+  title: 'Trap Genre | OkeyDoBokey',
   description: '트랩(Trap) 장르 상세 가이드',
 };
 

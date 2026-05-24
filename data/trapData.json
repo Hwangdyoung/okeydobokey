@@ -3,28 +3,28 @@
   "subGenres": [
     {
       "id": "melody",
-      "name": "Melody Trap",
+      "name": "멜로디 트랩",
       "tagline": "Autotune-soaked melodic waves",
       "description": "오토튠을 극대화한 보컬라인과 서정적이고 대중적인 비트의 조화",
       "artists": "식케이, 노엘, 릴러말즈"
     },
     {
       "id": "emo",
-      "name": "Emo Trap",
+      "name": "이모 트랩",
       "tagline": "Dreamy, introspective late-night thoughts",
       "description": "우울하고 감성적인 정서와 몽환적인 신스 사운드가 결합한 트랩 스타일",
       "artists": "해쉬스완, ASH ISLAND"
     },
     {
       "id": "hard",
-      "name": "Hard/Experimental Trap",
+      "name": "하드 트랩",
       "tagline": "Experimental flows and boundary-pushing beats",
       "description": "변칙적인 드럼 패턴과 전위적인 베이스 신스로 랩 스킬을 극대화하는 스타일",
       "artists": "키드밀리, 빌스택스, 릴 체리"
     },
     {
       "id": "pop",
-      "name": "Pop Trap",
+      "name": "팝 트랩",
       "tagline": "Chart-topping anthems and addictive hooks",
       "description": "피아노나 스트링 샘플링 기반의 웅장한 사운드와 대중적인 멜로디의 트랩",
       "artists": "창모, 슈퍼비"

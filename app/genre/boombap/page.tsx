@@ -5,7 +5,7 @@ import styles from '@/styles/Trap.module.css';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Boom Bap Genre | OkeyBokey',
+  title: 'Boom Bap Genre | OkeyDoBokey',
   description: '붐뱁(Boom Bap) 장르 상세 가이드',
 };
 
