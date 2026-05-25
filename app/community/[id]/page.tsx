@@ -74,16 +74,27 @@ export default function PostDetailPage() {
         authorEmail: data.author_email,
         likes: data.likes ?? 0,
         likedBy: data.liked_by ?? [],
-        comments: (data.comments ?? []).map((c: any) => ({
-          id: c.id,
-          author: c.author,
-          authorEmail: c.author_email,
-          text: c.text,
-          likes: c.likes ?? 0,
-          likedBy: c.liked_by ?? [],
-          date: c.date,
-          replies: [],
-        })),
+        comments: (data.comments ?? [])
+          .filter((c: any) => !c.parent_id)
+          .map((c: any) => ({
+            id: c.id,
+            author: c.author,
+            authorEmail: c.author_email,
+            text: c.text,
+            likes: c.likes ?? 0,
+            likedBy: c.liked_by ?? [],
+            date: c.date,
+            replies: (data.comments ?? [])
+              .filter((r: any) => r.parent_id === c.id)
+              .map((r: any) => ({
+                id: r.id,
+                author: r.author,
+                authorEmail: r.author_email,
+                text: r.text,
+                likes: r.likes ?? 0,
+                date: r.date,
+              })),
+          })),
         date: data.date,
       };
       setPost(mapped);
@@ -298,7 +309,17 @@ export default function PostDetailPage() {
                 <div>
                   <h1 className={styles.postTitle}>{post.title}</h1>
                   <div className={styles.postMeta}>
-                    <span>작성자: {post.author}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{
+                        width: '28px', height: '28px', borderRadius: '50%',
+                        background: '#333', overflow: 'hidden', flexShrink: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '13px', color: '#fff', border: '1px solid #555'
+                      }}>
+                        {post.author?.charAt(0).toUpperCase()}
+                      </div>
+                      <span>{post.author}</span>
+                    </div>
                     <span>{post.date}</span>
                   </div>
                 </div>
@@ -350,7 +371,17 @@ export default function PostDetailPage() {
                 >
                   {comment.id === bestCommentId && <span className={styles.bestBadge}>🔥 BEST</span>}
                   <div className={styles.commentHeader}>
-                    <span className={styles.commentAuthor}>{comment.author}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{
+                        width: '24px', height: '24px', borderRadius: '50%',
+                        background: '#333', overflow: 'hidden', flexShrink: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '11px', color: '#fff', border: '1px solid #555'
+                      }}>
+                        {comment.author?.charAt(0).toUpperCase()}
+                      </div>
+                      <span className={styles.commentAuthor}>{comment.author}</span>
+                    </div>
                     <span className={styles.commentDate}>{comment.date}</span>
                   </div>
                   <p className={styles.commentText}>{comment.text}</p>
@@ -372,7 +403,18 @@ export default function PostDetailPage() {
                       {safeReplies.map(reply => (
                         <div key={reply.id} className={styles.replyItem}>
                           <div className={styles.replyHeader}>
-                            <span className={styles.replyAuthor}>└ {reply.author}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <span style={{ color: '#888' }}>└</span>
+                              <div style={{
+                                width: '20px', height: '20px', borderRadius: '50%',
+                                background: '#333', overflow: 'hidden', flexShrink: 0,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: '10px', color: '#fff', border: '1px solid #555'
+                              }}>
+                                {reply.author?.charAt(0).toUpperCase()}
+                              </div>
+                              <span className={styles.replyAuthor}>{reply.author}</span>
+                            </div>
                             <span className={styles.replyDate}>{reply.date}</span>
                           </div>
                           <p className={styles.replyText}>{reply.text}</p>
