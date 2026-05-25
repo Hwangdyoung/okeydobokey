@@ -266,11 +266,11 @@ export default function CommunityPage() {
                               <span style={{ color: '#aaa', fontSize: '0.9rem' }}>{post.author}</span>
                             </div>
                           </div>
-                          <h3 className={styles.postTitle}>
+                          <h3 className={styles.postTitle} style={{ margin: '0.6rem 0' }}>
                             {post.title}
                             {(post.likes || 0) >= 10 && <span className={styles.hotIcon}>🔥</span>}
                           </h3>
-                          <div className={styles.postFooter}>
+                          <div className={styles.postFooter} style={{ marginTop: '0.6rem' }}>
                             <div className={styles.postStats}>
                               <span>👍 {post.likes || 0}</span>
                               <span>💬 {(post.comments || []).length}</span>
