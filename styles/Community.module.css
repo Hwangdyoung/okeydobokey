@@ -233,7 +233,7 @@
 }
 
 .issueText {
-  color: var(--clr-gray-2);
+  color: #d0d0d0;
   font-size: 0.95rem;
   white-space: nowrap;
   overflow: hidden;
@@ -364,7 +364,7 @@
 
 .issueSource {
   font-size: 0.75rem;
-  color: var(--clr-gray-3);
+  color: #888;
   font-weight: 500;
 }
 

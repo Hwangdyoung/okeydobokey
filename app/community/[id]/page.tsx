@@ -350,8 +350,7 @@ export default function PostDetailPage() {
         </article>
 
         <section className={styles.commentSection}>
-          <h2 className={styles.sectionTitle}>댓글 {safeComments.length}</h2>
-
+          <h2 className={styles.sectionTitle}>댓글 {safeComments.reduce((acc, c) => acc + 1 + (c.replies?.length || 0), 0)}</h2>
           <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
             <textarea
               value={commentText}
