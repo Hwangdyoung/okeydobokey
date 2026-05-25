@@ -220,12 +220,16 @@ export default function ProfilePage() {
 
   // Supabase Auth 소셜 로그인 호출
   const handleSocialLogin = async (provider: string) => {
+    if (provider === 'kakao') {
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${encodeURIComponent('https://okeydobokey.vercel.app/auth/callback')}&response_type=code&scope=profile_nickname,profile_image`;
+      window.location.href = kakaoAuthUrl;
+      return;
+    }
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider as any,
         options: {
           redirectTo: 'https://okeydobokey.vercel.app/auth/callback',
-          scopes: provider === 'kakao' ? 'profile_nickname profile_image' : undefined,
         }
       });
       if (error) throw error;
