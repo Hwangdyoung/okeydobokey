@@ -2,13 +2,25 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+// profiles 테이블에 avatar_url 저장하는 헬퍼
+async function upsertProfile(
+  supabase: ReturnType<typeof createServerClient>,
+  userId: string,
+  avatarUrl: string,
+  nickname?: string
+) {
+  const updates: Record<string, string> = { avatar_url: avatarUrl };
+  if (nickname) updates.nickname = nickname;
+
+  await supabase
+    .from('profiles')
+    .upsert({ id: userId, ...updates }, { onConflict: 'id' });
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/profile';
-
-  // 카카오 code인지 확인 (state 파라미터 없으면 카카오 직접 연동)
-  const isKakao = searchParams.get('state') === null || searchParams.has('code') && !searchParams.has('next');
 
   if (code) {
     const cookieStore = await cookies();
@@ -28,13 +40,22 @@ export async function GET(request: Request) {
       }
     );
 
-    // Supabase OAuth 콜백 먼저 시도
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
+    // ✅ 구글 등 Supabase OAuth 콜백 처리
+    const { data: sessionData, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error && sessionData?.user) {
+      const user = sessionData.user;
+      const avatarUrl = user.user_metadata?.avatar_url || '';
+      const nickname = user.user_metadata?.full_name || user.user_metadata?.name || '';
+
+      // 구글/기타 소셜 프로필 사진 저장
+      if (avatarUrl) {
+        await upsertProfile(supabase, user.id, avatarUrl, nickname);
+      }
+
       return NextResponse.redirect(`${origin}${next}`);
     }
 
-    // Supabase 실패 시 카카오 직접 처리
+    // ✅ 카카오 직접 처리 (Supabase OAuth 실패 시)
     try {
       // 1. 카카오 액세스 토큰 받기
       const tokenRes = await fetch('https://kauth.kakao.com/oauth/token', {
@@ -64,15 +85,19 @@ export async function GET(request: Request) {
       const fakeEmail = `kakao_${kakaoId}@okeydobokey.kakao`;
       const fakePassword = `kakao_${kakaoId}_${process.env.KAKAO_CLIENT_SECRET!.slice(0, 8)}`;
 
+      let userId: string | null = null;
+
       // 먼저 로그인 시도
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: fakeEmail,
         password: fakePassword,
       });
 
-      if (signInError) {
+      if (!signInError && signInData?.user) {
+        userId = signInData.user.id;
+      } else {
         // 없으면 회원가입
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: fakeEmail,
           password: fakePassword,
           options: {
@@ -85,6 +110,12 @@ export async function GET(request: Request) {
           }
         });
         if (signUpError) throw signUpError;
+        userId = signUpData?.user?.id ?? null;
+      }
+
+      // ✅ profiles 테이블에 카카오 프로필 사진 저장
+      if (userId && profileImage) {
+        await upsertProfile(supabase, userId, profileImage, nickname);
       }
 
       return NextResponse.redirect(`${origin}/profile`);
