@@ -88,14 +88,14 @@ function ActivityContent() {
   }
 
   // 1) 내가 쓴 글 필터링
-  const myPosts = postsList.filter(post => post.authorEmail === currentEmail);
+  const myPosts = postsList.filter((post: any) => post.author_email === currentEmail);
 
   // 2) 내가 쓴 댓글 필터링 (대댓글도 포함하여, 댓글이 속한 원문 게시글 정보와 함께 리스트화)
   const myComments: { commentId: number; text: string; date: string; postTitle: string; postId: number; isReply: boolean }[] = [];
   postsList.forEach(post => {
     const comments = Array.isArray(post.comments) ? post.comments : [];
     comments.forEach(c => {
-      if (c.authorEmail === currentEmail) {
+      if ((c as any).author_email === currentEmail) {
         myComments.push({
           commentId: c.id,
           text: c.text,
@@ -122,7 +122,7 @@ function ActivityContent() {
   });
 
   // 3) 좋아요 누른 글 필터링
-  const likedPosts = postsList.filter(post => Array.isArray(post.likedBy) && post.likedBy.includes(currentEmail));
+  const likedPosts = postsList.filter((post: any) => Array.isArray(post.liked_by) && post.liked_by.includes(currentEmail));
 
   return (
     <div className={styles.container}>
