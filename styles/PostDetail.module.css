@@ -2,7 +2,8 @@
   min-height: 100vh;
   background-color: var(--clr-dark-1);
   color: var(--clr-white);
-  padding-top: 120px; /* 고정 헤더와 겹침 방지 */
+  padding-top: 120px;
+  /* 고정 헤더와 겹침 방지 */
   padding-bottom: 5rem;
 }
 
@@ -14,7 +15,8 @@
 
 .tabMenu {
   display: flex;
-  align-items: center; /* 수직 정렬 */
+  align-items: center;
+  /* 수직 정렬 */
   gap: 0.5rem;
   margin-bottom: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -206,7 +208,7 @@
 }
 
 .commentText {
-  color: var(--clr-gray-1);
+  color: #ffffff;
   line-height: 1.6;
   margin-bottom: 1rem;
 }
@@ -253,7 +255,7 @@
 
 .replyAuthor {
   font-size: 0.9rem;
-  color: var(--clr-accent);
+  color: #ffffff;
 }
 
 .replyDate {
@@ -263,7 +265,7 @@
 
 .replyText {
   font-size: 0.95rem;
-  color: var(--clr-gray-1);
+  color: #e0e0e0;
 }
 
 .replyForm {
@@ -335,7 +337,8 @@
   margin-top: 1rem;
 }
 
-.editBtn, .deleteBtn {
+.editBtn,
+.deleteBtn {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--clr-gray-2);
