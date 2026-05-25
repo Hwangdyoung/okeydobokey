@@ -224,7 +224,8 @@ export default function ProfilePage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider as any,
         options: {
-          redirectTo: 'https://okeydobokey.vercel.app/auth/callback'
+          redirectTo: 'https://okeydobokey.vercel.app/auth/callback',
+          scopes: provider === 'kakao' ? 'profile_nickname profile_image' : undefined,
         }
       });
       if (error) throw error;
