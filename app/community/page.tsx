@@ -257,7 +257,6 @@ export default function CommunityPage() {
                             <h3 className={styles.postTitle}>{post.title}</h3>
                             {(post.likes || 0) >= 10 && <span className={styles.hotIcon}>🔥</span>}
                           </div>
-                          <p className={styles.postContent}>{post.content}</p>
                           <div className={styles.postFooter}>
                             <div className={styles.postMeta}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

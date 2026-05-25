@@ -85,7 +85,7 @@
 .tabBtn {
   background: none;
   border: none;
-  color: var(--clr-gray-2);
+  color: #aaaaaa;
   font-size: 1rem;
   font-weight: bold;
   padding: 0.5rem 1rem;
