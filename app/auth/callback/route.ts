@@ -12,9 +12,11 @@ async function upsertProfile(
   const updates: Record<string, string> = { avatar_url: avatarUrl };
   if (nickname) updates.nickname = nickname;
 
-  await supabase
+  const { error } = await supabase
     .from('profiles')
     .upsert({ id: userId, ...updates }, { onConflict: 'id' });
+
+  console.log('upsertProfile result:', { userId, avatarUrl, error });
 }
 
 export async function GET(request: Request) {
