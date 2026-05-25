@@ -30,6 +30,12 @@ export default function ProfilePage() {
       setEditNickname(currentNickname);
     }
   }, [currentNickname]);
+  useEffect(() => {
+    if (supabaseUser?.user_metadata?.bio) {
+      setBio(supabaseUser.user_metadata.bio);
+      setEditBio(supabaseUser.user_metadata.bio);
+    }
+  }, [supabaseUser]);
 
   const [view, setView] = useState<'login' | 'signup' | 'find' | 'changePassword'>('login');
   const [loginId, setLoginId] = useState(''); // 이메일 로그인 입력값
@@ -58,6 +64,9 @@ export default function ProfilePage() {
   const [findPwEmail, setFindPwEmail] = useState('');
   const [findSuccessMessage, setFindSuccessMessage] = useState('');
   const [findError, setFindError] = useState('');
+  const [bio, setBio] = useState('');
+  const [editBio, setEditBio] = useState('');
+  const [isEditingBio, setIsEditingBio] = useState(false);
 
   const [activity, setActivity] = useState({
     postCount: 0,
@@ -298,6 +307,25 @@ export default function ProfilePage() {
       console.error(err);
       setPasswordError(err.message || '비밀번호 변경에 실패했습니다.');
     }
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !supabaseUser) return;
+    const ext = file.name.split('.').pop();
+    const path = `${supabaseUser.id}.${ext}`;
+    const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+    if (uploadError) { alert('업로드 실패'); return; }
+    const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+    await supabase.auth.updateUser({ data: { avatar_url: data.publicUrl } });
+    window.location.reload();
+  };
+
+  const handleUpdateBio = async () => {
+    if (!supabaseUser) return;
+    await supabase.auth.updateUser({ data: { bio: editBio } });
+    setBio(editBio);
+    setIsEditingBio(false);
   };
 
   return (
@@ -544,7 +572,19 @@ export default function ProfilePage() {
                     </div>
                   </div>
                   <div className={styles.profileRow}>
-                    <div className={styles.avatar}><span>{currentNickname.charAt(0).toUpperCase()}</span></div>
+                    {/* 프로필 사진 */}
+                    <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => document.getElementById('avatarInput')?.click()}>
+                      <div className={styles.avatar}>
+                        {supabaseUser?.user_metadata?.avatar_url ? (
+                          <img src={supabaseUser.user_metadata.avatar_url} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                        ) : (
+                          <span>{currentNickname.charAt(0).toUpperCase()}</span>
+                        )}
+                      </div>
+                      <div style={{ position: 'absolute', bottom: 0, right: 0, background: '#fff', borderRadius: '50%', padding: '2px', fontSize: '12px' }}>📷</div>
+                      <input id="avatarInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarUpload} />
+                    </div>
+
                     <div className={styles.nameEdit}>
                       {!isEditingNickname ? (
                         <>
@@ -553,18 +593,34 @@ export default function ProfilePage() {
                             <button onClick={() => { setIsEditingNickname(true); setNicknameError(''); setNicknameSuccess(''); }} className={styles.smallBtn}>닉네임 변경</button>
                           </div>
                           <p className={styles.emailText}>{currentEmail}</p>
+                          {/* 자기소개 */}
+                          {!isEditingBio ? (
+                            <div style={{ marginTop: '0.5rem' }}>
+                              <p style={{ color: '#aaa', fontSize: '0.9rem', margin: 0 }}>{bio || '자기소개를 입력해주세요'}</p>
+                              <button onClick={() => setIsEditingBio(true)} className={styles.smallBtn} style={{ marginTop: '0.5rem' }}>자기소개 변경</button>
+                            </div>
+                          ) : (
+                            <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                              <textarea
+                                className={styles.input}
+                                value={editBio}
+                                onChange={(e) => setEditBio(e.target.value)}
+                                placeholder="자기소개를 입력해주세요"
+                                rows={3}
+                                maxLength={100}
+                                style={{ resize: 'none' }}
+                              />
+                              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <button onClick={handleUpdateBio} className={styles.primaryBtn}>저장</button>
+                                <button onClick={() => setIsEditingBio(false)} className={styles.smallBtn} style={{ background: 'rgba(255,255,255,0.05)', color: '#fff' }}>취소</button>
+                              </div>
+                            </div>
+                          )}
                         </>
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                           <div className={styles.editForm}>
-                            <input
-                              type="text"
-                              className={styles.input}
-                              value={editNickname}
-                              onChange={(e) => setEditNickname(e.target.value)}
-                              placeholder="새 닉네임 입력"
-                              required
-                            />
+                            <input type="text" className={styles.input} value={editNickname} onChange={(e) => setEditNickname(e.target.value)} placeholder="새 닉네임 입력" required />
                             <button onClick={handleUpdateNickname} className={styles.primaryBtn}>저장</button>
                             <button onClick={() => { setIsEditingNickname(false); setNicknameError(''); setNicknameSuccess(''); }} className={styles.smallBtn} style={{ background: 'rgba(255,255,255,0.05)', color: '#fff' }}>취소</button>
                           </div>
