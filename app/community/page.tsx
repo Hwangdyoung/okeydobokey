@@ -19,6 +19,7 @@ interface Post {
   likedBy: string[];
   comments: any[];
   date: string;
+  avatarUrl?: string | null;
 }
 
 const MOCK_ISSUES = [
@@ -95,20 +96,23 @@ export default function CommunityPage() {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
+      // profiles에서 avatar_url 가져오기
+      const { data: profiles } = await supabase.from('profiles').select('email, avatar_url');
+      const profileMap = Object.fromEntries((profiles || []).map((p: any) => [p.email, p.avatar_url]));
+
       setPosts(data.map(p => ({
         id: p.id,
         title: p.title,
         content: p.content,
         author: p.author,
         authorEmail: p.author_email,
+        avatarUrl: profileMap[p.author_email] || null,
         category: p.category,
         likes: p.likes ?? 0,
         likedBy: p.liked_by ?? [],
         comments: p.comments ?? [],
         date: p.date,
       })));
-    } else if (error) {
-      console.error('게시글 불러오기 실패:', error.message);
     }
     setIsLoading(false);
   };
@@ -259,9 +263,13 @@ export default function CommunityPage() {
                                 width: '24px', height: '24px', borderRadius: '50%',
                                 background: '#333', flexShrink: 0,
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                fontSize: '12px', color: '#fff', border: '1px solid #555'
+                                fontSize: '12px', color: '#fff', border: '1px solid #555',
+                                overflow: 'hidden'
                               }}>
-                                {post.author?.charAt(0).toUpperCase()}
+                                {post.avatarUrl
+                                  ? <img src={post.avatarUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  : post.author?.charAt(0).toUpperCase()
+                                }
                               </div>
                               <span style={{ color: '#aaa', fontSize: '0.9rem' }}>{post.author}</span>
                             </div>

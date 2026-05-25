@@ -318,6 +318,8 @@ export default function ProfilePage() {
     if (uploadError) { alert('업로드 실패'); return; }
     const { data } = supabase.storage.from('avatars').getPublicUrl(path);
     await supabase.auth.updateUser({ data: { avatar_url: data.publicUrl } });
+    // profiles 테이블도 업데이트
+    await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', supabaseUser.id);
     window.location.reload();
   };
 
