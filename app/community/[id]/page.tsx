@@ -12,6 +12,7 @@ interface Reply {
   id: number;
   author: string;
   authorEmail: string;
+  avatarUrl?: string | null;  // 추가
   text: string;
   likes: number;
   date: string;
@@ -21,6 +22,7 @@ interface Comment {
   id: number;
   author: string;
   authorEmail: string;
+  avatarUrl?: string | null;  // 추가
   text: string;
   likes: number;
   likedBy?: string[];
@@ -34,6 +36,7 @@ interface Post {
   content: string;
   author: string;
   authorEmail: string;
+  avatarUrl?: string | null;  // 추가
   likes: number;
   likedBy: string[];
   comments: Comment[];
@@ -66,12 +69,17 @@ export default function PostDetailPage() {
       .single();
 
     if (!error && data) {
+      // profiles에서 avatar_url 가져오기 추가
+      const { data: profiles } = await supabase.from('profiles').select('email, avatar_url');
+      const profileMap = Object.fromEntries((profiles || []).map((p: any) => [p.email, p.avatar_url]));
+
       const mapped: Post = {
         id: data.id,
         title: data.title,
         content: data.content,
         author: data.author,
         authorEmail: data.author_email,
+        avatarUrl: profileMap[data.author_email] || null,  // 추가
         likes: data.likes ?? 0,
         likedBy: data.liked_by ?? [],
         comments: (data.comments ?? [])
@@ -80,6 +88,7 @@ export default function PostDetailPage() {
             id: c.id,
             author: c.author,
             authorEmail: c.author_email,
+            avatarUrl: profileMap[c.author_email] || null,  // 추가
             text: c.text,
             likes: c.likes ?? 0,
             likedBy: c.liked_by ?? [],
@@ -90,6 +99,7 @@ export default function PostDetailPage() {
                 id: r.id,
                 author: r.author,
                 authorEmail: r.author_email,
+                avatarUrl: profileMap[r.author_email] || null,  // 추가
                 text: r.text,
                 likes: r.likes ?? 0,
                 date: r.date,
@@ -316,7 +326,10 @@ export default function PostDetailPage() {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '13px', color: '#fff', border: '1px solid #555'
                       }}>
-                        {post.author?.charAt(0).toUpperCase()}
+                        {post.avatarUrl
+                          ? <img src={post.avatarUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : post.author?.charAt(0).toUpperCase()
+                        }
                       </div>
                       <span>{post.author}</span>
                     </div>
@@ -379,7 +392,10 @@ export default function PostDetailPage() {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '11px', color: '#fff', border: '1px solid #555'
                       }}>
-                        {comment.author?.charAt(0).toUpperCase()}
+                        {comment.avatarUrl
+                          ? <img src={comment.avatarUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : comment.author?.charAt(0).toUpperCase()
+                        }
                       </div>
                       <span className={styles.commentAuthor}>{comment.author}</span>
                     </div>
@@ -412,7 +428,10 @@ export default function PostDetailPage() {
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 fontSize: '10px', color: '#fff', border: '1px solid #555'
                               }}>
-                                {reply.author?.charAt(0).toUpperCase()}
+                                {reply.avatarUrl
+                                  ? <img src={reply.avatarUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  : reply.author?.charAt(0).toUpperCase()
+                                }
                               </div>
                               <span className={styles.replyAuthor}>{reply.author}</span>
                             </div>
