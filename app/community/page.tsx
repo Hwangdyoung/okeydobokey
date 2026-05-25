@@ -260,7 +260,17 @@ export default function CommunityPage() {
                           <p className={styles.postContent}>{post.content}</p>
                           <div className={styles.postFooter}>
                             <div className={styles.postMeta}>
-                              <span>작성자: {post.author}</span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <div style={{
+                                  width: '24px', height: '24px', borderRadius: '50%',
+                                  background: '#333', overflow: 'hidden', flexShrink: 0,
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  fontSize: '12px', color: '#fff'
+                                }}>
+                                  {post.author?.charAt(0).toUpperCase()}
+                                </div>
+                                <span>{post.author}</span>
+                              </div>
                               <span>{post.date}</span>
                             </div>
                             <div className={styles.postStats}>
