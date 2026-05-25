@@ -336,12 +336,12 @@ export default function PostDetailPage() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                  {isLoggedIn && (post.authorEmail === currentEmail || post.author === currentNickname) && (
-                    <div className={styles.postCtrlGroup}>
+                  {isLoggedIn && post.authorEmail === currentEmail &&
+                    (<div className={styles.postCtrlGroup}>
                       <button onClick={() => setIsEditMode(true)} className={styles.editBtn}>수정</button>
                       <button onClick={handleDeletePost} className={styles.deleteBtn}>삭제</button>
                     </div>
-                  )}
+                    )}
                   <span style={{ color: '#888', fontSize: '0.85rem' }}>{post.date}</span>
                 </div>
               </header>
