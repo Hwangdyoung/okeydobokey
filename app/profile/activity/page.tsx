@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import styles from '@/styles/ProfileActivity.module.css';
+import { createClient } from '@/utils/supabase/client';
 
 interface Reply {
   id: number;
@@ -42,6 +43,7 @@ function ActivityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isLoggedIn, currentEmail } = useAuth();
+  const supabase = createClient();
 
   // URL tab 파라미터가 있으면 디폴트로 사용 (posts, comments, likes)
   const defaultTab = searchParams.get('tab') || 'posts';
@@ -52,17 +54,21 @@ function ActivityContent() {
 
   // 로컬 스토리지에서 모든 게시글 데이터를 최신 동기 로드
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      const stored = localStorage.getItem('okeybokey_posts');
-      if (stored) {
-        setPostsList(JSON.parse(stored));
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await supabase
+          .from('posts')
+          .select('*, comments(*)')
+          .order('created_at', { ascending: false });
+        if (data) setPostsList(data);
+      } catch (e) {
+        console.error('Failed to load posts:', e);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (e) {
-      console.error('Failed to load posts in activity page:', e);
-    } finally {
-      setIsLoading(false);
-    }
+    };
+    fetchData();
   }, []);
 
   // 비로그인 또는 로딩 상태 제어
