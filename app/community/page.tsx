@@ -254,30 +254,31 @@ export default function CommunityPage() {
                         <div className={styles.postCard}>
                           <div className={styles.postHeader}>
                             {post.category === 'notice' && <span className={styles.noticeBadge}>[공지]</span>}
-                            <h3 className={styles.postTitle}>{post.title}</h3>
-                            {(post.likes || 0) >= 10 && <span className={styles.hotIcon}>🔥</span>}
-                          </div>
-                          <div className={styles.postFooter}>
-                            <div className={styles.postMeta}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <div style={{
-                                  width: '24px', height: '24px', borderRadius: '50%',
-                                  background: '#333', overflow: 'hidden', flexShrink: 0,
-                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                  fontSize: '12px', color: '#fff'
-                                }}>
-                                  {post.author?.charAt(0).toUpperCase()}
-                                </div>
-                                <span>{post.author}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <div style={{
+                                width: '24px', height: '24px', borderRadius: '50%',
+                                background: '#333', flexShrink: 0,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: '12px', color: '#fff', border: '1px solid #555'
+                              }}>
+                                {post.author?.charAt(0).toUpperCase()}
                               </div>
-                              <span>{post.date}</span>
+                              <span style={{ color: '#aaa', fontSize: '0.9rem' }}>{post.author}</span>
                             </div>
+                          </div>
+                          <h3 className={styles.postTitle}>
+                            {post.title}
+                            {(post.likes || 0) >= 10 && <span className={styles.hotIcon}>🔥</span>}
+                          </h3>
+                          <div className={styles.postFooter}>
                             <div className={styles.postStats}>
                               <span>👍 {post.likes || 0}</span>
                               <span>💬 {(post.comments || []).length}</span>
                             </div>
+                            <span style={{ color: '#666', fontSize: '0.85rem' }}>{post.date}</span>
                           </div>
                         </div>
+
                       </Link>
                     ))
                   ) : (
@@ -340,6 +341,6 @@ export default function CommunityPage() {
         </aside>
 
       </div>
-    </main>
+    </main >
   );
 }
