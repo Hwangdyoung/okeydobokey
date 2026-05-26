@@ -610,7 +610,7 @@ export default function ProfilePage() {
                             display: 'block', width: '100%', padding: '0.7rem 1rem',
                             background: 'none', border: 'none', color: '#fff', cursor: 'pointer',
                             textAlign: 'left', fontSize: '0.9rem'
-                          }}>📷 사진 업로드</button>
+                          }}>프로필 사진 업로드</button>
                           <button onClick={async () => {
                             if (!supabaseUser) return;
                             await supabase.from('profiles').update({ avatar_url: null }).eq('id', supabaseUser.id);
@@ -621,7 +621,7 @@ export default function ProfilePage() {
                             display: 'block', width: '100%', padding: '0.7rem 1rem',
                             background: 'none', border: 'none', borderTop: '1px solid #333',
                             color: '#ff4444', cursor: 'pointer', textAlign: 'left', fontSize: '0.9rem'
-                          }}>🗑️ 사진 삭제</button>
+                          }}>프로필 사진 삭제</button>
                         </div>
                       )} </div>
 
