@@ -67,6 +67,18 @@ export default function ProfilePage() {
   const [bio, setBio] = useState('');
   const [editBio, setEditBio] = useState('');
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (supabaseUser) {
+      supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', supabaseUser.id)
+        .single()
+        .then(({ data }) => setProfileAvatarUrl(data?.avatar_url || null));
+    }
+  }, [supabaseUser]);
 
   const [activity, setActivity] = useState({
     postCount: 0,
@@ -321,6 +333,7 @@ export default function ProfilePage() {
     await supabase.auth.updateUser({ data: { avatar_url: avatarUrlWithCache } });
     await supabase.from('profiles').update({ avatar_url: avatarUrlWithCache }).eq('id', supabaseUser.id);
     await supabase.auth.refreshSession();
+    setProfileAvatarUrl(avatarUrlWithCache);
     window.location.reload();
   };
 
@@ -579,8 +592,8 @@ export default function ProfilePage() {
                     {/* 프로필 사진 */}
                     <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => document.getElementById('avatarInput')?.click()}>
                       <div className={styles.avatar}>
-                        {supabaseUser?.user_metadata?.avatar_url ? (
-                          <img src={supabaseUser.user_metadata.avatar_url} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                        {profileAvatarUrl ? (
+                          <img src={profileAvatarUrl} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
                         ) : (
                           <span>{currentNickname.charAt(0).toUpperCase()}</span>
                         )}
