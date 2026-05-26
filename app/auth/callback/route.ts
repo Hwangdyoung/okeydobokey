@@ -115,8 +115,17 @@ export async function GET(request: Request) {
       }
 
       // ✅ profiles 테이블에 카카오 프로필 사진 저장
+      // ✅ profiles 테이블에 카카오 프로필 사진 저장 (avatar_url이 없을 때만)
       if (userId && profileImage) {
-        await upsertProfile(supabase, userId, profileImage, nickname);
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', userId)
+          .single();
+
+        if (!existing?.avatar_url) {
+          await upsertProfile(supabase, userId, profileImage, nickname);
+        }
       }
 
       return NextResponse.redirect(`${origin}/profile`);
