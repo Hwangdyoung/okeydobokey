@@ -28,8 +28,7 @@ export default function HeroSection() {
           Okey
           <span style={{ color: 'var(--clr-accent)', display: 'inline-flex', alignItems: 'center' }}>
             <span className={styles.logoIcon}>
-              <img src="/do.png" alt="logo icon" style={{ width: '1.7em', height: '1.7em', objectFit: 'contain', display: 'block', margin: '-0.6em -0.7em -0.6em 0' }} />
-            </span>
+              <img src="/do.png" alt="logo icon" draggable={false} onDragStart={(e) => e.preventDefault()} style={{ width: '1.7em', height: '1.7em', objectFit: 'contain', display: 'block', margin: '-0.6em -0.7em -0.6em 0', userSelect: 'none' }} />            </span>
           </span>
           Bokey
         </h1>
