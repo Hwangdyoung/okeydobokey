@@ -315,7 +315,7 @@ export default function ProfilePage() {
     const ext = file.name.split('.').pop();
     const path = `${supabaseUser.id}.${ext}`;
     const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
-    if (uploadError) { alert('업로드 실패'); return; }
+    if (uploadError) { alert('업로드 실패: ' + uploadError.message); return; }
     const { data } = supabase.storage.from('avatars').getPublicUrl(path);
     await supabase.auth.updateUser({ data: { avatar_url: data.publicUrl } });
     // profiles 테이블도 업데이트
