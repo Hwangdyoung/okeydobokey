@@ -317,9 +317,9 @@ export default function ProfilePage() {
     const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
     if (uploadError) { alert('업로드 실패: ' + uploadError.message); return; }
     const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-    await supabase.auth.updateUser({ data: { avatar_url: data.publicUrl } });
-    // profiles 테이블도 업데이트
-    await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', supabaseUser.id);
+    const avatarUrlWithCache = `${data.publicUrl}?t=${Date.now()}`;
+    await supabase.auth.updateUser({ data: { avatar_url: avatarUrlWithCache } });
+    await supabase.from('profiles').update({ avatar_url: avatarUrlWithCache }).eq('id', supabaseUser.id);
     window.location.reload();
   };
 
