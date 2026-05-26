@@ -68,6 +68,7 @@ export default function ProfilePage() {
   const [editBio, setEditBio] = useState('');
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [profileAvatarUrl, setProfileAvatarUrl] = useState<string | null>(null);
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
 
   useEffect(() => {
     if (supabaseUser) {
@@ -590,17 +591,39 @@ export default function ProfilePage() {
                   </div>
                   <div className={styles.profileRow}>
                     {/* 프로필 사진 */}
-                    <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => document.getElementById('avatarInput')?.click()}>
-                      <div className={styles.avatar}>
-                        {profileAvatarUrl ? (
-                          <img src={profileAvatarUrl} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                        ) : (
-                          <span>{currentNickname.charAt(0).toUpperCase()}</span>
-                        )}
-                      </div>
+                    <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setShowAvatarMenu(!showAvatarMenu)}>                      <div className={styles.avatar}>
+                      {profileAvatarUrl ? (
+                        <img src={profileAvatarUrl} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                      ) : (
+                        <span>{currentNickname.charAt(0).toUpperCase()}</span>
+                      )}
+                    </div>
                       <div style={{ position: 'absolute', bottom: 0, right: 0, background: '#fff', borderRadius: '50%', padding: '2px', fontSize: '12px' }}>📷</div>
                       <input id="avatarInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarUpload} />
-                    </div>
+                      {showAvatarMenu && (
+                        <div style={{
+                          position: 'absolute', top: '110%', left: 0, zIndex: 100,
+                          background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px',
+                          overflow: 'hidden', minWidth: '140px'
+                        }} onClick={(e) => e.stopPropagation()}>
+                          <button onClick={() => { setShowAvatarMenu(false); document.getElementById('avatarInput')?.click(); }} style={{
+                            display: 'block', width: '100%', padding: '0.7rem 1rem',
+                            background: 'none', border: 'none', color: '#fff', cursor: 'pointer',
+                            textAlign: 'left', fontSize: '0.9rem'
+                          }}>📷 사진 업로드</button>
+                          <button onClick={async () => {
+                            if (!supabaseUser) return;
+                            await supabase.from('profiles').update({ avatar_url: null }).eq('id', supabaseUser.id);
+                            await supabase.auth.updateUser({ data: { avatar_url: null } });
+                            setProfileAvatarUrl(null);
+                            setShowAvatarMenu(false);
+                          }} style={{
+                            display: 'block', width: '100%', padding: '0.7rem 1rem',
+                            background: 'none', border: 'none', borderTop: '1px solid #333',
+                            color: '#ff4444', cursor: 'pointer', textAlign: 'left', fontSize: '0.9rem'
+                          }}>🗑️ 사진 삭제</button>
+                        </div>
+                      )} </div>
 
                     <div className={styles.nameEdit}>
                       {!isEditingNickname ? (
