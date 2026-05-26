@@ -567,9 +567,10 @@ export default function ProfilePage() {
                   <div className={styles.sectionHeader}>
                     <h2>프로필 설정</h2>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                      {supabaseUser?.app_metadata?.provider === 'email' && (
-                        <span onClick={() => { setView('changePassword'); setPasswordError(''); setPasswordSuccess(''); }} className={styles.authLink}>비밀번호 변경</span>
-                      )}
+                      {!supabaseUser?.email?.includes('@okeydobokey.kakao') &&
+                        supabaseUser?.app_metadata?.provider === 'email' && (
+                          <span onClick={() => { setView('changePassword'); setPasswordError(''); setPasswordSuccess(''); }} className={styles.authLink}>비밀번호 변경</span>
+                        )}
                       <button onClick={() => logout()} className={styles.logoutBtn}>로그아웃</button>
                     </div>
                   </div>
