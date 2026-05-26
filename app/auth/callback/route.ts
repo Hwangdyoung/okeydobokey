@@ -85,8 +85,7 @@ export async function GET(request: Request) {
 
       // 3. Supabase에 임시 이메일로 로그인 (카카오 ID 기반)
       const fakeEmail = `kakao_${kakaoId}@okeydobokey.kakao`;
-      const fakePassword = `kakao_${kakaoId}_${process.env.KAKAO_CLIENT_SECRET!.slice(0, 8)}`;
-
+      const fakePassword = '임시비밀번호123!';
       let userId: string | null = null;
 
       // 먼저 로그인 시도
