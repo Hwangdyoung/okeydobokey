@@ -51,7 +51,15 @@ export async function GET(request: Request) {
 
       // 구글/기타 소셜 프로필 사진 저장
       if (avatarUrl) {
-        await upsertProfile(supabase, user.id, avatarUrl, nickname);
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', user.id)
+          .single();
+
+        if (!existing?.avatar_url) {
+          await upsertProfile(supabase, user.id, avatarUrl, nickname);
+        }
       }
 
       return NextResponse.redirect(`${origin}${next}`);
