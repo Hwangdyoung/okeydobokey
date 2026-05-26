@@ -320,6 +320,7 @@ export default function ProfilePage() {
     const avatarUrlWithCache = `${data.publicUrl}?t=${Date.now()}`;
     await supabase.auth.updateUser({ data: { avatar_url: avatarUrlWithCache } });
     await supabase.from('profiles').update({ avatar_url: avatarUrlWithCache }).eq('id', supabaseUser.id);
+    await supabase.auth.refreshSession();
     window.location.reload();
   };
 
