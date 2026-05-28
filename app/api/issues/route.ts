@@ -7,6 +7,10 @@ const BLOCK_KEYWORDS = [
   '묘역', '분향소', '제사', '기념식'
 ];
 
+const BLOCK_URLS = [
+  'programs.sbs.co.kr',
+];
+
 export async function GET() {
   try {
     const queries = [
@@ -51,6 +55,8 @@ export async function GET() {
 
           const hasBlockKeyword = BLOCK_KEYWORDS.some(k => cleanTitle.includes(k));
           if (hasBlockKeyword) continue;
+          const hasBlockUrl = BLOCK_URLS.some(u => linkMatch[1].includes(u));
+          if (hasBlockUrl) continue;
 
           // 중복 제거
           if (allItems.some(i => i.title === cleanTitle)) continue;
