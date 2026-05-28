@@ -34,8 +34,7 @@ export default function CustomCursor() {
         target.tagName.toLowerCase() === 'textarea' ||
         !!target.closest('a') ||
         !!target.closest('button') ||
-        !!target.closest('[role="button"]') ||
-        window.getComputedStyle(target).cursor === 'pointer';
+        !!target.closest('[role="button"]');
 
       if (isClickable) {
         inner.classList.add('hover');
