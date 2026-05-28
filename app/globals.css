@@ -157,9 +157,11 @@ body::after {
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   z-index: 9999;
-  transition: opacity 0.3s ease;
+  will-change: transform;
+  transform: translate(-50%, -50%);
 }
 
 /* Inner Dot (점) */
@@ -167,8 +169,7 @@ body::after {
   width: 8px;
   height: 8px;
   background-color: #ffffff;
-  /* 평상시 흰색 */
-  transition: all 0.2s ease-out;
+  transition: background-color 0.2s ease, opacity 0.3s ease;
 }
 
 /* Outer Ring (링) */
@@ -176,10 +177,8 @@ body::after {
   width: 32px;
   height: 32px;
   border: 1.5px solid #ffffff;
-  /* 평상시 흰색 테두리 */
   background-color: transparent;
-  /* 부드럽게 따라다니는 효과를 위한 transition 설정 */
-  transition: top 0.1s ease-out, left 0.1s ease-out, border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, opacity 0.3s ease;
 }
 
 /* Hover Effect: 색상 전환 (노란색) */
