@@ -52,12 +52,13 @@ export async function GET() {
 
           // 중복 제거
           if (allItems.some(i => i.title === cleanTitle)) continue;
-          if (pubDateMatch) {
-            const pubDate = new Date(pubDateMatch[1].trim());
-            const twoWeeksAgo = new Date();
-            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-            if (pubDate < twoWeeksAgo) continue;
-          }
+          // pubDate 없으면 제외
+          if (!pubDateMatch) continue;
+
+          const pubDate = new Date(pubDateMatch[1].trim());
+          const twoWeeksAgo = new Date();
+          twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+          if (pubDate < twoWeeksAgo) continue;
 
           allItems.push({
             id: Date.now() + allItems.length,
