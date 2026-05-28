@@ -14,9 +14,9 @@ const BLOCK_URLS = [
 export async function GET() {
   try {
     const queries = [
-      '힙합+래퍼',
-      '힙합+앨범+OR+힙합+콘서트',
-      '래퍼+뮤직비디오+OR+래퍼+싱글',
+      '힙합+신보+2026',
+      '래퍼+컴백+2026',
+      '힙합+페스티벌+2026',
     ];
 
     const allItems: any[] = [];
