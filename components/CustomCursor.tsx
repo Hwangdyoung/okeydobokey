@@ -14,35 +14,37 @@ export default function CustomCursor() {
     const outer = outerRef.current;
     if (!inner || !outer) return;
 
+    let rafId: number;
+
     const onMouseMove = (e: MouseEvent) => {
-      const x = e.clientX;
-      const y = e.clientY;
-      inner.style.left = `${x}px`;
-      inner.style.top = `${y}px`;
-      outer.style.left = `${x}px`;
-      outer.style.top = `${y}px`;
-      inner.style.opacity = '1';
-      outer.style.opacity = '1';
-    };
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const x = e.clientX;
+        const y = e.clientY;
+        inner.style.transform = `translate(${x}px, ${y}px)`;
+        outer.style.transform = `translate(${x}px, ${y}px)`;
 
-    const onMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const isClickable =
-        target.tagName.toLowerCase() === 'a' ||
-        target.tagName.toLowerCase() === 'button' ||
-        target.tagName.toLowerCase() === 'input' ||
-        target.tagName.toLowerCase() === 'textarea' ||
-        !!target.closest('a') ||
-        !!target.closest('button') ||
-        !!target.closest('[role="button"]');
+        const target = e.target as HTMLElement;
+        const isClickable =
+          target.tagName.toLowerCase() === 'a' ||
+          target.tagName.toLowerCase() === 'button' ||
+          target.tagName.toLowerCase() === 'input' ||
+          target.tagName.toLowerCase() === 'textarea' ||
+          !!target.closest('a') ||
+          !!target.closest('button') ||
+          !!target.closest('[role="button"]');
 
-      if (isClickable) {
-        inner.classList.add('hover');
-        outer.classList.add('hover');
-      } else {
-        inner.classList.remove('hover');
-        outer.classList.remove('hover');
-      }
+        if (isClickable) {
+          inner.classList.add('hover');
+          outer.classList.add('hover');
+        } else {
+          inner.classList.remove('hover');
+          outer.classList.remove('hover');
+        }
+
+        inner.style.opacity = '1';
+        outer.style.opacity = '1';
+      });
     };
 
     const onMouseLeave = () => {
@@ -56,13 +58,12 @@ export default function CustomCursor() {
     };
 
     window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseover', onMouseOver);
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseover', onMouseOver);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
     };
@@ -70,8 +71,8 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={innerRef} className="custom-cursor-inner" style={{ opacity: 0 }} />
-      <div ref={outerRef} className="custom-cursor-outer" style={{ opacity: 0 }} />
+      <div ref={innerRef} className="custom-cursor-inner" style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', willChange: 'transform' }} />
+      <div ref={outerRef} className="custom-cursor-outer" style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', willChange: 'transform' }} />
     </>
   );
 }
