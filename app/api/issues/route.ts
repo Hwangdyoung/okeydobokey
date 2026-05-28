@@ -59,8 +59,7 @@ export async function GET() {
           if (hasBlockUrl) continue;
 
           // 중복 제거
-          if (allItems.some(i => i.title === cleanTitle)) continue;
-          // pubDate 없으면 제외
+          if (allItems.some(i => i.title.slice(0, 15) === cleanTitle.slice(0, 15))) continue;          // pubDate 없으면 제외
           if (!pubDateMatch) continue;
 
           const pubDate = new Date(pubDateMatch[1].trim());
