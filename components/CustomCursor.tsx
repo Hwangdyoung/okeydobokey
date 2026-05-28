@@ -1,83 +1,78 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 터치 디바이스인지 확인
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
 
+    const inner = innerRef.current;
+    const outer = outerRef.current;
+    if (!inner || !outer) return;
+
     const onMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+      const x = e.clientX;
+      const y = e.clientY;
+      inner.style.left = `${x}px`;
+      inner.style.top = `${y}px`;
+      outer.style.left = `${x}px`;
+      outer.style.top = `${y}px`;
+      inner.style.opacity = '1';
+      outer.style.opacity = '1';
     };
 
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // 클릭 가능한 요소 위에 있는지 확인
-      const isClickable = 
+      const isClickable =
         target.tagName.toLowerCase() === 'a' ||
         target.tagName.toLowerCase() === 'button' ||
         target.tagName.toLowerCase() === 'input' ||
         target.tagName.toLowerCase() === 'textarea' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.closest('[role="button"]') ||
+        !!target.closest('a') ||
+        !!target.closest('button') ||
+        !!target.closest('[role="button"]') ||
         window.getComputedStyle(target).cursor === 'pointer';
 
-      setIsHovering(!!isClickable);
-    };
-
-    const onMouseOut = () => {
-      setIsHovering(false);
+      if (isClickable) {
+        inner.classList.add('hover');
+        outer.classList.add('hover');
+      } else {
+        inner.classList.remove('hover');
+        outer.classList.remove('hover');
+      }
     };
 
     const onMouseLeave = () => {
-      setIsVisible(false);
+      inner.style.opacity = '0';
+      outer.style.opacity = '0';
     };
 
     const onMouseEnter = () => {
-      setIsVisible(true);
+      inner.style.opacity = '1';
+      outer.style.opacity = '1';
     };
 
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseover', onMouseOver);
-    window.addEventListener('mouseout', onMouseOut);
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseover', onMouseOver);
-      window.removeEventListener('mouseout', onMouseOut);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
     };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
+  }, []);
 
   return (
     <>
-      <div 
-        className={`custom-cursor-inner ${isHovering ? 'hover' : ''}`}
-        style={{ 
-          left: `${mousePosition.x}px`, 
-          top: `${mousePosition.y}px` 
-        }}
-      />
-      <div 
-        className={`custom-cursor-outer ${isHovering ? 'hover' : ''}`}
-        style={{ 
-          left: `${mousePosition.x}px`, 
-          top: `${mousePosition.y}px` 
-        }}
-      />
+      <div ref={innerRef} className="custom-cursor-inner" style={{ opacity: 0 }} />
+      <div ref={outerRef} className="custom-cursor-outer" style={{ opacity: 0 }} />
     </>
   );
 }
