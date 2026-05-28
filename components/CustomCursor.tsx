@@ -21,8 +21,10 @@ export default function CustomCursor() {
       rafId = requestAnimationFrame(() => {
         const x = e.clientX;
         const y = e.clientY;
-        inner.style.transform = `translate(${x}px, ${y}px)`;
-        outer.style.transform = `translate(${x}px, ${y}px)`;
+        inner.style.left = `${x}px`;
+        inner.style.top = `${y}px`;
+        outer.style.left = `${x}px`;
+        outer.style.top = `${y}px`;
 
         const target = e.target as HTMLElement;
         const isClickable =
@@ -71,8 +73,9 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={innerRef} className="custom-cursor-inner" style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', willChange: 'transform' }} />
-      <div ref={outerRef} className="custom-cursor-outer" style={{ opacity: 0, position: 'fixed', top: 0, left: 0, pointerEvents: 'none', willChange: 'transform' }} />
+      <div ref={innerRef} className="custom-cursor-inner" style={{ opacity: 0 }} />
+      <div ref={outerRef} className="custom-cursor-outer" style={{ opacity: 0 }} />
     </>
   );
+
 }
